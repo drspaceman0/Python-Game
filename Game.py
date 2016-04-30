@@ -26,20 +26,23 @@ def main():
 	while True:
 		runGame()
 
+class Player:
+		x = PLAYER_X
+		y = PLAYER_Y
+		moveUp = False
+		moveDown = False
+		moveLeft = False
+		moveRight = False
+		width = PLAYER_WIDTH
+		height = PLAYER_HEIGHT
+		color = RED
+	
+
 def runGame():
 	global PLAYER_X, PLAYER_Y
 	
-	playerObj = {
-		'x': PLAYER_X,
-		'y': PLAYER_Y,
-		'moveUp': False,
-		'moveDown': False,
-		'moveLeft': False,
-		'moveRight': False,
-		'width': PLAYER_WIDTH,
-		'height': PLAYER_HEIGHT,
-		'color': RED
-	}
+	playerObj = Player()
+	
 	while True:
 		DISPLAYSURF.fill(WHITE)
 		
@@ -49,52 +52,52 @@ def runGame():
 				terminate()
 			elif event.type == KEYDOWN:
 				if event.key in (K_LEFT, K_a):
-					playerObj['moveLeft']= True
+					playerObj.moveLeft= True
 				elif event.key in (K_RIGHT, K_d):
-					playerObj['moveRight']= True
+					playerObj.moveRight= True
 				elif event.key in (K_DOWN, K_s):
-					playerObj['moveDown']= True
+					playerObj.moveDown= True
 				elif event.key in (K_UP, K_w):
-					playerObj['moveUp']= True
+					playerObj.moveUp= True
 				elif event.key == K_ESCAPE:
 					terminate()
 			elif event.type == KEYUP:
 				# stop moving the player
 				if event.key in (K_LEFT, K_a):
-					playerObj['moveLeft']= False
+					playerObj.moveLeft= False
 				if event.key in (K_RIGHT, K_d):
-					playerObj['moveRight']= False
+					playerObj.moveRight= False
 				if event.key in (K_DOWN, K_s):
-					playerObj['moveDown']= False
+					playerObj.moveDown= False
 				if event.key in (K_UP, K_w):
-					playerObj['moveUp']= False
+					playerObj.moveUp= False
 				 
 		# update player position
-		if playerObj['moveRight']:
-			playerObj['x'] += PLAYER_SPEED
-		if playerObj['moveDown']:
-			playerObj['y'] += PLAYER_SPEED
-		if playerObj['moveLeft']:
-			playerObj['x'] -= PLAYER_SPEED
-		if playerObj['moveUp']:
-			playerObj['y'] -= PLAYER_SPEED
+		if playerObj.moveRight:
+			playerObj.x += PLAYER_SPEED
+		if playerObj.moveDown:
+			playerObj.y += PLAYER_SPEED
+		if playerObj.moveLeft:
+			playerObj.x -= PLAYER_SPEED
+		if playerObj.moveUp:
+			playerObj.y -= PLAYER_SPEED
 		moveToOtherSide(playerObj)
 		
 		# draw player
-		pygame.draw.rect(DISPLAYSURF, playerObj['color'], (playerObj['x'], playerObj['y'], playerObj['width'], playerObj['height']))
+		pygame.draw.rect(DISPLAYSURF, playerObj.color, (playerObj.x, playerObj.y, playerObj.width, playerObj.width))
 		
 		pygame.display.update()
 		FPSCLOCK.tick(FPS)
 
 def moveToOtherSide(playerObj):
-	if playerObj['moveRight'] and playerObj['x'] >= SCREEN_WIDTH:
-		playerObj['x'] = 0
-	if playerObj['moveLeft'] and playerObj['x'] <= 0 - PLAYER_WIDTH:
-		playerObj['x'] = SCREEN_WIDTH
-	if playerObj['moveDown'] and playerObj['y'] >= SCREEN_HEIGHT:
-		playerObj['y'] = 0
-	if playerObj['moveUp'] and playerObj['y'] <= 0 - PLAYER_HEIGHT:
-		playerObj['y'] = SCREEN_HEIGHT
+	if playerObj.moveRight and playerObj.x >= SCREEN_WIDTH:
+		playerObj.x = 0
+	if playerObj.moveLeft and playerObj.x <= 0 - PLAYER_WIDTH:
+		playerObj.x = SCREEN_WIDTH
+	if playerObj.moveDown and playerObj.y >= SCREEN_HEIGHT:
+		playerObj.y = 0
+	if playerObj.moveUp and playerObj.y <= 0 - PLAYER_HEIGHT:
+		playerObj.y = SCREEN_HEIGHT
 		
 def terminate():
 	pygame.quit()

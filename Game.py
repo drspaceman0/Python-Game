@@ -4,6 +4,7 @@ Shoot with a s d w keys
 '''
 
 import pygame, sys
+import math
 from pygame.locals import *
 
 # canvas variables
@@ -90,7 +91,7 @@ class Bullet:
 		
 class Enemy:
 	num_enemies = 0
-	list_enemies = []
+	listEnemies = []
 	def __init__(self, size):
 		self.x = 450
 		self.y = 450
@@ -99,10 +100,10 @@ class Enemy:
 		self.color = GREEN
 		self.speed = 5
 		Enemy.num_enemies += 1
-		Enemy.list_enemies.append(self)
+		Enemy.listEnemies.append(self)
 		
 	def update(self, PlayerObj):
-		for enemy in Enemy.list_enemies:
+		for enemy in Enemy.listEnemies:
 			if enemy.x >= SCREEN_WIDTH or enemy.x <= 0 or enemy.y >= SCREEN_HEIGHT or enemy.y <= 0:
 				Enemy.delete(enemy)
 				continue
@@ -122,8 +123,13 @@ class Enemy:
 				
 	def delete(self):
 		Enemy.num_enemies -= 1
-		Enemy.list_enemies.remove(self)
+		Enemy.listEnemies.remove(self)
 		del self
+
+def collision(obj1, obj2):
+	if math.sqrt(pow(obj1.x - obj2.x, 2) + pow(obj1.y - obj2.y, 2)) < 30:
+		return True
+		
 		
 		
 
@@ -160,9 +166,16 @@ def runGame():
 			
 			
 		# update enemies if any exist
-		if len(Enemy.list_enemies) > 0:
-			Enemy.update(Enemy.list_enemies[0], playerObj)
-					
+		if len(Enemy.listEnemies) > 0:
+			Enemy.update(Enemy.listEnemies[0], playerObj)
+			
+		# check for collision
+		if len(Bullet.listBullets) > 0:
+			for counti in range(len(Bullet.listBullets)):
+				for countj in range(len(Enemy.listEnemies)):
+					if collision(Bullet.listBullets[counti], Enemy.listEnemies[countj]) == True:
+						#Bullet.listBullets[counti].delete()
+						Enemy.listEnemies[countj].delete()
 		pygame.display.update()
 		FPSCLOCK.tick(FPS)
 

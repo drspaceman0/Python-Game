@@ -109,17 +109,13 @@ class Enemy:
 			#Chase the player in the x direction
 			if (PlayerObj.x > enemy.x):
 				enemy.x = enemy.x + enemy.speed
-			elif (PlayerObj.x < enemy.x):
+			if (PlayerObj.x < enemy.x):
 				enemy.x = enemy.x - enemy.speed
-			else:
-				pass
 			#Then chase the player in the y direction
-			if (PlayerObj.y > self.y):
+			if (PlayerObj.y > enemy.y):
 				enemy.y = enemy.y + enemy.speed
-			elif (PlayerObj.y < self.y):
+			if (PlayerObj.y < enemy.y):
 				enemy.y = enemy.y - enemy.speed
-			else:
-				pass
 			#Draw the enemies	
 			pygame.draw.circle(DISPLAYSURF, GREEN, (enemy.x, enemy.y), enemy.size)
 				

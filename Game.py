@@ -169,21 +169,12 @@ def runGame():
 		if len(Enemy.listEnemies) > 0:
 			Enemy.update(Enemy.listEnemies[0], playerObj)
 			
-		# check for collision
-		# might have to use list comprehension
-		#if len(Bullet.listBullets) > 0:
-			#for counti in range(len(Bullet.listBullets)):
-				#for countj in range(len(Enemy.listEnemies)):
-					#if collision(Bullet.listBullets[counti], Enemy.listEnemies[countj]) == True:
-						#Bullet.listBullets[counti].delete()
-						#Enemy.listEnemies[countj].delete()
-						
+			
+		#Hacked way to check for collision. For loops don't work the way you'd think
 		countb = 0
 		counte = 0
 		if countb < len(Bullet.listBullets):
 			if counte < len(Enemy.listEnemies):
-				Bullet.listBullets[countb]
-				Enemy.listEnemies[counte]
 				if collision(Bullet.listBullets[countb], Enemy.listEnemies[counte]) == True:
 					Bullet.listBullets[countb].delete()
 					Enemy.listEnemies[counte].delete()

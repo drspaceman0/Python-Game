@@ -3,6 +3,7 @@ Move with left right up down arrow keys
 Shoot with a s d w keys
 '''
 
+import Enemy
 import pygame, sys
 from pygame.locals import *
 
@@ -12,6 +13,7 @@ SCREEN_HEIGHT = 500
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+GREEN = (22, 226, 15)
 
 # player variables
 PLAYER_X = 10
@@ -46,6 +48,7 @@ class Player:
 		moveToOtherSide(self)
 		# draw player
 		pygame.draw.rect(DISPLAYSURF, self.color, (self.x, self.y, self.width, self.width))
+	
 	
 class Bullet:
 	numBullets = 0
@@ -82,6 +85,54 @@ class Bullet:
 		Bullet.numBullets -= 1
 		Bullet.listBullets.remove(self)
 		del self
+		
+		
+		
+		
+class Enemy:
+	num_enemies = 0
+	list_enemies = []
+	def __init__(self, size):
+		self.x = 450
+		self.y = 450
+		self.size = 20
+		health = 10
+		self.color = GREEN
+		self.speed = 5
+		Enemy.num_enemies += 1
+		Enemy.list_enemies.append(self)
+		
+	def update(self, PlayerObj):
+		for enemy in Enemy.list_enemies:
+			if enemy.x >= SCREEN_WIDTH or enemy.x <= 0 or enemy.y >= SCREEN_HEIGHT or enemy.y <= 0:
+				Enemy.delete(enemy)
+				continue
+			#Chase the player in the x direction
+			if (PlayerObj.x > enemy.x):
+				enemy.x = enemy.x + enemy.speed
+			elif (PlayerObj.x < enemy.x):
+				enemy.x = enemy.x - enemy.speed
+			else:
+				pass
+			#Then chase the player in the y direction
+			if (PlayerObj.y > self.y):
+				enemy.y = enemy.y + enemy.speed
+			elif (PlayerObj.y < self.y):
+				enemy.y = enemy.y - enemy.speed
+			else:
+				pass
+			#Draw the enemies	
+			pygame.draw.circle(DISPLAYSURF, GREEN, (enemy.x, enemy.y), enemy.size)
+				
+				
+	def delete(self):
+		Enemy.num_enemies -= 1
+		Enemy.list_enemies.remove(self)
+		del self
+		
+		
+
+	
 
 def main():
 	global FPSCLOCK, DISPLAYSURF, FPS
@@ -111,6 +162,11 @@ def runGame():
 		# update bullets if any exist
 		if len(Bullet.listBullets) > 0:
 			Bullet.update(Bullet.listBullets[0])
+			
+			
+		# update enemies if any exist
+		if len(Enemy.list_enemies) > 0:
+			Enemy.update(Enemy.list_enemies[0], playerObj)
 					
 		pygame.display.update()
 		FPSCLOCK.tick(FPS)
@@ -140,6 +196,8 @@ def checkForInputs(playerObj):
 				Bullet(playerObj, 'down')
 			if event.key == K_w:
 				Bullet(playerObj, 'up')
+			if event.key == K_p:
+				Enemy(4)
 			if event.key == K_ESCAPE:
 				terminate()
 		elif event.type == KEYUP:

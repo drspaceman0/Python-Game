@@ -3,7 +3,6 @@ Move with left right up down arrow keys
 Shoot with a s d w keys
 '''
 
-import Enemy
 import pygame, sys
 from pygame.locals import *
 

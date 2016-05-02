@@ -6,6 +6,7 @@ Shoot with a s d w keys
 import pygame, sys
 import math
 from pygame.locals import *
+import Enemy
 
 # canvas variables
 SCREEN_WIDTH = 700
@@ -92,43 +93,6 @@ class Bullet:
 		Bullet.listBullets.remove(self)
 		del self
 		
-		
-class Enemy:
-	num_enemies = 0
-	listEnemies = []
-	def __init__(self, size):
-		self.x = 450
-		self.y = 450
-		self.size = 20
-		health = 10
-		self.color = GREEN
-		self.speed = 5
-		Enemy.num_enemies += 1
-		Enemy.listEnemies.append(self)
-		
-	def update(self, PlayerObj):
-		for enemy in Enemy.listEnemies:
-			if enemy.x >= SCREEN_WIDTH or enemy.x <= 0 or enemy.y >= SCREEN_HEIGHT or enemy.y <= 0:
-				Enemy.delete(enemy)
-				continue
-			#Chase the player in the x direction
-			if (PlayerObj.x > enemy.x):
-				enemy.x = enemy.x + enemy.speed
-			if (PlayerObj.x < enemy.x):
-				enemy.x = enemy.x - enemy.speed
-			#Then chase the player in the y direction
-			if (PlayerObj.y > enemy.y):
-				enemy.y = enemy.y + enemy.speed
-			if (PlayerObj.y < enemy.y):
-				enemy.y = enemy.y - enemy.speed
-			#Draw the enemies	
-			pygame.draw.circle(DISPLAYSURF, GREEN, (enemy.x, enemy.y), enemy.size)
-				
-				
-	def delete(self):
-		Enemy.num_enemies -= 1
-		Enemy.listEnemies.remove(self)
-		del self
 
 def collision(obj1, obj2):
 	if math.sqrt(pow(obj1.x - obj2.x, 2) + pow(obj1.y - obj2.y, 2)) < 30:
@@ -199,18 +163,18 @@ def runGame():
 			Bullet.update(Bullet.listBullets[0])
 		
 		# update enemies if any exist
-		if len(Enemy.listEnemies) > 0:
-			Enemy.update(Enemy.listEnemies[0], playerObj)
+		if len(Enemy.Enemy.listEnemies) > 0:
+			Enemy.Enemy.update(Enemy.Enemy.listEnemies[0], playerObj)
 			
 			
 		#Hacked way to check for collision. For loops don't work the way you'd think
 		countb = 0
 		counte = 0
 		if countb < len(Bullet.listBullets):
-			if counte < len(Enemy.listEnemies):
-				if collision(Bullet.listBullets[countb], Enemy.listEnemies[counte]) == True:
+			if counte < len(Enemy.Enemy.listEnemies):
+				if collision(Bullet.listBullets[countb], Enemy.Enemy.listEnemies[counte]) == True:
 					Bullet.listBullets[countb].delete()
-					Enemy.listEnemies[counte].delete()
+					Enemy.Enemy.listEnemies[counte].delete()
 				else:
 					countb += 1
 					counte += 1
@@ -247,7 +211,7 @@ def checkForInputs(playerObj):
 			if event.key == K_w:
 				Bullet(playerObj, 'up')
 			if event.key == K_p:
-				Enemy(4)
+				Enemy.Enemy(40)
 			if event.key == K_ESCAPE:
 				terminate()
 		elif event.type == KEYUP:

@@ -18,9 +18,10 @@ GREEN = (22, 226, 15)
 # player variables
 PLAYER_X = 10
 PLAYER_Y = 10
-PLAYER_WIDTH = 50
-PLAYER_HEIGHT = 50
+PLAYER_WIDTH = 64
+PLAYER_HEIGHT = 64
 PLAYER_SPEED = 10
+
 
 class Player:
 	def __init__(self):
@@ -34,6 +35,7 @@ class Player:
 		self.width = PLAYER_WIDTH
 		self.height = PLAYER_HEIGHT
 		self.color = RED
+		self.spriteList = []
 	
 	def movePlayer(self):
 		if self.moveRight:
@@ -47,17 +49,21 @@ class Player:
 		# check if player needs to go to other side
 		moveToOtherSide(self)
 		# draw player
-		pygame.draw.rect(DISPLAYSURF, self.color, (self.x, self.y, self.width, self.width))
+		self.spriteList.update(self.x, self.y)
+		self.spriteList.draw(DISPLAYSURF)
+		
+	def updateSpriteList(self, sprites):
+		self.spriteList = sprites
 	
 	
 class Bullet:
 	numBullets = 0
 	listBullets = []
 	def __init__(self,playerObj, dir):
-		self.x = playerObj.x + playerObj.width/2 - 2
-		self.y = playerObj.y + playerObj.height/2 - 2
-		self.width = 10
-		self.height = 10
+		self.x = playerObj.x + playerObj.width/4
+		self.y = playerObj.y + playerObj.height/4
+		self.width = 5
+		self.height = 5
 		self.color = BLACK
 		self.speed = 20
 		self.direction = dir
@@ -85,8 +91,6 @@ class Bullet:
 		Bullet.numBullets -= 1
 		Bullet.listBullets.remove(self)
 		del self
-		
-		
 		
 		
 class Enemy:
@@ -130,11 +134,37 @@ def collision(obj1, obj2):
 	if math.sqrt(pow(obj1.x - obj2.x, 2) + pow(obj1.y - obj2.y, 2)) < 30:
 		return True
 		
-		
-		
+def load_image(name):
+    image = pygame.image.load(name)
+    return image
 
-	
+# http://stackoverflow.com/questions/14044147/animated-sprite-from-few-images
+class Sprite(pygame.sprite.Sprite):
 
+    def __init__(self):
+		super(Sprite, self).__init__()
+		self.counter = 0
+		self.images = []
+		self.images.append(load_image('images\player_idle1.png'))
+		self.images.append(load_image('images\player_idle2.png'))
+		# assuming both images are 64x64 pixels
+
+		self.index = 0
+		self.image = self.images[self.index]
+		self.rect = pygame.Rect(5, 5, 64, 64)
+
+    def update(self, x, y):
+		self.counter += 1 
+		self.rect = pygame.Rect(x, y, 64, 64) 
+		if self.counter > 10: # after ten clicks switch sprites
+			self.counter = 0
+			self.index += 1
+			if self.index >= len(self.images):
+				self.index = 0
+			self.image = self.images[self.index]
+#		
+# START GAME
+#	
 def main():
 	global FPSCLOCK, DISPLAYSURF, FPS
 
@@ -149,8 +179,12 @@ def main():
 		runGame()		
 	
 def runGame():
+	
+	mySprite = Sprite()
+	myGroup = pygame.sprite.Group(mySprite)
 	playerObj = Player()
-
+	playerObj.updateSpriteList(myGroup)
+	
 	while True:
 		DISPLAYSURF.fill(WHITE)
 		
@@ -163,8 +197,7 @@ def runGame():
 		# update bullets if any exist
 		if len(Bullet.listBullets) > 0:
 			Bullet.update(Bullet.listBullets[0])
-			
-			
+		
 		# update enemies if any exist
 		if len(Enemy.listEnemies) > 0:
 			Enemy.update(Enemy.listEnemies[0], playerObj)
@@ -181,15 +214,12 @@ def runGame():
 				else:
 					countb += 1
 					counte += 1
-				
-						
-					
-						
 		
 		pygame.display.update()
 		FPSCLOCK.tick(FPS)
-		
-		
+#
+#	END GAME
+#
 
 def checkForInputs(playerObj):
 	for event in pygame.event.get():

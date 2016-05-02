@@ -170,14 +170,35 @@ def runGame():
 			Enemy.update(Enemy.listEnemies[0], playerObj)
 			
 		# check for collision
-		if len(Bullet.listBullets) > 0:
-			for counti in range(len(Bullet.listBullets)):
-				for countj in range(len(Enemy.listEnemies)):
-					if collision(Bullet.listBullets[counti], Enemy.listEnemies[countj]) == True:
+		# might have to use list comprehension
+		#if len(Bullet.listBullets) > 0:
+			#for counti in range(len(Bullet.listBullets)):
+				#for countj in range(len(Enemy.listEnemies)):
+					#if collision(Bullet.listBullets[counti], Enemy.listEnemies[countj]) == True:
 						#Bullet.listBullets[counti].delete()
-						Enemy.listEnemies[countj].delete()
+						#Enemy.listEnemies[countj].delete()
+						
+		countb = 0
+		counte = 0
+		if countb < len(Bullet.listBullets):
+			if counte < len(Enemy.listEnemies):
+				Bullet.listBullets[countb]
+				Enemy.listEnemies[counte]
+				if collision(Bullet.listBullets[countb], Enemy.listEnemies[counte]) == True:
+					Bullet.listBullets[countb].delete()
+					Enemy.listEnemies[counte].delete()
+				else:
+					countb += 1
+					counte += 1
+				
+						
+					
+						
+		
 		pygame.display.update()
 		FPSCLOCK.tick(FPS)
+		
+		
 
 def checkForInputs(playerObj):
 	for event in pygame.event.get():

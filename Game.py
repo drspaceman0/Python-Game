@@ -5,16 +5,11 @@ Shoot with a s d w keys
 
 import pygame, sys
 import math
+import random
 from pygame.locals import *
 import Enemy
+import Display
 
-# canvas variables
-SCREEN_WIDTH = 700
-SCREEN_HEIGHT = 500
-RED = (255, 0, 0)
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-GREEN = (22, 226, 15)
 
 # player variables
 PLAYER_X = 10
@@ -35,7 +30,7 @@ class Player:
 		self.moveRight = False
 		self.width = PLAYER_WIDTH
 		self.height = PLAYER_HEIGHT
-		self.color = RED
+		self.color = Display.RED
 		self.spriteList = []
 	
 	def movePlayer(self):
@@ -51,7 +46,7 @@ class Player:
 		moveToOtherSide(self)
 		# draw player
 		self.spriteList.update(self.x, self.y)
-		self.spriteList.draw(DISPLAYSURF)
+		self.spriteList.draw(Display.DISPLAYSURF)
 		
 	def updateSpriteList(self, sprites):
 		self.spriteList = sprites
@@ -65,7 +60,7 @@ class Bullet:
 		self.y = playerObj.y + playerObj.height/4
 		self.width = 5
 		self.height = 5
-		self.color = BLACK
+		self.color = Display.BLACK
 		self.speed = 20
 		self.direction = dir
 		Bullet.numBullets += 1
@@ -73,7 +68,7 @@ class Bullet:
 	
 	def update(self):
 		for bullet in Bullet.listBullets:
-			if bullet.x >= SCREEN_WIDTH or bullet.x <= 0 or bullet.y >= SCREEN_HEIGHT or bullet.y <= 0:
+			if bullet.x >= Display.SCREEN_WIDTH or bullet.x <= 0 or bullet.y >= Display.SCREEN_HEIGHT or bullet.y <= 0:
 				Bullet.delete(bullet)
 				continue
 			# get bullet position
@@ -86,7 +81,7 @@ class Bullet:
 			if bullet.direction == 'up':
 				bullet.y -= bullet.speed
 			# draw bullet
-			pygame.draw.rect(DISPLAYSURF, bullet.color, (bullet.x, bullet.y, bullet.width, bullet.width))
+			pygame.draw.rect(Display.DISPLAYSURF, bullet.color, (bullet.x, bullet.y, bullet.width, bullet.width))
 
 	def delete(self):
 		Bullet.numBullets -= 1
@@ -135,10 +130,10 @@ def main():
 	pygame.init()
 	FPS = 30 # frames per second
 	FPSCLOCK = pygame.time.Clock()
-	DISPLAYSURF = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
+	DISPLAYSURF = pygame.display.set_mode((Display.SCREEN_WIDTH, Display.SCREEN_HEIGHT), 0, 32)
 	pygame.display.set_caption('Game')
 	PLAYER_X = 10
-	PLAYER_Y = 10
+	PLAYER_Y = 10 
 	while True:
 		runGame()		
 	
@@ -150,7 +145,7 @@ def runGame():
 	playerObj.updateSpriteList(myGroup)
 	
 	while True:
-		DISPLAYSURF.fill(WHITE)
+		Display.DISPLAYSURF.fill(Display.WHITE)
 		
 		# check for key input
 		checkForInputs(playerObj)
@@ -180,7 +175,7 @@ def runGame():
 					counte += 1
 		
 		pygame.display.update()
-		FPSCLOCK.tick(FPS)
+		Display.FPSCLOCK.tick(Display.FPS)
 #
 #	END GAME
 #
@@ -211,7 +206,7 @@ def checkForInputs(playerObj):
 			if event.key == K_w:
 				Bullet(playerObj, 'up')
 			if event.key == K_p:
-				Enemy.Enemy(40)
+				Enemy.Enemy(300, 300, 40)
 			if event.key == K_ESCAPE:
 				terminate()
 		elif event.type == KEYUP:
@@ -226,14 +221,14 @@ def checkForInputs(playerObj):
 				playerObj.moveUp= False
 		
 def moveToOtherSide(playerObj):
-	if playerObj.moveRight and playerObj.x >= SCREEN_WIDTH:
+	if playerObj.moveRight and playerObj.x >= Display.SCREEN_WIDTH:
 		playerObj.x = 0
 	if playerObj.moveLeft and playerObj.x <= 0 - PLAYER_WIDTH:
-		playerObj.x = SCREEN_WIDTH
-	if playerObj.moveDown and playerObj.y >= SCREEN_HEIGHT:
+		playerObj.x = Display.SCREEN_WIDTH
+	if playerObj.moveDown and playerObj.y >= Display.SCREEN_HEIGHT:
 		playerObj.y = 0
 	if playerObj.moveUp and playerObj.y <= 0 - PLAYER_HEIGHT:
-		playerObj.y = SCREEN_HEIGHT
+		playerObj.y = Display.SCREEN_HEIGHT
 		
 def terminate():
 	pygame.quit()

@@ -1,28 +1,23 @@
 import pygame
+import Display
 
-SCREEN_WIDTH = 700
-SCREEN_HEIGHT = 500
-RED = (255, 0, 0)
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-GREEN = (22, 226, 15)
 
 class Enemy:
 	num_enemies = 0
 	listEnemies = []
-	def __init__(self, size):
-		self.x = 450
-		self.y = 450
+	def __init__(self, posx, posy, size):
+		self.x = posx
+		self.y = posy
 		self.size = size
-		health = 10
-		self.color = GREEN
+		health = size/2
+		self.color = Display.GREEN
 		self.speed = 5
 		Enemy.num_enemies += 1
 		Enemy.listEnemies.append(self)
 		
 	def update(self, PlayerObj):
 		for enemy in Enemy.listEnemies:
-			if enemy.x >= SCREEN_WIDTH or enemy.x <= 0 or enemy.y >= SCREEN_HEIGHT or enemy.y <= 0:
+			if enemy.x >= Display.SCREEN_WIDTH or enemy.x <= 0 or enemy.y >= Display.SCREEN_HEIGHT or enemy.y <= 0:
 				Enemy.delete(enemy)
 				continue
 			#Chase the player in the x direction
@@ -36,7 +31,7 @@ class Enemy:
 			if (PlayerObj.y < enemy.y):
 				enemy.y = enemy.y - enemy.speed
 			#Draw the enemies	
-			pygame.draw.circle(DISPLAYSURF, GREEN, (enemy.x, enemy.y), enemy.size)
+			pygame.draw.circle(Display.DISPLAYSURF, Display.GREEN, (enemy.x, enemy.y), enemy.size)
 				
 				
 	def delete(self):

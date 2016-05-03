@@ -11,47 +11,9 @@ import Bullet
 import Enemy
 import Display
 import SpriteAnimation
+import Player
 
 
-# player variables
-PLAYER_X = 10
-PLAYER_Y = 10
-PLAYER_WIDTH = 64
-PLAYER_HEIGHT = 64
-PLAYER_SPEED = 10
-
-
-class Player:
-	def __init__(self):
-		self.x = PLAYER_X
-		self.y = PLAYER_Y
-		self.direction = 'right'
-		self.moveUp = False
-		self.moveDown = False
-		self.moveLeft = False
-		self.moveRight = False
-		self.width = PLAYER_WIDTH
-		self.height = PLAYER_HEIGHT
-		self.color = Display.RED
-		self.spriteList = []
-	
-	def movePlayer(self):
-		if self.moveRight:
-			self.x += PLAYER_SPEED
-		if self.moveDown:
-			self.y += PLAYER_SPEED
-		if self.moveLeft:
-			self.x -= PLAYER_SPEED
-		if self.moveUp:
-			self.y -= PLAYER_SPEED
-		# check if player needs to go to other side
-		moveToOtherSide(self)
-		# draw player
-		self.spriteList.update(self.x, self.y)
-		self.spriteList.draw(Display.DISPLAYSURF)
-		
-	def updateSpriteList(self, sprites):
-		self.spriteList = sprites
 	
 	
 def collision(obj1, obj2):
@@ -72,7 +34,7 @@ def runGame():
 	
 	mySprite = SpriteAnimation.SpriteAnimation()
 	myGroup = pygame.sprite.Group(mySprite)
-	playerObj = Player()
+	playerObj = Player.Player()
 	playerObj.updateSpriteList(myGroup)
 	
 	while True:
@@ -151,15 +113,6 @@ def checkForInputs(playerObj):
 			if event.key == K_UP:
 				playerObj.moveUp= False
 		
-def moveToOtherSide(playerObj):
-	if playerObj.moveRight and playerObj.x >= Display.SCREEN_WIDTH:
-		playerObj.x = 0
-	if playerObj.moveLeft and playerObj.x <= 0 - PLAYER_WIDTH:
-		playerObj.x = Display.SCREEN_WIDTH
-	if playerObj.moveDown and playerObj.y >= Display.SCREEN_HEIGHT:
-		playerObj.y = 0
-	if playerObj.moveUp and playerObj.y <= 0 - PLAYER_HEIGHT:
-		playerObj.y = Display.SCREEN_HEIGHT
 		
 def terminate():
 	pygame.quit()

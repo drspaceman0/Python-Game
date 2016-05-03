@@ -7,6 +7,7 @@ import pygame, sys
 import math
 import random
 from pygame.locals import *
+import Bullet
 import Enemy
 import Display
 
@@ -52,41 +53,7 @@ class Player:
 		self.spriteList = sprites
 	
 	
-class Bullet:
-	numBullets = 0
-	listBullets = []
-	def __init__(self,playerObj, dir):
-		self.x = playerObj.x + playerObj.width/4
-		self.y = playerObj.y + playerObj.height/4
-		self.width = 5
-		self.height = 5
-		self.color = Display.BLACK
-		self.speed = 20
-		self.direction = dir
-		Bullet.numBullets += 1
-		Bullet.listBullets.append(self)
-	
-	def update(self):
-		for bullet in Bullet.listBullets:
-			if bullet.x >= Display.SCREEN_WIDTH or bullet.x <= 0 or bullet.y >= Display.SCREEN_HEIGHT or bullet.y <= 0:
-				Bullet.delete(bullet)
-				continue
-			# get bullet position
-			if bullet.direction == 'right':
-				bullet.x += bullet.speed
-			if bullet.direction == 'left':
-				bullet.x -= bullet.speed
-			if bullet.direction == 'down':
-				bullet.y += bullet.speed
-			if bullet.direction == 'up':
-				bullet.y -= bullet.speed
-			# draw bullet
-			pygame.draw.rect(Display.DISPLAYSURF, bullet.color, (bullet.x, bullet.y, bullet.width, bullet.width))
 
-	def delete(self):
-		Bullet.numBullets -= 1
-		Bullet.listBullets.remove(self)
-		del self
 		
 
 def collision(obj1, obj2):
@@ -126,12 +93,6 @@ class Sprite(pygame.sprite.Sprite):
 #	
 def main():
 	global FPSCLOCK, DISPLAYSURF, FPS
-
-	pygame.init()
-	FPS = 30 # frames per second
-	FPSCLOCK = pygame.time.Clock()
-	DISPLAYSURF = pygame.display.set_mode((Display.SCREEN_WIDTH, Display.SCREEN_HEIGHT), 0, 32)
-	pygame.display.set_caption('Game')
 	PLAYER_X = 10
 	PLAYER_Y = 10 
 	while True:
@@ -154,8 +115,8 @@ def runGame():
 		playerObj.movePlayer()
 		
 		# update bullets if any exist
-		if len(Bullet.listBullets) > 0:
-			Bullet.update(Bullet.listBullets[0])
+		if len(Bullet.Bullet.listBullets) > 0:
+			Bullet.Bullet.update(Bullet.Bullet.listBullets[0])
 		
 		# update enemies if any exist
 		if len(Enemy.Enemy.listEnemies) > 0:
@@ -165,10 +126,10 @@ def runGame():
 		#Hacked way to check for collision. For loops don't work the way you'd think
 		countb = 0
 		counte = 0
-		if countb < len(Bullet.listBullets):
+		if countb < len(Bullet.Bullet.listBullets):
 			if counte < len(Enemy.Enemy.listEnemies):
-				if collision(Bullet.listBullets[countb], Enemy.Enemy.listEnemies[counte]) == True:
-					Bullet.listBullets[countb].delete()
+				if collision(Bullet.Bullet.listBullets[countb], Enemy.Enemy.listEnemies[counte]) == True:
+					Bullet.Bullet.listBullets[countb].delete()
 					Enemy.Enemy.listEnemies[counte].delete()
 				else:
 					countb += 1
@@ -198,13 +159,13 @@ def checkForInputs(playerObj):
 				playerObj.moveUp= True
 				playerObj.direction = 'up'
 			if event.key == K_a:
-				Bullet(playerObj, 'left')
+				Bullet.Bullet(playerObj, 'left')
 			if event.key == K_d:
-				Bullet(playerObj, 'right')
+				Bullet.Bullet(playerObj, 'right')
 			if event.key == K_s:
-				Bullet(playerObj, 'down')
+				Bullet.Bullet(playerObj, 'down')
 			if event.key == K_w:
-				Bullet(playerObj, 'up')
+				Bullet.Bullet(playerObj, 'up')
 			if event.key == K_p:
 				Enemy.Enemy(300, 300, 40)
 			if event.key == K_ESCAPE:

@@ -50,3 +50,17 @@ class Player:
 			self.y = 0
 		if self.moveUp and self.y <= 0 - PLAYER_HEIGHT:
 			self.y = Display.SCREEN_HEIGHT
+			
+	def getQuadrant(self):
+			#Check quadrant 1
+			if self.x < Display.QUADRANTX and self.y < Display.QUADRANTY:
+				return 1
+			#Check quadrant 2
+			if self.x > Display.QUADRANTX and self.y < Display.QUADRANTY:
+				return 2
+			#Check Q 3
+			if self.x < Display.QUADRANTX and self.y > Display.QUADRANTY:
+				return 3
+			#Check Q 4
+			if self.x > Display.QUADRANTX and self.y > Display.QUADRANTY:
+				return 4

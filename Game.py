@@ -23,14 +23,16 @@ def main():
 		runGame()		
 	
 def runGame():
-	
 	mySprite = SpriteAnimation.SpriteAnimation()
 	myGroup = pygame.sprite.Group(mySprite)
 	playerObj = Player.Player()
 	playerObj.updateSpriteList(myGroup)
+	myfont = pygame.font.SysFont("monospace", 15)
+	scoretext = myfont.render("Score = "+str(playerObj.score), 1, (0,0,0))
 	
 	while True:
 		Display.DISPLAYSURF.fill(Display.WHITE)
+		
 		
 		# check for key input
 		Input.checkForInputs(playerObj)
@@ -46,8 +48,11 @@ def runGame():
 		if len(Enemy.Enemy.listEnemies) > 0:
 			Enemy.Enemy.update(Enemy.Enemy.listEnemies[0], playerObj)
 		
+		# draw stuff
+		Display.DISPLAYSURF.blit(scoretext, (10, 10))
 		pygame.display.update()
 		Display.FPSCLOCK.tick(Display.FPS)
+		
 #
 #	END GAME
 #

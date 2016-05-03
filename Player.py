@@ -1,4 +1,6 @@
 import Display
+
+
 # player variables defaults
 PLAYER_X = 10
 PLAYER_Y = 10
@@ -10,6 +12,7 @@ class Player:
 	def __init__(self):
 		self.x = PLAYER_X
 		self.y = PLAYER_Y
+		self.score = 0
 		self.direction = 'right'
 		self.moveUp = False
 		self.moveDown = False

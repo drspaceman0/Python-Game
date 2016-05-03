@@ -2,6 +2,8 @@ import pygame
 import Display
 import Bullet
 import math
+import Player
+
 
 
 class Enemy:
@@ -25,6 +27,8 @@ class Enemy:
 					enemy.health-= 5
 					if enemy.health < 0:
 						enemy.death()
+						PlayerObj.score += 1
+						print "%s = Score" % (PlayerObj.score)
 			if enemy.x >= Display.SCREEN_WIDTH or enemy.x <= 0 or enemy.y >= Display.SCREEN_HEIGHT or enemy.y <= 0:
 				Enemy.delete(enemy)
 				continue

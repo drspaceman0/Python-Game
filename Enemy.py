@@ -3,6 +3,7 @@ import Display
 import Bullet
 import math
 import Player
+import random
 
 
 
@@ -33,14 +34,15 @@ class Enemy:
 				Enemy.delete(enemy)
 				continue
 			#Chase the player in the x direction
-			if (PlayerObj.x+20) > enemy.x:
+			#The random.randint part makes the enemies "twitch" more, but also bunch less
+			if ((PlayerObj.x+20)+random.randint(-10, 10)) > enemy.x:
 				enemy.x = enemy.x + enemy.speed
-			if (PlayerObj.x+20) < enemy.x:
+			if ((PlayerObj.x+20)+random.randint(-10, 10)) < enemy.x:
 				enemy.x = enemy.x - enemy.speed
 			#Then chase the player in the y direction
-			if (PlayerObj.y+20) > enemy.y:
+			if ((PlayerObj.y+20)+random.randint(-10, 10)) > enemy.y:
 				enemy.y = enemy.y + enemy.speed
-			if (PlayerObj.y+20) < enemy.y:
+			if ((PlayerObj.y+20)+random.randint(-10, 10)) < enemy.y:
 				enemy.y = enemy.y - enemy.speed
 			#Draw the enemies	
 			pygame.draw.circle(Display.DISPLAYSURF, Display.GREEN, (enemy.x, enemy.y), enemy.size)

@@ -17,6 +17,7 @@ class Enemy:
 		self.health = size/4
 		self.color = Display.GREEN
 		self.speed = 5
+		self.chase = False
 		Enemy.num_enemies += 1
 		Enemy.listEnemies.append(self)
 		
@@ -33,18 +34,24 @@ class Enemy:
 			if enemy.x >= Display.SCREEN_WIDTH or enemy.x <= 0 or enemy.y >= Display.SCREEN_HEIGHT or enemy.y <= 0:
 				Enemy.delete(enemy)
 				continue
+			#Determine if within chasing distance of player
+			if abs(enemy.x -PlayerObj.x) < 50 or abs(enemy.y - PlayerObj.y) < 50 or abs(PlayerObj.x - enemy.x) < 50 or abs(PlayerObj.y - enemy.y) < 50:
+				enemy.chase = True
+			else:
+				enemy.chase = False
 			#Chase the player in the x direction
 			#The random.randint part makes the enemies "twitch" more, but also bunch less
-			if ((PlayerObj.x+20)+random.randint(-10, 10)) > enemy.x:
-				enemy.x = enemy.x + enemy.speed
-			if ((PlayerObj.x+20)+random.randint(-10, 10)) < enemy.x:
-				enemy.x = enemy.x - enemy.speed
-			#Then chase the player in the y direction
-			if ((PlayerObj.y+20)+random.randint(-10, 10)) > enemy.y:
-				enemy.y = enemy.y + enemy.speed
-			if ((PlayerObj.y+20)+random.randint(-10, 10)) < enemy.y:
-				enemy.y = enemy.y - enemy.speed
-			#Draw the enemies	
+			if enemy.chase == True:
+				if ((PlayerObj.x+20)+random.randint(-10, 10)) > enemy.x:
+					enemy.x = enemy.x + enemy.speed
+				if ((PlayerObj.x+20)+random.randint(-10, 10)) < enemy.x:
+					enemy.x = enemy.x - enemy.speed
+				#Then chase the player in the y direction
+				if ((PlayerObj.y+20)+random.randint(-10, 10)) > enemy.y:
+					enemy.y = enemy.y + enemy.speed
+				if ((PlayerObj.y+20)+random.randint(-10, 10)) < enemy.y:
+					enemy.y = enemy.y - enemy.speed
+				#Draw the enemies	
 			pygame.draw.circle(Display.DISPLAYSURF, Display.GREEN, (enemy.x, enemy.y), enemy.size)
 			
 	

@@ -10,6 +10,7 @@ from pygame.locals import *
 import Bullet
 import Enemy
 import Display
+import SpriteAnimation
 
 
 # player variables
@@ -53,41 +54,10 @@ class Player:
 		self.spriteList = sprites
 	
 	
-
-		
-
 def collision(obj1, obj2):
 	if math.sqrt(pow(obj1.x - obj2.x, 2) + pow(obj1.y - obj2.y, 2)) < 30:
-		return True
-		
-def load_image(name):
-    image = pygame.image.load(name)
-    return image
+		return True	
 
-# http://stackoverflow.com/questions/14044147/animated-sprite-from-few-images
-class Sprite(pygame.sprite.Sprite):
-
-    def __init__(self):
-		super(Sprite, self).__init__()
-		self.counter = 0
-		self.images = []
-		self.images.append(load_image('images\player_idle1.png'))
-		self.images.append(load_image('images\player_idle2.png'))
-		# assuming both images are 64x64 pixels
-
-		self.index = 0
-		self.image = self.images[self.index]
-		self.rect = pygame.Rect(5, 5, 64, 64)
-
-    def update(self, x, y):
-		self.counter += 1 
-		self.rect = pygame.Rect(x, y, 64, 64) 
-		if self.counter > 10: # after ten clicks switch sprites
-			self.counter = 0
-			self.index += 1
-			if self.index >= len(self.images):
-				self.index = 0
-			self.image = self.images[self.index]
 #		
 # START GAME
 #	
@@ -100,7 +70,7 @@ def main():
 	
 def runGame():
 	
-	mySprite = Sprite()
+	mySprite = SpriteAnimation.SpriteAnimation()
 	myGroup = pygame.sprite.Group(mySprite)
 	playerObj = Player()
 	playerObj.updateSpriteList(myGroup)

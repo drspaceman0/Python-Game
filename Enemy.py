@@ -1,5 +1,7 @@
 import pygame
 import Display
+import Bullet
+import math
 
 
 class Enemy:
@@ -9,7 +11,7 @@ class Enemy:
 		self.x = posx
 		self.y = posy
 		self.size = size
-		health = size/2
+		self.health = size/2
 		self.color = Display.GREEN
 		self.speed = 5
 		Enemy.num_enemies += 1
@@ -32,8 +34,32 @@ class Enemy:
 				enemy.y = enemy.y - enemy.speed
 			#Draw the enemies	
 			pygame.draw.circle(Display.DISPLAYSURF, Display.GREEN, (enemy.x, enemy.y), enemy.size)
+			
+	
+	def death(self):
+		if self.size > 20:
+			Enemy(self.x + 25, self.y+25, self.size/2)
+			Enemy(self.x - 25, self.y-25, self.size/2)
+			self.delete()
+		else:
+			self.delete()
+			
+			
+	def collision(obj1, obj2):
+		if math.sqrt(pow(obj1.x - obj2.x, 2) + pow(obj1.y - obj2.y, 2)) < 30:
+			return True
+		
 				
 				
+	def bulletCollide(self, bulletlist):
+		for enemy in Enemy.listEnemies:
+			for Bullet.Bullet.bullet in bulletlist:
+				if Enemy.collision(enemy, Bullet.Bullet.bullet):
+					Bullet.Bullet.bullet.delete()
+					enemy.health -= 5
+				if enemy.health <= 0:
+					enemy.death()
+	
 	def delete(self):
 		Enemy.num_enemies -= 1
 		Enemy.listEnemies.remove(self)

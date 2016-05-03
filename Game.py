@@ -122,7 +122,11 @@ def runGame():
 		if len(Enemy.Enemy.listEnemies) > 0:
 			Enemy.Enemy.update(Enemy.Enemy.listEnemies[0], playerObj)
 			
+		# Bullet vs Enemy collision
+		if len(Enemy.Enemy.listEnemies) > 0:
+			Enemy.Enemy.bulletCollide(Enemy.Enemy.listEnemies[0], Bullet.Bullet.listBullets)
 			
+		'''		
 		#Hacked way to check for collision. For loops don't work the way you'd think
 		countb = 0
 		counte = 0
@@ -134,6 +138,7 @@ def runGame():
 				else:
 					countb += 1
 					counte += 1
+		'''
 		
 		pygame.display.update()
 		Display.FPSCLOCK.tick(Display.FPS)

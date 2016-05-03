@@ -74,6 +74,9 @@ class Enemy:
 	
 	def delete(self):
 		Enemy.num_enemies -= 1
-		Enemy.listEnemies.remove(self)
+		try:
+			Enemy.listEnemies.remove(self)
+		except ValueError:
+			print "Delete enemy error"
 		del self
 		

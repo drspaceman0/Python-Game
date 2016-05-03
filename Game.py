@@ -55,10 +55,6 @@ class Player:
 	
 
 		
-
-def collision(obj1, obj2):
-	if math.sqrt(pow(obj1.x - obj2.x, 2) + pow(obj1.y - obj2.y, 2)) < 30:
-		return True
 		
 def load_image(name):
     image = pygame.image.load(name)
@@ -126,19 +122,6 @@ def runGame():
 		if len(Enemy.Enemy.listEnemies) > 0:
 			Enemy.Enemy.bulletCollide(Enemy.Enemy.listEnemies[0], Bullet.Bullet.listBullets)
 			
-		'''		
-		#Hacked way to check for collision. For loops don't work the way you'd think
-		countb = 0
-		counte = 0
-		if countb < len(Bullet.Bullet.listBullets):
-			if counte < len(Enemy.Enemy.listEnemies):
-				if collision(Bullet.Bullet.listBullets[countb], Enemy.Enemy.listEnemies[counte]) == True:
-					Bullet.Bullet.listBullets[countb].delete()
-					Enemy.Enemy.listEnemies[counte].delete()
-				else:
-					countb += 1
-					counte += 1
-		'''
 		
 		pygame.display.update()
 		Display.FPSCLOCK.tick(Display.FPS)
@@ -172,7 +155,7 @@ def checkForInputs(playerObj):
 			if event.key == K_w:
 				Bullet.Bullet(playerObj, 'up')
 			if event.key == K_p:
-				Enemy.Enemy(300, 300, 40)
+				Enemy.Enemy(400, 400, 40)
 			if event.key == K_ESCAPE:
 				terminate()
 		elif event.type == KEYUP:

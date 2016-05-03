@@ -1,7 +1,10 @@
 import pygame
 import Display
 import Bullet
+<<<<<<< HEAD
 import math
+=======
+>>>>>>> 251211e7ec1961dc5a0e0695623a18f6cbd0253f
 
 
 class Enemy:
@@ -19,6 +22,10 @@ class Enemy:
 		
 	def update(self, PlayerObj):
 		for enemy in Enemy.listEnemies:
+			for bullet in Bullet.Bullet.listBullets:
+				if bullet.collision(enemy.x, enemy.y):
+					bullet.delete()
+					enemy.delete()
 			if enemy.x >= Display.SCREEN_WIDTH or enemy.x <= 0 or enemy.y >= Display.SCREEN_HEIGHT or enemy.y <= 0:
 				Enemy.delete(enemy)
 				continue
@@ -64,3 +71,4 @@ class Enemy:
 		Enemy.num_enemies -= 1
 		Enemy.listEnemies.remove(self)
 		del self
+		

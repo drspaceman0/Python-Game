@@ -1,4 +1,5 @@
 import pygame
+import math
 import Display
 
 class Bullet:
@@ -36,3 +37,7 @@ class Bullet:
 		Bullet.numBullets -= 1
 		Bullet.listBullets.remove(self)
 		del self
+	
+	def collision(self, x, y):
+		if math.sqrt(pow(self.x - x, 2) + pow(self.y - y, 2)) < 30:
+			return True

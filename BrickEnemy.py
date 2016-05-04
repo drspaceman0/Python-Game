@@ -3,7 +3,7 @@ import Display
 import Bullet
 import random
 import math
-
+import pygame
 MINSIZE = 20
 
 class BrickEnemy(Enemy.Enemy):
@@ -13,7 +13,7 @@ class BrickEnemy(Enemy.Enemy):
 	def __init__(self, posx, posy, size):
 		self.x = posx
 		self.y = posy
-		self.size = MINSIZE
+		self.size = size
 		self.health = 1
 		self.color = Display.RED
 		self.speed = 8
@@ -59,10 +59,14 @@ class BrickEnemy(Enemy.Enemy):
 		if math.sqrt(pow(obj1.x - obj2.x, 2) + pow(obj1.y - obj2.y, 2)) < 30:
 			return True
 	
+	def drawEnemy(self):
+		#Draw the enemies	
+		pygame.draw.rect(Display.DISPLAYSURF, self.color, (self.x, self.y, self.size, self.size))
+	
 	def death(self):
 		if self.size > 20:
-			brickEnemy(self.x + 25, self.y+25, self.size/2)
-			brickEnemy(self.x - 25, self.y-25, self.size/2)
+			BrickEnemy(self.x + 25, self.y+25, self.size/2)
+			BrickEnemy(self.x - 25, self.y-25, self.size/2)
 			self.delete()
 		else:
 			self.delete()
@@ -74,4 +78,4 @@ class BrickEnemy(Enemy.Enemy):
 			BrickEnemy.listBrickEnemies.remove(self)
 			del self
 		except ValueError:
-			pass
+			BrickEnemy.numBrickEnemies += 1

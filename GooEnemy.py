@@ -71,4 +71,4 @@ class GooEnemy(Enemy.Enemy):
 			GooEnemy.listGooEnemies.remove(self)
 			del self
 		except ValueError:
-			pass
+			GooEnemy.numGooEnemies += 1

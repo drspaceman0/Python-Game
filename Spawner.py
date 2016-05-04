@@ -6,44 +6,44 @@ import Display
 import GooEnemy
 import BrickEnemy
 MAXENEMY = 6 #for testing - not set in stone, despite being a constant. maybe by difficulty?
-ENEMYSIZE = 30
+ENEMYGOOSIZE = 30
+ENEMYBRICKSIZE = 20
 EDGING = 30 #Used to account for the edge of the displaysurf so they don't delete as spawned
 MULTIPLIER = 1.7 # Same as edging
 
 class Spawner:
-	maxGooEnemy = MAXENEMY
-	maxBrickEnemy = MAXENEMY/2
 	def __init__(self):
 		self.maxGooEnemy = MAXENEMY
+		self.maxBrickEnemy = MAXENEMY/2
 		#self.display = Display.DISPLAYSURF
 		#stuff
 	
 	
 	def spawnGooQuadrant1(self): #Do I need self here?
-		GooEnemy.GooEnemy(random.randint(EDGING, Display.QUADRANTX), random.randint(EDGING, Display.QUADRANTY), ENEMYSIZE)
+		GooEnemy.GooEnemy(random.randint(EDGING, Display.QUADRANTX), random.randint(EDGING, Display.QUADRANTY), ENEMYGOOSIZE)
 		
 	def spawnGooQuadrant2(self):
-		GooEnemy.GooEnemy(random.randint(Display.QUADRANTX, Display.QUADRANTX*MULTIPLIER), random.randint(EDGING, Display.QUADRANTY), ENEMYSIZE) #Quadrant 2
+		GooEnemy.GooEnemy(random.randint(Display.QUADRANTX, Display.QUADRANTX*MULTIPLIER), random.randint(EDGING, Display.QUADRANTY), ENEMYGOOSIZE) #Quadrant 2
 		
 	def spawnGooQuadrant3(self):
-		GooEnemy.GooEnemy(random.randint(EDGING, Display.QUADRANTX), random.randint(Display.QUADRANTY, Display.QUADRANTY*MULTIPLIER), ENEMYSIZE) #Quadrant 3
+		GooEnemy.GooEnemy(random.randint(EDGING, Display.QUADRANTX), random.randint(Display.QUADRANTY, Display.QUADRANTY*MULTIPLIER), ENEMYGOOSIZE) #Quadrant 3
 		
 	def spawnGooQuadrant4(self):
-		GooEnemy.GooEnemy(random.randint(Display.QUADRANTX, Display.QUADRANTX*MULTIPLIER), random.randint(Display.QUADRANTY, Display.QUADRANTY*MULTIPLIER), ENEMYSIZE) #Quadrant 4
+		GooEnemy.GooEnemy(random.randint(Display.QUADRANTX, Display.QUADRANTX*MULTIPLIER), random.randint(Display.QUADRANTY, Display.QUADRANTY*MULTIPLIER), ENEMYGOOSIZE) #Quadrant 4
 
 
 
 	def spawnBrickQuadrant1(self): #Do I need self here?
-		BrickEnemy.BrickEnemy(random.randint(EDGING, Display.QUADRANTX), random.randint(EDGING, Display.QUADRANTY), ENEMYSIZE)
+		BrickEnemy.BrickEnemy(random.randint(EDGING, Display.QUADRANTX), random.randint(EDGING, Display.QUADRANTY), ENEMYBRICKSIZE)
 		
 	def spawnBrickQuadrant2(self):
-		BrickEnemy.BrickEnemy(random.randint(Display.QUADRANTX, Display.QUADRANTX*MULTIPLIER), random.randint(EDGING, Display.QUADRANTY), ENEMYSIZE) #Quadrant 2
+		BrickEnemy.BrickEnemy(random.randint(Display.QUADRANTX, Display.QUADRANTX*MULTIPLIER), random.randint(EDGING, Display.QUADRANTY), ENEMYBRICKSIZE) #Quadrant 2
 		
 	def spawnBrickQuadrant3(self):
-		BrickEnemy.BrickEnemy(random.randint(EDGING, Display.QUADRANTX), random.randint(Display.QUADRANTY, Display.QUADRANTY*MULTIPLIER), ENEMYSIZE) #Quadrant 3
+		BrickEnemy.BrickEnemy(random.randint(EDGING, Display.QUADRANTX), random.randint(Display.QUADRANTY, Display.QUADRANTY*MULTIPLIER), ENEMYBRICKSIZE) #Quadrant 3
 		
 	def spawnBrickQuadrant4(self):
-		BrickEnemy.BrickEnemy(random.randint(Display.QUADRANTX, Display.QUADRANTX*MULTIPLIER), random.randint(Display.QUADRANTY, Display.QUADRANTY*MULTIPLIER), ENEMYSIZE) #Quadrant 4
+		BrickEnemy.BrickEnemy(random.randint(Display.QUADRANTX, Display.QUADRANTX*MULTIPLIER), random.randint(Display.QUADRANTY, Display.QUADRANTY*MULTIPLIER), ENEMYBRICKSIZE) #Quadrant 4
 	
 
 

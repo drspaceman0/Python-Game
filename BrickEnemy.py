@@ -69,7 +69,9 @@ class BrickEnemy(Enemy.Enemy):
 			
 			
 	def delete(self):
-		BrickEnemy.numBrickEnemies -= 1
-		BrickEnemy.listBrickEnemies.remove(self)
-		del self
-		
+		try:
+			BrickEnemy.numBrickEnemies -= 1
+			BrickEnemy.listBrickEnemies.remove(self)
+			del self
+		except ValueError:
+			pass

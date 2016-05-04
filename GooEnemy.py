@@ -66,7 +66,9 @@ class GooEnemy(Enemy.Enemy):
 			
 			
 	def delete(self):
-		GooEnemy.numGooEnemies -= 1
-		GooEnemy.listGooEnemies.remove(self)
-		del self
-		
+		try:
+			GooEnemy.numGooEnemies -= 1
+			GooEnemy.listGooEnemies.remove(self)
+			del self
+		except ValueError:
+			pass

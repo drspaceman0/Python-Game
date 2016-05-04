@@ -5,6 +5,8 @@ import Player
 import Bullet
 import Enemy
 
+bulletDir = {'left': False, 'right': False, 'up': False, 'down': False} 
+
 def checkForInputs(playerObj):
 	for event in pygame.event.get():
 		if event.type == QUIT:
@@ -23,13 +25,13 @@ def checkForInputs(playerObj):
 				playerObj.moveUp= True
 				playerObj.direction = 'up'
 			if event.key == K_a:
-				Bullet.Bullet(playerObj, 'left')
+				bulletDir['left'] = True
 			if event.key == K_d:
-				Bullet.Bullet(playerObj, 'right')
+				bulletDir['right'] = True
 			if event.key == K_s:
-				Bullet.Bullet(playerObj, 'down')
+				bulletDir['down'] = True
 			if event.key == K_w:
-				Bullet.Bullet(playerObj, 'up')
+				bulletDir['up'] = True
 			if event.key == K_p:
 				Enemy.Enemy(300, 300, 40)
 			if event.key == K_ESCAPE:
@@ -44,6 +46,25 @@ def checkForInputs(playerObj):
 				playerObj.moveDown= False
 			if event.key == K_UP:
 				playerObj.moveUp= False
+			if event.key == K_a:
+				bulletDir['left'] = False
+			if event.key == K_d:
+				bulletDir['right'] = False
+			if event.key == K_s:
+				bulletDir['down'] = False
+			if event.key == K_w:
+				bulletDir['up'] = False
+	updateBullets(playerObj)
+
+def updateBullets(playerObj):
+	if bulletDir['left']:
+		Bullet.Bullet(playerObj, 'left')
+	if bulletDir['right']:
+		Bullet.Bullet(playerObj, 'right')
+	if bulletDir['up']:
+		Bullet.Bullet(playerObj, 'up')
+	if bulletDir['down']:
+		Bullet.Bullet(playerObj, 'down')
 				
 def terminate():
 	pygame.quit()

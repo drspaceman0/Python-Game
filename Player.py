@@ -1,5 +1,6 @@
+import pygame
 import Display
-
+import SpriteAnimation
 
 # player variables defaults
 PLAYER_X = 10
@@ -9,11 +10,16 @@ PLAYER_HEIGHT = 64
 PLAYER_SPEED = 10
 
 class Player:
+	player_down = [pygame.image.load('images\player_down1.png'), pygame.image.load('images\player_down2.png')]
+	player_up = [pygame.image.load('images\player_up1.png'), pygame.image.load('images\player_up2.png')]
+	player_right = [pygame.image.load('images\player_right1.png'), pygame.image.load('images\player_right2.png')]
+	player_left = [pygame.transform.flip(pygame.image.load('images\player_right1.png'), True, False), pygame.transform.flip(pygame.image.load('images\player_right2.png'), True, False)]
+	
 	def __init__(self):
 		self.x = PLAYER_X
 		self.y = PLAYER_Y
 		self.score = 0
-		self.direction = 'right'
+		self.direction = 'down'
 		self.moveUp = False
 		self.moveDown = False
 		self.moveLeft = False
@@ -21,8 +27,8 @@ class Player:
 		self.width = PLAYER_WIDTH
 		self.height = PLAYER_HEIGHT
 		self.color = Display.RED
-		self.spriteList = []
-	
+		self.spriteObj = SpriteAnimation.SpriteAnimation(self.player_down)
+
 	def movePlayer(self):
 		if self.moveRight:
 			self.x += PLAYER_SPEED
@@ -32,15 +38,24 @@ class Player:
 			self.x -= PLAYER_SPEED
 		if self.moveUp:
 			self.y -= PLAYER_SPEED
+		# update sprites
+		self.updateSpriteList()
 		# check if player needs to go to other side
 		self.moveToOtherSide()
 		# draw player
-		self.spriteList.update(self.x, self.y)
-		self.spriteList.draw(Display.DISPLAYSURF)
-		
-	def updateSpriteList(self, sprites):
-		self.spriteList = sprites
+		self.spriteObj.update(self.x, self.y)
 	
+	def updateSpriteList(self):
+		if self.direction == 'right' and self.spriteObj.images != self.player_right:
+			self.spriteObj.changeSprites(self.player_right)
+		elif self.direction == 'left' and self.spriteObj.images != self.player_left:
+			self.spriteObj.changeSprites(self.player_left)
+		if self.direction == 'up' and self.spriteObj.images != self.player_up:
+			self.spriteObj.changeSprites(self.player_up)
+		elif self.direction == 'down' and self.spriteObj.images != self.player_down:
+			self.spriteObj.changeSprites(self.player_down)
+
+
 	def moveToOtherSide(self):
 		if self.moveRight and self.x >= Display.SCREEN_WIDTH:
 			self.x = 0
@@ -50,3 +65,18 @@ class Player:
 			self.y = 0
 		if self.moveUp and self.y <= 0 - PLAYER_HEIGHT:
 			self.y = Display.SCREEN_HEIGHT
+
+	def getQuadrant(self):
+			#Check quadrant 1
+			if self.x < Display.QUADRANTX and self.y < Display.QUADRANTY:
+				return 1
+			#Check quadrant 2
+			if self.x > Display.QUADRANTX and self.y < Display.QUADRANTY:
+				return 2
+			#Check Q 3
+			if self.x < Display.QUADRANTX and self.y > Display.QUADRANTY:
+				return 3
+			#Check Q 4
+			if self.x > Display.QUADRANTX and self.y > Display.QUADRANTY:
+				return 4
+

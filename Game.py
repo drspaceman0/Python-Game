@@ -14,6 +14,7 @@ import SpriteAnimation
 import Player
 import Input
 import Room
+import Spawner
 				 
 #		
 # START GAME
@@ -23,12 +24,10 @@ def main():
 		runGame()		
 	
 def runGame():
-	mySprite = SpriteAnimation.SpriteAnimation()
-	myGroup = pygame.sprite.Group(mySprite)
 	playerObj = Player.Player()
-	playerObj.updateSpriteList(myGroup)
 	# roomObj = Room.Room()
 	# roomObj.drawRoom()
+	EnemySpawn = Spawner.Spawner()
 	myfont = pygame.font.SysFont("monospace", 15)
 	scoretext = myfont.render("Score = "+str(playerObj.score), 1, (0,0,0))
 	
@@ -49,6 +48,8 @@ def runGame():
 		# update enemies if any exist
 		if len(Enemy.Enemy.listEnemies) > 0:
 			Enemy.Enemy.update(Enemy.Enemy.listEnemies[0], playerObj)
+			
+		EnemySpawn.update(playerObj.getQuadrant())
 		
 		# draw stuff
 		Display.DISPLAYSURF.blit(scoretext, (10, 10))

@@ -9,7 +9,7 @@ MAXENEMY = 6 #for testing - not set in stone, despite being a constant. maybe by
 ENEMYGOOSIZE = 30
 ENEMYBRICKSIZE = 20
 EDGING = 30 #Used to account for the edge of the displaysurf so they don't delete as spawned
-MULTIPLIER = 1.7 # Same as edging
+MULTIPLIER = int(1.7) # Same as edging
 
 class Spawner:
 	def __init__(self):

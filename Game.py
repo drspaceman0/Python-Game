@@ -15,12 +15,8 @@ import Player
 import Input
 import Room
 import Spawner
-<<<<<<< HEAD
-=======
 import GooEnemy
 import BrickEnemy
-
->>>>>>> master
 				 
 #		
 # START GAME

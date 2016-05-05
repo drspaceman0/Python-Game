@@ -15,6 +15,12 @@ import Player
 import Input
 import Room
 import Spawner
+<<<<<<< HEAD
+=======
+import GooEnemy
+import BrickEnemy
+
+>>>>>>> master
 				 
 #		
 # START GAME
@@ -27,7 +33,8 @@ def runGame():
 	playerObj = Player.Player()
 	# roomObj = Room.Room()
 	# roomObj.drawRoom()
-	EnemySpawn = Spawner.Spawner()
+	EnemyGooSpawner = Spawner.Spawner()
+	EnemyBrickSpawner = Spawner.Spawner()
 	myfont = pygame.font.SysFont("monospace", 15)
 	scoretext = myfont.render("Score = "+str(playerObj.score), 1, (0,0,0))
 	
@@ -45,11 +52,17 @@ def runGame():
 		if len(Bullet.Bullet.listBullets) > 0:
 			Bullet.Bullet.update(Bullet.Bullet.listBullets[0])
 		
-		# update enemies if any exist
-		if len(Enemy.Enemy.listEnemies) > 0:
-			Enemy.Enemy.update(Enemy.Enemy.listEnemies[0], playerObj)
+		# update GooEnemies if any exist
+		if len(GooEnemy.GooEnemy.listGooEnemies) > 0:
+			GooEnemy.GooEnemy.update(GooEnemy.GooEnemy.listGooEnemies[0], playerObj)
 			
-		EnemySpawn.update(playerObj.getQuadrant())
+		# update BrickEnemies if any exist
+		if len(BrickEnemy.BrickEnemy.listBrickEnemies) > 0:
+			BrickEnemy.BrickEnemy.update(BrickEnemy.BrickEnemy.listBrickEnemies[0], playerObj)
+		
+		#Spawn enemies if need be 
+		EnemyGooSpawner.updateGoo(playerObj.getQuadrant())
+		EnemyBrickSpawner.updateBrick(playerObj.getQuadrant())
 		
 		# draw stuff
 		Display.DISPLAYSURF.blit(scoretext, (10, 10))

@@ -24,7 +24,7 @@ class GooEnemy(Enemy.Enemy):
 			for bullet in Bullet.Bullet.listBullets:
 				if GooEnemy.collision(gooenemy, bullet):
 					bullet.delete()
-					gooenemy.health-= 5
+					gooenemy.health-= PlayerObj.damage
 					if gooenemy.health < 0:
 						gooenemy.death()
 						PlayerObj.score += 1

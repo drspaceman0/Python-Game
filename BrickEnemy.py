@@ -27,7 +27,7 @@ class BrickEnemy(Enemy.Enemy):
 			for bullet in Bullet.Bullet.listBullets:
 				if BrickEnemy.collision(brickenemy, bullet):
 					bullet.delete()
-					brickenemy.health-= 5
+					brickenemy.health-= PlayerObj.damage
 					if brickenemy.health < 0:
 						brickenemy.death()
 						PlayerObj.score += 1

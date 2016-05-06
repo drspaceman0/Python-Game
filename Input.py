@@ -32,8 +32,6 @@ def checkForInputs(playerObj):
 				bulletDir['down'] = True
 			if event.key == K_w:
 				bulletDir['up'] = True
-			if event.key == K_p:
-				Enemy.Enemy(300, 300, 40)
 			if event.key == K_ESCAPE:
 				terminate()
 		elif event.type == KEYUP:

@@ -53,6 +53,7 @@ class BrickEnemy(Enemy.Enemy):
 				if ((PlayerObj.y+20)+random.randint(-10, 10)) < brickenemy.y:
 					brickenemy.y = brickenemy.y - brickenemy.speed
 			brickenemy.drawEnemy()
+			brickenemy.drainHealth(PlayerObj)
 			
 			
 	def collision(obj1, obj2):
@@ -79,3 +80,8 @@ class BrickEnemy(Enemy.Enemy):
 			del self
 		except ValueError:
 			BrickEnemy.numBrickEnemies += 1
+			
+	def drainHealth(self, PlayerObj):
+		if self.collision (PlayerObj):
+			PlayerObj.health -= 1
+			print "%s, player health" % (PlayerObj.health)

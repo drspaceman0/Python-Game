@@ -50,6 +50,7 @@ class GooEnemy(Enemy.Enemy):
 				if ((PlayerObj.y+20)+random.randint(-10, 10)) < gooenemy.y:
 					gooenemy.y = gooenemy.y - gooenemy.speed
 			gooenemy.drawEnemy()
+			gooenemy.drainHealth(PlayerObj)
 			
 			
 	def collision(obj1, obj2):
@@ -72,3 +73,8 @@ class GooEnemy(Enemy.Enemy):
 			del self
 		except ValueError:
 			GooEnemy.numGooEnemies += 1
+			
+	def drainHealth(self, PlayerObj):
+		if self.collision (PlayerObj):
+			PlayerObj.health -= 1
+			print "%s, player health" % (PlayerObj.health)

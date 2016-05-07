@@ -36,12 +36,12 @@ def runGame():
 	playerObj.dungeonObj = dungeonObj # temporary, need a better way to pass dungeon info to playerobj
 	dungeonObj.playerObj = playerObj
 	
-	myfont = pygame.font.SysFont("monospace", 15)
-	scoretext = myfont.render("Score = "+str(playerObj.score), 1, (0,0,0))
-	roomtext = myfont.render("Room = "+str(dungeonObj.currRoomIndex), 1, (0,0,0))
+
 	
 	while True:
-				
+		myfont = pygame.font.SysFont("monospace", 15)
+		scoretext = myfont.render("Score = "+str(playerObj.score), 1, (0,0,0))
+		roomtext = myfont.render("Room = "+str(dungeonObj.currRoomIndex), 1, (0,0,0))
 		# check for key input
 		Input.checkForInputs(playerObj)
 		dungeonObj.update() 

@@ -17,10 +17,11 @@ import Room
 import Spawner
 import GooEnemy
 import BrickEnemy
-
+import labledEnemy
 #		
 # START GAME
 #	
+
 def main():
 	while True:
 		runGame()
@@ -31,10 +32,12 @@ def restart():
 		runGame()
 	
 def runGame():
+
 	playerObj = Player.Player()
 	dungeonObj = Room.Dungeon(playerObj)
 	playerObj.dungeonObj = dungeonObj # temporary, need a better way to pass dungeon info to playerobj
 	dungeonObj.playerObj = playerObj
+	LE = labledEnemy.labledEnemy()
 	
 
 	
@@ -57,11 +60,12 @@ def runGame():
 		if len(BrickEnemy.BrickEnemy.listBrickEnemies) > 0:
 			BrickEnemy.BrickEnemy.update(BrickEnemy.BrickEnemy.listBrickEnemies[0], playerObj)
 			
-			
+		LE.update(playerObj)
 			
 		# check if the player is alive
 		if playerObj.stillAlive() == False:
 			print "dead"
+
 			restart()
 		
 		

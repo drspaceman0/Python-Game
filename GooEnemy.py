@@ -4,6 +4,7 @@ import Bullet
 import random
 import math
 import pygame
+import Game
 
 class GooEnemy(Enemy.Enemy):
 	numGooEnemies = 0
@@ -30,7 +31,6 @@ class GooEnemy(Enemy.Enemy):
 					if gooenemy.health < 0:
 						gooenemy.death()
 						PlayerObj.score += 1
-						print "%s = Score" % (PlayerObj.score)
 			if gooenemy.x >= Display.SCREEN_WIDTH or gooenemy.x <= 0 or gooenemy.y >= Display.SCREEN_HEIGHT or gooenemy.y <= 0:
 				gooenemy.delete()
 				continue

@@ -4,6 +4,7 @@ import Bullet
 import random
 import math
 import pygame
+import Game
 MINSIZE = 20
 
 class BrickEnemy(Enemy.Enemy):
@@ -31,7 +32,7 @@ class BrickEnemy(Enemy.Enemy):
 					if brickenemy.health < 0:
 						brickenemy.death()
 						PlayerObj.score += 1
-						print "%s = Score" % (PlayerObj.score)
+
 			if brickenemy.x >= Display.SCREEN_WIDTH or brickenemy.x <= 0 or brickenemy.y >= Display.SCREEN_HEIGHT or brickenemy.y <= 0:
 				brickenemy.delete()
 				continue

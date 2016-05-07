@@ -4,10 +4,12 @@ import Game
 import Player
 import Bullet
 import Enemy
+import labledEnemy
 
 bulletDir = {'left': False, 'right': False, 'up': False, 'down': False} 
 
 def checkForInputs(playerObj):
+
 	for event in pygame.event.get():
 		if event.type == QUIT:
 			terminate()

@@ -17,7 +17,7 @@ import Room
 import Spawner
 import GooEnemy
 import BrickEnemy
-				 
+
 #		
 # START GAME
 #	
@@ -26,9 +26,11 @@ def main():
 		runGame()		
 	
 def runGame():
+	dungeonObj = Room.Dungeon()
 	playerObj = Player.Player()
-	# roomObj = Room.Room()
-	# roomObj.drawRoom()
+	playerObj.dungeonObj = dungeonObj # temporary, need a better way to pass dungeon info to playerobj
+	dungeonObj.playerObj = playerObj
+	
 	EnemyGooSpawner = Spawner.Spawner()
 	EnemyBrickSpawner = Spawner.Spawner()
 	myfont = pygame.font.SysFont("monospace", 15)
@@ -41,8 +43,7 @@ def runGame():
 		# check for key input
 		Input.checkForInputs(playerObj)
 				 
-		# update player position
-		playerObj.movePlayer()
+		playerObj.update()
 		
 		# update bullets if any exist
 		if len(Bullet.Bullet.listBullets) > 0:
@@ -56,10 +57,13 @@ def runGame():
 		if len(BrickEnemy.BrickEnemy.listBrickEnemies) > 0:
 			BrickEnemy.BrickEnemy.update(BrickEnemy.BrickEnemy.listBrickEnemies[0], playerObj)
 		
+		dungeonObj.update()
 		#Spawn enemies if need be 
-		EnemyGooSpawner.updateGoo(playerObj.getQuadrant())
-		EnemyBrickSpawner.updateBrick(playerObj.getQuadrant())
-		
+		if roomObj.numGooEnemySpawns > 0:
+			EnemyGooSpawner.updateGoo(playerObj.getQuadrant())
+		if roomObj.numBrickEnemySpawns > 0:
+			EnemyBrickSpawner.updateBrick(playerObj.getQuadrant())
+	
 		# draw stuff
 		Display.DISPLAYSURF.blit(scoretext, (10, 10))
 		pygame.display.update()

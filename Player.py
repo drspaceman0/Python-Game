@@ -1,6 +1,8 @@
 import pygame
 import Display
 import SpriteAnimation
+import Room
+import math
 
 # player variables defaults
 PLAYER_X = 10
@@ -28,7 +30,22 @@ class Player:
 		self.height = PLAYER_HEIGHT
 		self.color = Display.RED
 		self.spriteObj = SpriteAnimation.SpriteAnimation(self.player_down)
-
+		self.dungeonObj = None
+		self.currRoomObj = None
+	
+	def update(self):
+		# update room if need be
+		self.currRoomObj = self.dungeonObj.returnCurrentRoom()
+		self.movePlayer()
+		# update sprites
+		self.updateSpriteList()
+		# check if player needs to go to other side
+		# self.moveToOtherSide()
+		# draw player
+		self.spriteObj.update(self.x, self.y)
+		# check if player should move to next room
+		self.checkForDoorCollision()
+	
 	def movePlayer(self):
 		if self.moveRight:
 			self.x += PLAYER_SPEED
@@ -38,12 +55,7 @@ class Player:
 			self.x -= PLAYER_SPEED
 		if self.moveUp:
 			self.y -= PLAYER_SPEED
-		# update sprites
-		self.updateSpriteList()
-		# check if player needs to go to other side
-		self.moveToOtherSide()
-		# draw player
-		self.spriteObj.update(self.x, self.y)
+		
 	
 	def updateSpriteList(self):
 		if self.direction == 'right' and self.spriteObj.images != self.player_right:
@@ -66,6 +78,21 @@ class Player:
 		if self.moveUp and self.y <= 0 - PLAYER_HEIGHT:
 			self.y = Display.SCREEN_HEIGHT
 
+	def changePlayerPosition(self, x, y):
+		self.x = x
+		self.y = y
+	
+	def checkForDoorCollision(self):
+		for door in self.currRoomObj.doors.values():
+			if self.collision(door[0], door[1]):
+				door[2] = True
+			else:
+				door[2] = False
+			
+	def collision(self, x, y):
+		if math.sqrt(pow(self.x - x, 2) + pow(self.y - y, 2)) < 30:
+			return True
+		
 	def getQuadrant(self):
 			#Check quadrant 1
 			if self.x < Display.QUADRANTX and self.y < Display.QUADRANTY:

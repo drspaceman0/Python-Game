@@ -3,6 +3,7 @@ import Display
 import Bullet
 import random
 import math
+
 class GooEnemy(Enemy.Enemy):
 	numGooEnemies = 0
 	listGooEnemies = []

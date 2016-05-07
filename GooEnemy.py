@@ -25,7 +25,7 @@ class GooEnemy(Enemy.Enemy):
 			for bullet in Bullet.Bullet.listBullets:
 				if GooEnemy.collision(gooenemy, bullet):
 					bullet.delete()
-					gooenemy.health-= 5
+					gooenemy.health-= PlayerObj.damage
 					if gooenemy.health < 0:
 						gooenemy.death()
 						PlayerObj.score += 1
@@ -51,6 +51,7 @@ class GooEnemy(Enemy.Enemy):
 				if ((PlayerObj.y+20)+random.randint(-10, 10)) < gooenemy.y:
 					gooenemy.y = gooenemy.y - gooenemy.speed
 			gooenemy.drawEnemy()
+			gooenemy.drainHealth(PlayerObj)
 			
 			
 	def collision(obj1, obj2):
@@ -73,3 +74,8 @@ class GooEnemy(Enemy.Enemy):
 			del self
 		except ValueError:
 			GooEnemy.numGooEnemies += 1
+			
+	def drainHealth(self, PlayerObj):
+		if self.collision (PlayerObj):
+			PlayerObj.health -= 1
+			print "%s, player health" % (PlayerObj.health)

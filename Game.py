@@ -23,7 +23,12 @@ import BrickEnemy
 #	
 def main():
 	while True:
-		runGame()		
+		runGame()
+
+
+def restart():
+	while True:
+		runGame()
 	
 def runGame():
 	dungeonObj = Room.Dungeon()
@@ -49,13 +54,20 @@ def runGame():
 		if len(Bullet.Bullet.listBullets) > 0:
 			Bullet.Bullet.update(Bullet.Bullet.listBullets[0])
 		
-		# update GooEnemies if any exist
+		# update GooEnemies if any exist, then attack the player
 		if len(GooEnemy.GooEnemy.listGooEnemies) > 0:
 			GooEnemy.GooEnemy.update(GooEnemy.GooEnemy.listGooEnemies[0], playerObj)
 			
-		# update BrickEnemies if any exist
+		# update BrickEnemies if any exist, then attack the player
 		if len(BrickEnemy.BrickEnemy.listBrickEnemies) > 0:
 			BrickEnemy.BrickEnemy.update(BrickEnemy.BrickEnemy.listBrickEnemies[0], playerObj)
+			
+			
+			
+		# check if the player is alive
+		if playerObj.stillAlive() == False:
+			print "dead"
+			restart()
 		
 		dungeonObj.update()
 		#Spawn enemies if need be 

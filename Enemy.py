@@ -80,3 +80,7 @@ class Enemy:
 			del self
 		except ValueError:
 			pass
+			
+	def drainHealth(PlayerObj):
+		if collision (self, PlayerObj):
+			PlayerObj.health -= 1

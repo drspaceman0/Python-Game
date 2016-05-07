@@ -21,6 +21,8 @@ class Player:
 		self.x = PLAYER_X
 		self.y = PLAYER_Y
 		self.score = 0
+		self.health = 20
+		self.damage = 5
 		self.direction = 'down'
 		self.moveUp = False
 		self.moveDown = False
@@ -106,4 +108,10 @@ class Player:
 			#Check Q 4
 			if self.x > Display.QUADRANTX and self.y > Display.QUADRANTY:
 				return 4
+				
 
+	def stillAlive(self):
+		if self.health <= 0:
+			return False
+		else:
+			return True

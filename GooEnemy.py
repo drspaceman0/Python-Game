@@ -3,6 +3,7 @@ import Display
 import Bullet
 import random
 import math
+import pygame
 
 class GooEnemy(Enemy.Enemy):
 	numGooEnemies = 0

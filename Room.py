@@ -12,22 +12,22 @@ DOOR_LENGTH = 100
 
 class Room:
 	
-	def __init__(self, index, spawnGoo, spawnBrick, playerObj):
+	def __init__(self, index, spawnGoo, spawnBrick, playerObj, color):
+		self.color = color
 		self.width = Display.SCREEN_WIDTH
 		self.height = Display.SCREEN_HEIGHT
-		'''
-		self.spawnGoo = False #spawnGoo
-		self.spawnBrick = False #spawnBrick
+		self.spawnGoo = spawnGoo
+		self.spawnBrick = spawnBrick
 		if self.spawnGoo:
-			EnemyGooSpawner = Spawner.Spawner()
+			self.EnemyGooSpawner = Spawner.Spawner()
 		if self.spawnBrick:
-			EnemyBrickSpawner = Spawner.Spawner()
-		'''
+			self.EnemyBrickSpawner = Spawner.Spawner()
+
 								  #x, y, True if player enters this door 
 		self.doors = {'leftDoor': [0, int(Display.SCREEN_HEIGHT/2), False, None], 'rightDoor': [Display.SCREEN_WIDTH-DOOR_WIDTH, int(Display.SCREEN_HEIGHT/2), False, None]}
 		self.entranceX = 25
 		self.entranceY = 25
-		self.beginRoom = True
+		self.currentRoom = True
 		self.timeToChangeRoom = False
 		self.roomIndexToChangeTo = 0
 		self.index = index
@@ -35,15 +35,12 @@ class Room:
 		Dungeon.numRooms += 1
 		
 	def update(self):
+		Display.DISPLAYSURF.fill(self.color)
 		self.updateDoors()
-		if self.beginRoom:
-			self.beginRoom = False
-		'''
-		if self.spawnGoo:
-			EnemyGooSpawner.updateGoo(playerObj.getQuadrant())
-		if self.spawnBrick:
-			EnemyBrickSpawner.updateBrick(playerObj.getQuadrant())
-		'''
+		if self.spawnGoo and self.currentRoom:
+			self.EnemyGooSpawner.updateGoo(self.playerObj.getQuadrant())
+		if self.spawnBrick and self.currentRoom:
+			self.EnemyBrickSpawner.updateBrick(self.playerObj.getQuadrant())
 	
 	def updateDoors(self):
 		for door in self.doors.values():
@@ -54,6 +51,7 @@ class Room:
 			pygame.draw.rect(Display.DISPLAYSURF, Display.BROWN, (door[0], door[1], DOOR_WIDTH, DOOR_LENGTH))
 			# check if player hsa entered door
 			if door[2]:
+				self.currentRoom = False
 				self.roomIndexToChangeTo = door[3].index
 				self.getRoomEntranceForNextRoom(door)
 				self.timeToChangeRoom = True
@@ -66,20 +64,19 @@ class Room:
 			door[3].entranceX = Display.SCREEN_WIDTH - DOOR_WIDTH - 50
 		door[3].entranceY = door[1]
 	
-	#def exitRoom(self):
-		#if math.sqrt(pow(self.playerObj.x - 300, 2) + pow(self.playerObj.y - 300, 2)) < 30:
-		#	return True
 		
 class Dungeon:
 	numRooms = 0
 	listRooms = []
 	def __init__(self, playerObj):
 		self.playerObj = playerObj
-		self.Room1 = Room(self.numRooms, 0,0, self.playerObj)
-		self.Room2 = Room(self.numRooms, 1,1, self.playerObj)
+		self.Room1 = Room(self.numRooms, False, True, self.playerObj, Display.TEAL)
+		self.Room2 = Room(self.numRooms, True, False, self.playerObj, Display.PURPLE)
+		self.Room3 = Room(self.numRooms, True, True, self.playerObj, Display.ORANGE)
 		self.connectRooms()
 		self.listRooms.append(self.Room1)
 		self.listRooms.append(self.Room2)
+		self.listRooms.append(self.Room3)
 		self.currRoomIndex = 0
 		
 		
@@ -88,18 +85,20 @@ class Dungeon:
 		if self.returnCurrentRoom().timeToChangeRoom:
 			self.changeRoom()
 		self.returnCurrentRoom().update()
-		
 			
 	
 	def changeRoom(self):
 		self.returnCurrentRoom().timeToChangeRoom = False
 		self.currRoomIndex = self.returnCurrentRoom().roomIndexToChangeTo
 		self.playerObj.changePlayerPosition(self.returnCurrentRoom().entranceX, self.returnCurrentRoom().entranceY)
+		self.returnCurrentRoom().currentRoom = True
 		self.returnCurrentRoom().update()
 	
 	def connectRooms(self):
 		self.Room1.doors['rightDoor'][3] = self.Room2
 		self.Room2.doors['leftDoor'][3] = self.Room1
+		self.Room2.doors['rightDoor'][3] = self.Room3
+		self.Room3.doors['leftDoor'][3] = self.Room2
 		
 	def returnCurrentRoom(self):
 		return self.listRooms[self.currRoomIndex]

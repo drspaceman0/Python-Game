@@ -9,8 +9,8 @@ class labledEnemy:
 	listLabledEnemies = []
 
 	def __init__(self):
-		self.x = 100
-		self.y = 100
+		self.x = 500
+		self.y = 500
 		self.label = "Viscous Goo"
 		self.speed = 2
 		self.color = Display.BLACK

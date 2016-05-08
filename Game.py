@@ -65,6 +65,8 @@ def runGame():
 		if len(BrickEnemy.BrickEnemy.listBrickEnemies) > 0:
 			BrickEnemy.BrickEnemy.update(BrickEnemy.BrickEnemy.listBrickEnemies[0], playerObj)
 		
+		
+		
 		VE0.updateName()	
 		VE1.updateName()	
 		VE2.updateName()	

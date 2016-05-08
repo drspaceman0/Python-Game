@@ -42,7 +42,7 @@ class Player:
 		# update sprites
 		self.updateSpriteList()
 		# check if player needs to go to other side
-		# self.moveToOtherSide()
+		self.moveToOtherSide()
 		# draw player
 		self.spriteObj.update(self.x, self.y)
 		# check if player should move to next room

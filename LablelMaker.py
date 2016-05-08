@@ -1,4 +1,3 @@
-import pygame
 
 #singleton...?
 class LabelMaker:

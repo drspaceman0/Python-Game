@@ -18,6 +18,7 @@ import Spawner
 import GooEnemy
 import BrickEnemy
 import labledEnemy
+import LabelMaker
 #		
 # START GAME
 #	

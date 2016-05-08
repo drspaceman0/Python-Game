@@ -19,6 +19,7 @@ import GooEnemy
 import BrickEnemy
 import labledEnemy
 import LabelMaker
+import hypotheticalenemy
 #		
 # START GAME
 #	
@@ -38,7 +39,10 @@ def runGame():
 	dungeonObj = Room.Dungeon(playerObj)
 	playerObj.dungeonObj = dungeonObj # temporary, need a better way to pass dungeon info to playerobj
 	dungeonObj.playerObj = playerObj
-	LE = labledEnemy.labledEnemy()
+	VE0 = hypotheticalenemy.VariableEnemy(100, 100)
+	VE1 = hypotheticalenemy.VariableEnemy(200, 200)
+	VE2 = hypotheticalenemy.VariableEnemy(300, 300)
+	VE3 = hypotheticalenemy.VariableEnemy(400, 400)
 	
 
 	
@@ -60,8 +64,15 @@ def runGame():
 		# update BrickEnemies if any exist, then attack the player
 		if len(BrickEnemy.BrickEnemy.listBrickEnemies) > 0:
 			BrickEnemy.BrickEnemy.update(BrickEnemy.BrickEnemy.listBrickEnemies[0], playerObj)
-			
-		LE.update(playerObj)
+		
+		VE0.updateName()	
+		VE1.updateName()	
+		VE2.updateName()	
+		VE3.updateName()	
+		VE0.drawSelf()
+		VE1.drawSelf()
+		VE2.drawSelf()
+		VE3.drawSelf()
 			
 		# check if the player is alive
 		if playerObj.stillAlive() == False:

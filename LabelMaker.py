@@ -16,40 +16,48 @@ class LabelMaker:
 		
 		#Define Adjectives
 		#These change enemy SPEED, SIZE, DAMAGE and DROP_RATE, as well as enemy.misc ATTACK, PATH_LOGIC
-		adjectives.append("fierce") #Charge/doesn't do much
-		adjectives.append("monstrous") #Size*=2
-		adjectives.append("swift") #speed*=2
-		adjectives.append("stalking") #changes enemy-to-player pathing logic OR moves through doors?
-		adjectives.append("perceptive") #Finds player if they're in the same room
-		adjectives.append("deadly") #drains health faster
-		adjectives.append("bloated") #explodes harmfully
-		adjectives.append("friendly") #deals less damage
-		adjectives.append("deranged") #floats aimlessly
-		adjectives.append("cowardly") #runs away from player in certain range
-		adjectives.append("zombified") #slower, but more health
-		adjectives.append("slimy") #slows player  
-		adjectives.append("rich") #Double drop rate - for hard
-		adjectives.append("poor") #Halves drop rate - for easy 
-		adjectives.append("ugly") #nothing/descriptor
-		adjectives.append("") #Use this as a template for more additions
+		self.adjectives.append("Fierce") #Charge/doesn't do much
+		self.adjectives.append("Monstrous") #Size*=2
+		self.adjectives.append("Swift") #speed*=2
+		self.adjectives.append("Stalking") #changes enemy-to-player pathing logic OR moves through doors?
+		self.adjectives.append("Perceptive") #Finds player if they're in the same room
+		self.adjectives.append("Deadly") #drains health faster
+		self.adjectives.append("Bloated") #explodes harmfully
+		self.adjectives.append("Friendly") #deals less damage
+		self.adjectives.append("Deranged") #floats aimlessly
+		self.adjectives.append("Cowardly") #runs away from player in certain range
+		self.adjectives.append("Zombified") #slower, but more health
+		self.adjectives.append("Slimy") #slows player  
+		self.adjectives.append("Rich") #Double drop rate - for hard
+		self.adjectives.append("Poor") #Halves drop rate - for easy 
+		self.adjectives.append("Ugly") #nothing/descriptor
+		self.adjectives.append("Barbaric") #Descriptor?
+		#adjectives.append("") #Use this as a template for more additions
 		
 		
 		
 		
 		#Define Nouns:
-		nouns.append("Goo") # Green-
-		nouns.append("Swarm") #
-		nouns.append("Cow") #
-		nouns.append("Golem") #
-		nouns.append("Wizard") #
-		nouns.append("Bandit") #
-		nouns.append("Fighter") #
-		nouns.append("Skeleton") #
-		nouns.append("Skull") #
-		nouns.append("Orc") #
-		nouns.append("Demon") #
-		nouns.append("Goblin") #
-		nouns.append("") #Template
+		self.nouns.append("goo") # Green-
+		self.nouns.append("swarm") # Black?
+		self.nouns.append("golem") # Grey?
+		self.nouns.append("wizard") # Blue? Maybe different types
+		self.nouns.append("bandit") # Brown
+		self.nouns.append("fighter") # Red
+		self.nouns.append("skeleton") # White, circle/no fill
+		self.nouns.append("skull") # White
+		self.nouns.append("orc") #Green
+		self.nouns.append("demon") #Orange
+		self.nouns.append("goblin") #Green
+		#nouns.append("") #Template
+		
+		#Define Verbs:
+		self.verbs.append("fighting") #
+		self.verbs.append("slithering") #
+		self.verbs.append("polluting") #
+		self.verbs.append("disgusting") #
+		#verbs.append("") #
+		#verbs.append("") #Template
 		
 		
 		

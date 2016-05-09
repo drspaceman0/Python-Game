@@ -7,17 +7,11 @@ import pygame, sys
 import math
 import random
 from pygame.locals import *
-import Bullet
-#import Enemy
 import Display
 import SpriteAnimation
 import Player
 import Input
 import Room
-import Spawner
-import GooEnemy
-import BrickEnemy
-import labledEnemy
 import LabelMaker
 import hypotheticalenemy
 import Weapon
@@ -61,17 +55,6 @@ def runGame():
 		Input.checkForInputs(playerObj)
 		dungeonObj.update() 
 		playerObj.update()
-		
-		# update bullets if any exist
-		if len(Bullet.Bullet.listBullets) > 0:
-			Bullet.Bullet.update(Bullet.Bullet.listBullets[0])
-		# update GooEnemies if any exist, then attack the player
-		if len(GooEnemy.GooEnemy.listGooEnemies) > 0:
-			GooEnemy.GooEnemy.update(GooEnemy.GooEnemy.listGooEnemies[0], playerObj)
-		# update BrickEnemies if any exist, then attack the player
-		if len(BrickEnemy.BrickEnemy.listBrickEnemies) > 0:
-			BrickEnemy.BrickEnemy.update(BrickEnemy.BrickEnemy.listBrickEnemies[0], playerObj)
-		
 		
 		
 		VE0.updateName()	

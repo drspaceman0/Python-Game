@@ -1,9 +1,7 @@
 import pygame
 import math
 import Display
-import Enemy
 import Player
-import Spawner
 import random
 DOOR_WIDTH = Display.TILE_SIZE
 DOOR_LENGTH = Display.TILE_SIZE
@@ -28,13 +26,14 @@ class Room:
 		self.color = color
 		self.width = Display.SCREEN_WIDTH
 		self.height = Display.SCREEN_HEIGHT
-		self.spawnGoo = spawnGoo
+		#Update to new Enemy
+		'''self.spawnGoo = spawnGoo
 		self.spawnBrick = spawnBrick
 		if self.spawnGoo:
 			self.EnemyGooSpawner = Spawner.Spawner()
 		if self.spawnBrick:
 			self.EnemyBrickSpawner = Spawner.Spawner()
-
+		'''
 								  #x, y, True if player enters this door 
 		self.doors = {'leftDoor': [0, Display.SCREEN_HEIGHT/2, False, None], 'rightDoor': [Display.SCREEN_WIDTH-DOOR_WIDTH, Display.SCREEN_HEIGHT/2, False, None], 'upDoor': [Display.SCREEN_WIDTH-DOOR_WIDTH/2, DOOR_LENGTH, False, None], 'downDoor': [Display.SCREEN_WIDTH-DOOR_WIDTH/2, Display.SCREEN_HEIGHT - DOOR_LENGTH, False, None]}
 		self.entranceX = 0
@@ -49,10 +48,6 @@ class Room:
 	def update(self):
 		self.drawRoom()
 		self.updateDoors()
-		if self.spawnGoo and self.currentRoom:
-			self.EnemyGooSpawner.updateGoo(self.playerObj.getQuadrant())
-		if self.spawnBrick and self.currentRoom:
-			self.EnemyBrickSpawner.updateBrick(self.playerObj.getQuadrant())
 	
 	def drawRoom(self):
 		Display.DISPLAYSURF.fill(self.color)

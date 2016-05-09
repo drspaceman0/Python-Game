@@ -3,6 +3,7 @@ import Display
 import SpriteAnimation
 import Room
 import math
+import Weapon
 
 # player variables defaults
 PLAYER_X = 0
@@ -23,6 +24,7 @@ class Player:
 		self.score = 0
 		self.health = 20
 		self.damage = 5
+		self.range = 5
 		self.direction = 'down'
 		self.moveUp = False
 		self.moveDown = False
@@ -34,6 +36,8 @@ class Player:
 		self.spriteObj = SpriteAnimation.SpriteAnimation(self.player_down)
 		self.dungeonObj = None
 		self.currRoomObj = None
+		self.currentWeapon = Weapon.MeleeWeapon()
+	
 	
 	def update(self):
 		# update room if need be
@@ -115,3 +119,4 @@ class Player:
 			return False
 		else:
 			return True
+			

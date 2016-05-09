@@ -80,7 +80,10 @@ class MeleeWeapon:
 		elif self.noun == 2:#dagger
 			self.range = self.range/2
 			self.damage = self.damage/2
-			self.speed += 3 
+			self.speed += 3
+			self.hasEffect = True
+			self.effect = "bleed"
+			self.dot = .5
 		
 		elif self.noun == 3: #mace
 			self.damage += 2 

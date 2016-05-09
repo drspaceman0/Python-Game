@@ -9,10 +9,8 @@ class LabelMaker:
 	adjectives = []
 	nouns = []
 	verbs = []
-	colors = []
 	
 	def __init__(self):
-		#Should also make a matching attribute class, which changes enemies based on traits
 		
 		#Define Adjectives
 		#These change enemy SPEED, SIZE, DAMAGE and DROP_RATE, as well as enemy.misc ATTACK, PATH_LOGIC

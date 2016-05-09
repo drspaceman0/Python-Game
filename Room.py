@@ -178,7 +178,6 @@ class Dungeon:
 		self.Room5.doors['upDoor'][3] = self.Room1
 		
 	def returnCurrentRoom(self):
-		print self.currRoomIndex
 		return self.listRooms[self.currRoomIndex]
 	
 		

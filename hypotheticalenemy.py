@@ -34,6 +34,7 @@ class VariableEnemy:
 		self.damage = DAMAGE
 		self.attack = ATTACK
 		self.color = COLOR
+		self.drawDifferent = False
 		self.moveThroughDoors = False
 		self.canChase = True #Used to see IF an enemey can chase the player
 		self.chase = False #Set to true if chasing, false otherwise
@@ -129,8 +130,8 @@ class VariableEnemy:
 			self.color = Display.GOOGREEN
 			
 		elif self.noun == 1: #Swarm
-			pass #self.color is BLACK by default
-			#Try to find a way to make a bunch of tiny circles on top of the normally drawn enemy to look like a swarm?
+			#self.color is BLACK by default
+			self.drawDifferent = True
 		
 		elif self.noun == 2: #Golem
 			self.color = Display.GREY
@@ -155,7 +156,10 @@ class VariableEnemy:
 			
 		elif self.noun == 9: #Demon
 			self.color = Display.DEMONORANGE
-			
+			self.size = self.size*2
+			self.damage = self.damage*1.5
+			self.health = self.health*2
+			self.dropRate = self.dropRate*2
 		elif self.noun == 10: #Goblin
 			self.color = Display.GOBLINGREEN
 		
@@ -169,6 +173,7 @@ class VariableEnemy:
 		
 		elif self.verb == 1: #Slithering
 			self.speed -= 1
+			
 		
 		elif self.verb == 2: #Polluting
 			self.attack = "poision"
@@ -183,7 +188,16 @@ class VariableEnemy:
 		self.text = self.font.render(self.name, 1, (0,0,0))	
 	
 	def drawSelf(self):
-		pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x, self.y), self.size)
-		Display.DISPLAYSURF.blit(self.text, (self.x - self.size*1.5, (self.y - self.size*1.5)))
+		if self.drawDifferent == True:
+			if self.noun == 1: #Swarm
+				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x+5, self.y-5), self.size/5)	#maybe change these
+				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x+5, self.y+5), self.size/5)	#to be random
+				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x, self.y), self.size/5)		#between 1-5
+				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x-5, self.y+5), self.size/5)	#for swarm movement
+				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x-5, self.y-5), self.size/5)
+		else:
+			pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x, self.y), self.size)
 		
+		Display.DISPLAYSURF.blit(self.text, (self.x - self.size*2, (self.y - self.size*1.5)))
+			
 		

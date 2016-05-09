@@ -1,7 +1,6 @@
 import pygame
 import math
 import Display
-import Enemy
 import Player
 import random
 DOOR_WIDTH = Display.TILE_SIZE

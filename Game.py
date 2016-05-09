@@ -20,6 +20,7 @@ import BrickEnemy
 import labledEnemy
 import LabelMaker
 import hypotheticalenemy
+import Weapon
 #		
 # START GAME
 #	
@@ -43,6 +44,12 @@ def runGame():
 	VE1 = hypotheticalenemy.VariableEnemy(200, 200)
 	VE2 = hypotheticalenemy.VariableEnemy(300, 300)
 	VE3 = hypotheticalenemy.VariableEnemy(400, 400)
+	W0 = Weapon.MeleeWeapon()
+	W1 = Weapon.MeleeWeapon()
+	W2 = Weapon.MeleeWeapon()
+	W0.printName()
+	W1.printName()
+	W2.printName()
 	
 
 	
@@ -75,6 +82,8 @@ def runGame():
 		VE1.drawSelf()
 		VE2.drawSelf()
 		VE3.drawSelf()
+		
+		
 			
 		# check if the player is alive
 		if playerObj.stillAlive() == False:

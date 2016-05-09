@@ -7,13 +7,16 @@ import math
 RANGE = 20 #swing across this many pixels collide with objects in range, hurt them
 DAMAGE = 1 #Base Damage dealt by weapon
 EFFECT = "none"
+WM = WeaponMaker.WeaponMaker()
+
 
 class MeleeWeapon:
-	WM = WeaponMaker.WeaponMaker()
 	def __init__(self):
 		self.range = RANGE
 		self.damage = DAMAGE
+		self.hasEffect = False
 		self.effect = EFFECT
+		self.speed = 0
 		self.dot = 0
 		self.damageUser = False
 		self.damateToUser = 0
@@ -23,12 +26,18 @@ class MeleeWeapon:
 		self.adjective = random.randint(0, len(WM.lladjectives)-1)
 		self.material = random.randint(0, len(WM.llmaterial)-1)
 		self.noun = random.randint(0, len(WM.llnouns)-1)
-		if isSpecial(dropRate) == True:
+		self.hasSpecial = False
+		if self.isSpecial() == True:
+			self.hasSpecial = True
 			self.verb = random.randint(0, len(WM.llverbs)-1)
+			self.name = WM.lladjectives[self.adjective] + " " + WM.llmaterial[self.material] + " " + WM.llnouns[self.noun] + " " + WM.llverbs[self.verb]
+		else:
+			self.name = self.name = WM.lladjectives[self.adjective] + " " + WM.llmaterial[self.material] + " " + WM.llnouns[self.noun]
+		
 	
 	
 	#This adds special "effects" - magic, bleed, etc. if the drop rate is above 3
-	def isSpecial(dropRate = 0):
+	def isSpecial(self, dropRate = 0):
 		if (random.randint(0, 18) + dropRate) > 20:
 		#add some stuff about picking new adjectives and nouns and material to ensure it's good L00t!
 			return True
@@ -42,7 +51,7 @@ class MeleeWeapon:
 		elif self.adjective == 1: #Chaotic
 			self.damageUser = True
 			self.damageToSelf = random.randint(0,4) #Between zero and three
-			self.damage = random.randint(2, 5)
+			self.damage = self.damage + random.randint(2, 5)
 		
 		#Between 2 and 11 are default values - handled in ELSE
 		elif self.adjective == 12: #Rotten 
@@ -57,3 +66,93 @@ class MeleeWeapon:
 		elif self.adjective == 15: #Ancient
 			self.effect = "magic"
 			self.dot = 1
+			
+		else:
+			pass #Default values are fine
+	
+	def getNounTraits():
+		if self.noun == 0: #Straightsword
+			pass #default
+		elif self.noun == 1: #Axe
+			self.speed -= 1
+			self.damage += 1
+		
+		elif self.noun == 2:#dagger
+			self.range = self.range/2
+			self.damage = self.damage/2
+			self.speed += 3 
+		
+		elif self.noun == 3: #mace
+			self.damage += 2 
+			self.speed -= 1 
+			
+		elif self.noun == 4: #Katana
+			self.damage += 1
+			self.speed += 1
+			self.hasEffect = True
+			self.effect = "bleed"
+			self.dot = 1 
+		
+		elif self.noun == 5: #Broadsword
+			self.damage += 1 
+			self.speed -= 1 
+			
+		elif self.noun == 6: #Longsword
+			self.range += 2 
+			self.speed -= 1 
+		
+		elif self.noun == 7: #Cudgel
+			self.damage += 2
+			
+		else: #defaults
+			pass
+	
+	def getMaterialTraits():
+		if self.material == 0: # Wood
+			damage -= 1 
+			self.speed += 1 
+		
+		elif self.material == 2: # Iron
+			self.damage += 1 
+			self.speed -= 1
+
+		elif self.material == 3: #Copper
+			pass #Defaults good 
+		
+		elif self.material == 4: #Glass 
+			self.damage += 1 
+			self.hasEffect = True 
+			self.effect = "bleed"
+			self.dot = 0.5
+		else:
+			pass #Defaults 
+			
+	def getSpecialTraits():
+		if selfhasSpecial == True:
+			if self.verb == 0: #of smoldering
+				self.hasEffect = True
+				self.effect = "fire"
+				self.dot = 1 
+			
+			elif self.verb == 1: #of numbing
+				self.hasEffect = True 
+				self.effect = "frost"
+				self.dot = 1 
+			
+			elif self.verb == 2: #of sparking
+				self.hasEffect = True
+				self.effect = "electric"
+				self.dot = 1
+				
+			elif self.verb == 3: #of mild stink (lol)
+				self.hasEffect = True
+				self.effect = "poison"
+				self.dot = 1 
+			
+			else:
+				pass #Shouldn't happen
+				
+				
+				
+	def printName(self):
+		print "%s" % (self.name)

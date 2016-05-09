@@ -32,6 +32,9 @@ def checkForInputs(playerObj):
 			if event.key == K_w:
 				bulletDir['up'] = True
 			'''
+			if event.key == K_BACKSPACE:
+				print "reset"
+				Game.restart()
 			if event.key == K_ESCAPE:
 				terminate()
 		elif event.type == KEYUP:

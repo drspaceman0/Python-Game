@@ -1,9 +1,7 @@
 import pygame
 import math
 import Display
-import Enemy
 import Player
-import Spawner
 import random
 DOOR_WIDTH = Display.TILE_SIZE
 DOOR_LENGTH = Display.TILE_SIZE
@@ -156,6 +154,3 @@ class Dungeon:
 		
 	def returnCurrentRoom(self):
 		return self.listRooms[self.currRoomIndex]
-	
-		
-		

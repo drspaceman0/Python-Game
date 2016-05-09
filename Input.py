@@ -2,9 +2,6 @@ import pygame, sys
 from pygame.locals import *
 import Game
 import Player
-import Bullet
-import Enemy
-import labledEnemy
 
 bulletDir = {'left': False, 'right': False, 'up': False, 'down': False} 
 
@@ -26,7 +23,7 @@ def checkForInputs(playerObj):
 			if event.key == K_UP:
 				playerObj.moveUp= True
 				playerObj.direction = 'up'
-			if event.key == K_a:
+			'''if event.key == K_a:
 				bulletDir['left'] = True
 			if event.key == K_d:
 				bulletDir['right'] = True
@@ -34,6 +31,7 @@ def checkForInputs(playerObj):
 				bulletDir['down'] = True
 			if event.key == K_w:
 				bulletDir['up'] = True
+			'''
 			if event.key == K_ESCAPE:
 				terminate()
 		elif event.type == KEYUP:

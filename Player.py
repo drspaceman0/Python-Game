@@ -5,10 +5,10 @@ import Room
 import math
 
 # player variables defaults
-PLAYER_X = 10
-PLAYER_Y = 10
-PLAYER_WIDTH = 64
-PLAYER_HEIGHT = 64
+PLAYER_X = 0
+PLAYER_Y = 0
+PLAYER_WIDTH = 48
+PLAYER_HEIGHT = 48
 PLAYER_SPEED = 10
 
 class Player:
@@ -49,13 +49,13 @@ class Player:
 		self.checkForDoorCollision()
 	
 	def movePlayer(self):
-		if self.moveRight:
+		if self.moveRight and self.x + PLAYER_SPEED < Display.SCREEN_WIDTH - PLAYER_WIDTH:
 			self.x += PLAYER_SPEED
-		if self.moveDown:
+		if self.moveDown and self.y + PLAYER_SPEED < Display.SCREEN_HEIGHT - PLAYER_HEIGHT:
 			self.y += PLAYER_SPEED
-		if self.moveLeft:
+		if self.moveLeft and self.x - PLAYER_SPEED > 0:
 			self.x -= PLAYER_SPEED
-		if self.moveUp:
+		if self.moveUp and self.y - PLAYER_SPEED > 0:
 			self.y -= PLAYER_SPEED
 		
 	

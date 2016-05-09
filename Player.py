@@ -87,12 +87,13 @@ class Player:
 	def checkForDoorCollision(self):
 		for door in self.currRoomObj.doors.values():
 			if self.collision(door[0], door[1]):
-				door[2] = True
-			else:
-				door[2] = False
+				# switch room
+				self.currRoomObj.roomIndexToChangeTo = door[2].index
+				self.currRoomObj.getRoomEntranceForNextRoom(door)
+				self.currRoomObj.timeToChangeRoom = True
 			
 	def collision(self, x, y):
-		if math.sqrt(pow(self.x - x, 2) + pow(self.y - y, 2)) < 30:
+		if math.sqrt(pow(self.x - x, 2) + pow(self.y - y, 2)) < 48:
 			return True
 		
 	def getQuadrant(self):

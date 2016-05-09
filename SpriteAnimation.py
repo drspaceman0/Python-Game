@@ -10,7 +10,7 @@ class SpriteAnimation(pygame.sprite.Sprite):
 		self.images = sprites
 		self.index = 0
 		self.image = self.images[self.index]
-		self.rect = pygame.Rect(5, 5, 64, 64)
+		self.rect = pygame.Rect(5, 5, Display.TILE_SIZE, Display.TILE_SIZE)
 	
 	def update(self, x, y):
 		self.counter += 1 

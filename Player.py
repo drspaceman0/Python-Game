@@ -31,6 +31,8 @@ class Player:
 		self.health = 20
 		self.damage = 5
 		self.range = 50
+		self.size = 48
+		self.rangeAfterSize = self.size/2 + self.range 
 		self.direction = 'down'
 		self.moveUp = False
 		self.moveDown = False
@@ -82,7 +84,7 @@ class Player:
 		elif self.direction == 'down' and self.spriteObj.images != self.player_down:
 			self.spriteObj.changeSprites(self.player_down)
 		#This circle will be our collision box where we draw our attack from 
-		pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.colliderx, self.collidery), 24, 1)
+		pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.colliderx+self.rangeAfterSize, self.collidery+self.rangeAfterSize), 24+self.range, 1)
 
 
 	def moveToOtherSide(self):
@@ -141,7 +143,7 @@ class Player:
 		
 		
 	def updateToWeaponStats(self):
-		self.range = self.currentWeapon.range
+		self.rangeAfterSize = self.currentWeapon.range
 		self.damage = self.currentWeapon.damage
 		
 	def updateColliders(self):

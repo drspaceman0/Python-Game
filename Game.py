@@ -15,6 +15,7 @@ import Room
 import Enemy
 import Weapon
 import Combat
+import functions
 #		
 # START GAME
 #	
@@ -31,7 +32,7 @@ def restart():
 
 	
 def runGame():
-
+	CombatSys = Combat.Combat()
 	playerObj = Player.Player()
 	dungeonObj = Room.Dungeon(playerObj)
 	playerObj.dungeonObj = dungeonObj # temporary, need a better way to pass dungeon info to playerobj
@@ -49,7 +50,9 @@ def runGame():
 		dungeonObj.update() 
 		playerObj.update()
 		playerObj.updateColliders()
-		
+		if functions.objCollision(playerObj, VE0):
+			print "attack!"
+			CombatSys.attack(playerObj, VE0)
 		VE0.drawSelf()
 		VE0.updateColliders()
 		VE0.drawCollider()

@@ -47,12 +47,13 @@ class VariableEnemy:
 		self.collisionx = self.x
 		self.collisiony = self.y
 		self.size = SIZE
+		self.range = RANGE
+		self.rangeAfterSize = (self.size/2) + self.range
 		self.speed = SPEED
 		self.health = HEALTH
 		self.damage = DAMAGE
 		self.attack = ATTACK
 		self.color = COLOR
-		self.range = RANGE
 		self.moveUp = False
 		self.moveDown = False
 		self.moveRight = False
@@ -279,7 +280,7 @@ class VariableEnemy:
 		"I died"
 		
 	def updateStatsToCurrentWeapon(self):
-		self.range += self.currentWeapon.range
+		self.rangeAfterSize += self.currentWeapon.range
 		self.damage += self.currentWeapon.damage
 		
 	def drawCollider(self):

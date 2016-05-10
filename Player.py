@@ -90,7 +90,7 @@ class Player:
 		elif self.direction == 'down' and self.spriteObj.images != self.player_down:
 			self.spriteObj.changeSprites(self.player_down)
 		#This circle will be our collision box where we draw our attack from 
-		pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.colliderx, self.collidery), 24+self.range, 1)
+		pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.colliderx, self.collidery), self.range, 1)
 		pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (self.colliderx, self.collidery), (self.weaponx, self.weapony), 1)
 
 

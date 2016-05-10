@@ -48,10 +48,11 @@ def runGame():
 		Input.checkForInputs(playerObj)
 		dungeonObj.update() 
 		playerObj.update()
+		playerObj.updateColliders()
 		
-		
-
 		VE0.drawSelf()
+		VE0.updateColliders()
+		VE0.drawCollider()
 		VE0.chaseObj(playerObj)
 		
 		

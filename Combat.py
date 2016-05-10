@@ -1,4 +1,5 @@
 import math
+import Display
 
 class Combat:
 	
@@ -19,3 +20,6 @@ class Combat:
 			if defender.health < 0:
 				print "%s has been struck dead!" % (defender.name)
 				defender.death()
+				
+	def drawAttack(self, attacker):
+		pygame.draw.arc(Display.DISPLAYSURF, )

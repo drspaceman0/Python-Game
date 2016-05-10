@@ -9,7 +9,6 @@ import Weapon
 #Hypothetical enemy class
 
 #ADJECTIVE BASE TRAITS
-SIZE = 20
 SPEED = 2 #playerObj/2
 SIZE = Display.TILE_SIZE/2
 HEALTH = 10
@@ -26,6 +25,8 @@ COLOR = Display.BLACK
 nameGenerator = EnemyLabelMaker.EnemyLabelMaker()
 EnemyCombat = Combat.Combat()
 class VariableEnemy:
+	enemyList = []
+	numberOfEnemies = 0
 	# sprite library
 	outline_sprite = pygame.image.load('images\enemy_outline.png')
 	friendly_sprite = pygame.image.load('images\\friendly.png')
@@ -35,12 +36,16 @@ class VariableEnemy:
 	disgusting_sprite = [pygame.image.load('images\\flys1.png'), pygame.image.load('images\\flys2.png')]
 	polluting_sprite = [pygame.image.load('images\\polluting1.png'), pygame.image.load('images\\polluting2.png')]
 	def __init__(self, locationx, locationy):
+		VariableEnemy.enemyList.append(self)
+		VariableEnemy.numberOfEnemies += 1
 		self.adjective = random.randint(0, len(nameGenerator.adjectives)-1)
 		self.noun = random.randint(0, len(nameGenerator.nouns)-1)
 		self.verb = random.randint(0, len(nameGenerator.verbs)-1)
 		self.name = nameGenerator.adjectives[self.adjective] + " " + nameGenerator.verbs[self.verb] + " " + nameGenerator.nouns[self.noun]
 		self.x = locationx
 		self.y = locationy
+		self.collisionx = self.x
+		self.collisiony = self.y
 		self.size = SIZE
 		self.speed = SPEED
 		self.health = HEALTH
@@ -236,7 +241,7 @@ class VariableEnemy:
 			
 	'''distance formula'''
 	def collision(self, obj):
-		if math.sqrt(pow(self.x - obj.x, 2) + pow(self.y - obj.y, 2)) < self.range:
+		if math.sqrt(pow(self.x - obj.x, 2) + pow(self.y - obj.y, 2)) <= self.range:
 			return True
 		else:
 			return False
@@ -270,10 +275,18 @@ class VariableEnemy:
 	#def patrolX(startx, endx)
 			
 	def death(self):
+		del self
 		"I died"
 		
 	def updateStatsToCurrentWeapon(self):
-		self.range+=self.currentWeapon.range
-		self.damage+=self.currentWeapon.damage
+		self.range += self.currentWeapon.range
+		self.damage += self.currentWeapon.damage
+		
+	def drawCollider(self):
+		#This circle will be our collision box where we draw our attack from 
+		pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.collisionx, self.collisiony), self.size+2, 1)
 	
 				
+	def updateColliders(self):
+		self.collisionx = self.x
+		self.collisiony = self.y

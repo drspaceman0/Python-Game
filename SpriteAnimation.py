@@ -12,7 +12,7 @@ class SpriteAnimation(pygame.sprite.Sprite):
 		self.image = self.images[self.index]
 		self.rect = pygame.Rect(5, 5, Display.TILE_SIZE, Display.TILE_SIZE)
 	
-	def update(self, x, y):
+	def update(self, x, y, flip):
 		self.counter += 1 
 		self.rect = pygame.Rect(x, y, 64, 64) 
 		if self.counter > 10: # after ten clicks switch sprites
@@ -20,7 +20,10 @@ class SpriteAnimation(pygame.sprite.Sprite):
 			self.index += 1
 			if self.index >= len(self.images):
 				self.index = 0
-			self.image = self.images[self.index]
+			if flip:
+				self.image = pygame.transform.flip(self.images[self.index], True, False)
+			else:
+				self.image = self.images[self.index]
 		self.draw(Display.DISPLAYSURF)
 	
 	def changeSprites(self, sprites):

@@ -48,7 +48,7 @@ class Player:
 		# check if player needs to go to other side
 		self.moveToOtherSide()
 		# draw player
-		self.spriteObj.update(self.x, self.y)
+		self.spriteObj.update(self.x, self.y, False)
 		# check if player should move to next room
 		self.checkForDoorCollision()
 	

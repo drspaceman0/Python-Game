@@ -2,6 +2,7 @@ import LabelMaker
 import random
 import Display
 import pygame
+import SpriteAnimation
 
 #Hypothetical enemy class
 
@@ -26,7 +27,9 @@ class VariableEnemy:
 	friendly_sprite = pygame.image.load('images\\friendly.png')
 	fierce_sprite = pygame.image.load('images\\fierce.png')
 	perceptive_sprite = pygame.image.load('images\\perceptive.png')
-	
+	rich_sprite = pygame.image.load('images\\rich.png')
+	disgusting_sprite = [pygame.image.load('images\\flys1.png'), pygame.image.load('images\\flys2.png')]
+	polluting_sprite = [pygame.image.load('images\\polluting1.png'), pygame.image.load('images\\polluting2.png')]
 	def __init__(self, locationx, locationy):
 		self.adjective = random.randint(0, len(nameGenerator.adjectives)-1)
 		self.noun = random.randint(0, len(nameGenerator.nouns)-1)
@@ -52,9 +55,11 @@ class VariableEnemy:
 		self.font = pygame.font.SysFont("monospace", 12)
 		self.text = self.font.render(self.name, 1, (0,0,0))
 		self.spriteList = [self.outline_sprite]
+		self.spriteObj = None
 		self.getAdjectiveTraits()
 		self.getNounTraits()
 		self.getVerbTraits()
+		
 		
 		
 		
@@ -67,6 +72,7 @@ class VariableEnemy:
 		perhaps upper tier enemies get a second adjective modifier, 
 		or even have different lists for 'badasses', 'bosses', 'mini-bosses', etc. (differnt enemy class?)
 		'''
+		
 		if self.adjective == 0: #Fierce
 			self.speed += 1
 			self.dropRate += 1
@@ -116,6 +122,7 @@ class VariableEnemy:
 		
 		elif self.adjective == 12: #Rich
 			self.dropRate += 3
+			self.spriteList.append(self.rich_sprite)
 			
 		elif self.adjective == 13: #Poor
 			self.dropRate -= .5
@@ -185,9 +192,11 @@ class VariableEnemy:
 			self.speed -= 1
 			
 		elif self.verb == 2: #Polluting
+			self.spriteObj = SpriteAnimation.SpriteAnimation(self.polluting_sprite)
 			self.attack = "poision"
 		
 		elif self.verb == 3: #Disgusting
+			self.spriteObj = SpriteAnimation.SpriteAnimation(self.disgusting_sprite)
 			pass #Player fear level?	
 			
 			
@@ -208,7 +217,10 @@ class VariableEnemy:
 			pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x, self.y), self.size)
 			for sprite in self.spriteList:
 				Display.DISPLAYSURF.blit(pygame.transform.scale(sprite, (self.size * 2, self.size * 2)), pygame.Rect(self.x - self.size, self.y - self.size, self.size, self.size))	
-			
+			# draw verb animation
+			if self.spriteObj != None:
+				self.spriteObj.update(self.x - self.size*2, self.y - self.size, False)
+				self.spriteObj.update(self.x + self.size, self.y - self.size, True)
 		Display.DISPLAYSURF.blit(self.text, (self.x - self.size*2, (self.y - self.size*1.5)))
 			
 		

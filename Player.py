@@ -32,6 +32,8 @@ class Player:
 		self.damage = 5
 		self.range = 50
 		self.size = 48
+		self.weaponx = 0
+		self.weapony = 0
 		self.rangeAfterSize = self.size/2 + self.range 
 		self.direction = 'down'
 		self.moveUp = False
@@ -66,12 +68,16 @@ class Player:
 	def movePlayer(self):
 		if self.moveRight and self.x + PLAYER_SPEED < Display.SCREEN_WIDTH - PLAYER_WIDTH:
 			self.x += PLAYER_SPEED
+			self.weaponx = self.colliderx+self.range
 		if self.moveDown and self.y + PLAYER_SPEED < Display.SCREEN_HEIGHT - PLAYER_HEIGHT:
 			self.y += PLAYER_SPEED
+			self.weapony = self.collidery
 		if self.moveLeft and self.x - PLAYER_SPEED > 0:
 			self.x -= PLAYER_SPEED
+			self.weaponx = self.colliderx-self.range
 		if self.moveUp and self.y - PLAYER_SPEED > 0:
 			self.y -= PLAYER_SPEED
+			self.weapony = self.collidery
 		
 	
 	def updateSpriteList(self):
@@ -84,7 +90,8 @@ class Player:
 		elif self.direction == 'down' and self.spriteObj.images != self.player_down:
 			self.spriteObj.changeSprites(self.player_down)
 		#This circle will be our collision box where we draw our attack from 
-		pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.colliderx+self.rangeAfterSize, self.collidery+self.rangeAfterSize), 24+self.range, 1)
+		pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.colliderx, self.collidery), 24+self.range, 1)
+		pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (self.colliderx, self.collidery), (self.weaponx, self.weapony), 1)
 
 
 	def moveToOtherSide(self):
@@ -149,3 +156,6 @@ class Player:
 	def updateColliders(self):
 		self.collisionx = self.x+24
 		self.collisiony = self.y+24
+	
+	def isPlayer(self):
+		return True

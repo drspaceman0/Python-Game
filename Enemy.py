@@ -291,3 +291,6 @@ class VariableEnemy:
 	def updateColliders(self):
 		self.collisionx = self.x
 		self.collisiony = self.y
+		
+	def isPlayer(self):
+		return False

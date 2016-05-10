@@ -4,7 +4,7 @@ import math
 import Display
 import pygame
 import Combat
-
+import Weapon
 #Hypothetical enemy class
 
 #ADJECTIVE BASE TRAITS
@@ -64,6 +64,8 @@ class VariableEnemy:
 		self.getAdjectiveTraits()
 		self.getNounTraits()
 		self.getVerbTraits()
+		self.currentWeapon = Weapon.MeleeWeapon()
+		self.updateStatsToCurrentWeapon()
 		
 		
 		
@@ -222,7 +224,7 @@ class VariableEnemy:
 			
 	'''distance formula'''
 	def collision(self, obj):
-		if math.sqrt(pow(self.x - obj.x, 2) + pow(self.y - obj.y, 2)) < 50:
+		if math.sqrt(pow(self.x - obj.x, 2) + pow(self.y - obj.y, 2)) < self.range:
 			return True
 		else:
 			return False
@@ -258,5 +260,8 @@ class VariableEnemy:
 	def death(self):
 		"I died"
 		
+	def updateStatsToCurrentWeapon(self):
+		self.range+=self.currentWeapon.range
+		self.damage+=self.currentWeapon.damage
 	
 				

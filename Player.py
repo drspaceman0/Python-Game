@@ -123,7 +123,7 @@ class Player:
 		else:
 			return True
 	
-	def death():
+	def death(self):
 		print "Hero died..."
 		print "Game Over"
 		

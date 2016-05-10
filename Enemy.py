@@ -10,6 +10,7 @@ import Combat
 #ADJECTIVE BASE TRAITS
 SIZE = 20
 SPEED = 2 #playerObj/2
+SIZE = Display.TILE_SIZE/2
 HEALTH = 10
 ATTACK  = "melee"
 DAMAGE = 1 #1/20th of player starting health
@@ -24,6 +25,12 @@ COLOR = Display.BLACK
 nameGenerator = EnemyLabelMaker.EnemyLabelMaker()
 EnemyCombat = Combat.Combat()
 class VariableEnemy:
+	# sprite library
+	outline_sprite = pygame.image.load('images\enemy_outline.png')
+	friendly_sprite = pygame.image.load('images\\friendly.png')
+	fierce_sprite = pygame.image.load('images\\fierce.png')
+	perceptive_sprite = pygame.image.load('images\\perceptive.png')
+	
 	def __init__(self, locationx, locationy):
 		self.adjective = random.randint(0, len(nameGenerator.adjectives)-1)
 		self.noun = random.randint(0, len(nameGenerator.nouns)-1)
@@ -53,9 +60,11 @@ class VariableEnemy:
 		self.dropRate = DROPRATE #number out of 100 for how often cool stuff drops
 		self.font = pygame.font.SysFont("monospace", 12)
 		self.text = self.font.render(self.name, 1, (0,0,0))
+		self.spriteList = [self.outline_sprite]
 		self.getAdjectiveTraits()
 		self.getNounTraits()
 		self.getVerbTraits()
+		
 		
 		
 	def printName(self):
@@ -67,10 +76,10 @@ class VariableEnemy:
 		perhaps upper tier enemies get a second adjective modifier, 
 		or even have different lists for 'badasses', 'bosses', 'mini-bosses', etc. (differnt enemy class?)
 		'''
-	
 		if self.adjective == 0: #Fierce
 			self.speed += 1
 			self.dropRate += 1
+			self.spriteList.append(self.fierce_sprite)
 			
 		elif self.adjective == 1: #Monstrous
 			self.size = self.size*2
@@ -85,6 +94,7 @@ class VariableEnemy:
 		
 		elif self.adjective == 4: #Perceptive
 			self.chase = True
+			self.spriteList.append(self.perceptive_sprite)
 		
 		elif self.adjective == 5: #Deadly
 			self.damage = self.damage*2
@@ -96,6 +106,7 @@ class VariableEnemy:
 		
 		elif self.adjective == 7: #Friendly
 			self.damage = self.damage*0.5
+			self.spriteList.append(self.friendly_sprite)
 			
 		elif self.adjective == 8: #Deranged
 			self.canChase = False
@@ -182,7 +193,6 @@ class VariableEnemy:
 		elif self.verb == 1: #Slithering
 			self.speed -= 1
 			
-		
 		elif self.verb == 2: #Polluting
 			self.attack = "poision"
 		
@@ -205,12 +215,14 @@ class VariableEnemy:
 				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x-5, self.y-5), self.size/5)
 		else:
 			pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x, self.y), self.size)
-		
+			for sprite in self.spriteList:
+				Display.DISPLAYSURF.blit(pygame.transform.scale(sprite, (self.size * 2, self.size * 2)), pygame.Rect(self.x - self.size, self.y - self.size, self.size, self.size))	
+			
 		Display.DISPLAYSURF.blit(self.text, (self.x - self.size*2, (self.y - self.size*1.5)))
 			
 	'''distance formula'''
 	def collision(self, obj):
-		if math.sqrt(pow((self.x-20) - obj.x, 2) + pow((self.y-20) - obj.y, 2)) < self.size*1.5:
+		if math.sqrt(pow(self.x - obj.x, 2) + pow(self.y - obj.y, 2)) < 50:
 			return True
 		else:
 			return False
@@ -225,13 +237,13 @@ class VariableEnemy:
 				if obj.x > self.x:
 					self.moveRight = True
 					self.x = self.x + self.speed
-				elif obj.x < self.x:
+				if obj.x < self.x:
 					self.moveLeft = True
 					self.x = self.x - self.speed
-				elif obj.y > self.y:
+				if obj.y > self.y:
 					self.moveDown = True
 					self.y += self.speed
-				elif obj.y < self.y:
+				if obj.y < self.y:
 					self.moveUp = True
 					self.y -= self.speed
 			else: #If colliding, attack!

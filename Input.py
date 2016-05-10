@@ -34,6 +34,9 @@ def checkForInputs(playerObj):
 			'''
 			if event.key == K_SPACE:
 				Player.attack()
+			if event.key == K_BACKSPACE:
+				print "reset"
+				Game.restart()
 			if event.key == K_ESCAPE:
 				terminate()
 		elif event.type == KEYUP:

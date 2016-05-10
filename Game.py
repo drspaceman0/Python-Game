@@ -14,6 +14,7 @@ import Input
 import Room
 import Enemy
 import Weapon
+import Combat
 #		
 # START GAME
 #	
@@ -26,6 +27,8 @@ def main():
 def restart():
 	while True:
 		runGame()
+		
+
 	
 def runGame():
 
@@ -67,9 +70,11 @@ def runGame():
 		pygame.display.update()
 		Display.FPSCLOCK.tick(Display.FPS)
 		
+		
 #
 #	END GAME
 #
 
 if __name__ == '__main__':
 	main()
+	

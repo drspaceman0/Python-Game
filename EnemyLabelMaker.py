@@ -5,7 +5,7 @@
 
 
 #singleton...?
-class LabelMaker:
+class EnemyLabelMaker:
 	adjectives = []
 	nouns = []
 	verbs = []

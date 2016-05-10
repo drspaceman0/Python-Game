@@ -1,6 +1,6 @@
 
 
-class WeaponMaker:
+class WeaponLabelMaker:
 	#ll stands for low level - 1-5
 	#ml stands for medium level - 5-10
 	#hl stands for high level - 10-15

@@ -4,13 +4,14 @@ import SpriteAnimation
 import Room
 import math
 import Weapon
+import Combat
 
 # player variables defaults
 PLAYER_X = 0
 PLAYER_Y = 0
 PLAYER_WIDTH = 48
 PLAYER_HEIGHT = 48
-PLAYER_SPEED = 10
+PLAYER_SPEED = 5
 
 class Player:
 	player_down = [pygame.image.load('images\player_down1.png'), pygame.image.load('images\player_down2.png')]
@@ -21,6 +22,7 @@ class Player:
 	def __init__(self):
 		self.x = PLAYER_X
 		self.y = PLAYER_Y
+		self.name = "Hero"
 		self.score = 0
 		self.health = 20
 		self.damage = 5
@@ -120,4 +122,10 @@ class Player:
 			return False
 		else:
 			return True
-			
+	
+	def death():
+		print "Hero died..."
+		print "Game Over"
+		
+		
+		

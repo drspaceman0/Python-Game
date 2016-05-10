@@ -1,13 +1,14 @@
-import WeaponMaker
+import WeaponLabelMaker
 import random
 import math
+import Display
 
 
 #Weapon Defaults
 RANGE = 20 #swing across this many pixels collide with objects in range, hurt them
 DAMAGE = 1 #Base Damage dealt by weapon
 EFFECT = "none"
-WM = WeaponMaker.WeaponMaker()
+WM = WeaponLabelMaker.WeaponLabelMaker()
 
 
 class MeleeWeapon:
@@ -159,3 +160,6 @@ class MeleeWeapon:
 				
 	def printName(self):
 		print "%s" % (self.name)
+		
+	#def drawWeapon(self, owner):
+	#	pygame.draw.aaline(Display.DISPLAYSURF, (0,0,0) (owner.x, owner.y),  )

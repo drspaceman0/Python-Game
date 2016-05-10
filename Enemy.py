@@ -1,25 +1,28 @@
-import LabelMaker
+import EnemyLabelMaker
 import random
+import math
 import Display
 import pygame
+import Combat
 
 #Hypothetical enemy class
 
 #ADJECTIVE BASE TRAITS
 SIZE = 20
-SPEED = 5 #playerObj/2
+SPEED = 2 #playerObj/2
 HEALTH = 10
 ATTACK  = "melee"
 DAMAGE = 1 #1/20th of player starting health
 PLAYEREFFECT = "0"
 DROPRATE = 1
+RANGE = 5
 	
-#NOUN TRAITS
+
 COLOR = Display.BLACK
-#	SPRITE #if we use this, could be lots of code/images, but cool af
+
 	
-#VERB TRAITS
-nameGenerator = LabelMaker.LabelMaker()
+nameGenerator = EnemyLabelMaker.EnemyLabelMaker()
+EnemyCombat = Combat.Combat()
 class VariableEnemy:
 	def __init__(self, locationx, locationy):
 		self.adjective = random.randint(0, len(nameGenerator.adjectives)-1)
@@ -28,16 +31,21 @@ class VariableEnemy:
 		self.name = nameGenerator.adjectives[self.adjective] + " " + nameGenerator.verbs[self.verb] + " " + nameGenerator.nouns[self.noun]
 		self.x = locationx
 		self.y = locationy
-		self.speed = SPEED
 		self.size = SIZE
+		self.speed = SPEED
 		self.health = HEALTH
 		self.damage = DAMAGE
 		self.attack = ATTACK
 		self.color = COLOR
+		self.range = RANGE
+		self.moveUp = False
+		self.moveDown = False
+		self.moveRight = False
+		self.moveLeft = False
 		self.drawDifferent = False
 		self.moveThroughDoors = False
 		self.canChase = True #Used to see IF an enemey can chase the player
-		self.chase = False #Set to true if chasing, false otherwise
+		self.chase = True #Set to true if chasing, false otherwise
 		self.canFlee = False #Used to see IF an enemy can flee the player
 		self.flee = False #Set to true if fleeing, false otherwise
 		self.hasPlayerEffect = False #Used for things like slowing the player, perhaps bleed or poision (status effects)
@@ -200,4 +208,43 @@ class VariableEnemy:
 		
 		Display.DISPLAYSURF.blit(self.text, (self.x - self.size*2, (self.y - self.size*1.5)))
 			
+	'''distance formula'''
+	def collision(self, obj):
+		if math.sqrt(pow((self.x-20) - obj.x, 2) + pow((self.y-20) - obj.y, 2)) < self.size*1.5:
+			return True
+		else:
+			return False
+			
+	'''Written so that the Enemy may chase any object, not just the player
+		in doing so, we allow them to chase objects, perhaps chests or loot
+		they can destroy before the enemy is there? Also, if we want to impliment
+		friendlies, this is a start'''
+	def chaseObj(self, obj):
+		if self.chase == True:
+			if self.collision(obj) == False:
+				if obj.x > self.x:
+					self.moveRight = True
+					self.x = self.x + self.speed
+				elif obj.x < self.x:
+					self.moveLeft = True
+					self.x = self.x - self.speed
+				elif obj.y > self.y:
+					self.moveDown = True
+					self.y += self.speed
+				elif obj.y < self.y:
+					self.moveUp = True
+					self.y -= self.speed
+			else: #If colliding, attack!
+				EnemyCombat.attack(self, obj)
+		self.moveDown = False
+		self.moveLeft = False
+		self.moveRight = False
+		self.moveUp = False
 		
+	#def patrolX(startx, endx)
+			
+	def death(self):
+		"I died"
+		
+	
+				

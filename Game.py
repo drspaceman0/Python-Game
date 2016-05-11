@@ -16,6 +16,7 @@ import Enemy
 import Weapon
 import Combat
 import functions
+import time
 #		
 # START GAME
 #	
@@ -38,8 +39,11 @@ def runGame():
 	playerObj.dungeonObj = dungeonObj # temporary, need a better way to pass dungeon info to playerobj
 	dungeonObj.playerObj = playerObj
 	enemylist = []
-	VE0 = Enemy.VariableEnemy(300, 300)
+	VE0 = Enemy.VariableEnemy(0, 300, 300, 1, 2, 3)
+	VE1 = Enemy.VariableEnemy(1, 400, 500)
 	enemylist.append(VE0)
+	enemylist.append(VE1)
+	print "%s = length of list" % (len(enemylist))
 	
 
 	
@@ -53,16 +57,17 @@ def runGame():
 		playerObj.update()
 		playerObj.updateColliders()
 		if len(enemylist) > 0:
-			VE0.drawSelf()
-			VE0.updateColliders()
-			VE0.drawCollider()
-			VE0.chaseObj(playerObj)
-			if functions.objCollision(playerObj, VE0):
-				print "attack!"
-				CombatSys.attack(playerObj, VE0)
-			if VE0.isDead == True:
-				enemylist.remove(VE0)
-			
+			for enemy in enemylist:
+				enemy.drawSelf()
+				enemy.updateColliders()
+				enemy.drawCollider()
+				enemy.chaseObj(playerObj)
+				if functions.objCollision(playerObj, enemy):
+					print "attack!"
+					CombatSys.attack(playerObj, enemy)
+				if enemy.isDead == True:
+					enemylist.remove(enemy)
+					
 			
 		
 			

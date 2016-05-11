@@ -113,9 +113,6 @@ class Player:
 		if math.sqrt(pow((self.x-24) - x, 2) + pow((self.y-24) - y, 2)) < 15:
 			return True
 			
-	
-		
-		
 	def getQuadrant(self):
 			#Check quadrant 1
 			if self.x < Display.QUADRANTX and self.y < Display.QUADRANTY:

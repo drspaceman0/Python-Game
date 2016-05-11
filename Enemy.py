@@ -36,10 +36,9 @@ class VariableEnemy:
 	disgusting_sprite = [pygame.image.load('images\\flys1.png'), pygame.image.load('images\\flys2.png')]
 	polluting_sprite = [pygame.image.load('images\\polluting1.png'), pygame.image.load('images\\polluting2.png')]
 	#Note that this has default values if we don't pass it stuff. The "stuff" comes from the spawner calling it, allowing for types of spawners
-	def __init__(self, id, locationx, locationy, adjective = random.randint(0, len(nameGenerator.adjectives)-1), noun = random.randint(0, len(nameGenerator.nouns)-1), verb = random.randint(0, len(nameGenerator.verbs)-1)):
+	def __init__(self, locationx, locationy, adjective = random.randint(0, len(nameGenerator.adjectives)-1), noun = random.randint(0, len(nameGenerator.nouns)-1), verb = random.randint(0, len(nameGenerator.verbs)-1)):
 		VariableEnemy.enemyList.append(self)
 		VariableEnemy.numberOfEnemies += 1
-		self.id = int(id)
 		self.adjective = adjective
 		self.noun = noun
 		self.verb = verb

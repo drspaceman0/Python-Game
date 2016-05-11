@@ -17,6 +17,7 @@ import Weapon
 import Combat
 import functions
 import time
+import Spawnner
 #		
 # START GAME
 #	
@@ -31,6 +32,10 @@ def restart():
 		runGame()
 		
 
+		
+
+	'''We should consider getting a draw down, 
+	background, then loot, then spawners, then enemies, then player?'''
 	
 def runGame():
 	CombatSys = Combat.Combat()
@@ -39,12 +44,9 @@ def runGame():
 	playerObj.dungeonObj = dungeonObj # temporary, need a better way to pass dungeon info to playerobj
 	dungeonObj.playerObj = playerObj
 	enemylist = []
-	VE0 = Enemy.VariableEnemy(0, 300, 300, 1, 2, 3)
-	VE1 = Enemy.VariableEnemy(1, 400, 500)
-	enemylist.append(VE0)
-	enemylist.append(VE1)
-	print "%s = length of list" % (len(enemylist))
-	
+	spawnnerlist = []
+	SpawnnerOfPwnge = Spawnner.Spawnner(enemylist)
+	spawnnerlist.append(SpawnnerOfPwnge)
 
 	
 	while True:
@@ -58,6 +60,14 @@ def runGame():
 		dungeonObj.update() 
 		playerObj.update()
 		playerObj.updateColliders()
+		if len(spawnnerlist) > 0:
+			for spawnner in spawnnerlist:
+				spawnner.drawSpawnner()
+				spawnner.update()
+				if functions.objCollision(playerObj, spawnner):
+					CombatSys.attack(playerObj, spawnner)
+				if spawnner.isDead == True:
+					spawnnerlist.remove(spawnner)
 		if len(enemylist) > 0:
 			for enemy in enemylist:
 				enemy.drawSelf()
@@ -93,4 +103,4 @@ def runGame():
 
 if __name__ == '__main__':
 	main()
-	
+		

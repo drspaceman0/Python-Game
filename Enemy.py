@@ -16,7 +16,7 @@ ATTACK  = "melee"
 DAMAGE = 1 #1/20th of player starting health
 PLAYEREFFECT = "0"
 DROPRATE = 1
-RANGE = 5
+RANGE = 30
 	
 
 COLOR = Display.BLACK
@@ -50,18 +50,16 @@ class VariableEnemy:
 		self.collisiony = self.y
 		self.size = SIZE
 		self.range = RANGE
-		self.rangeAfterSize = (self.size/2) + self.range
 		self.speed = SPEED
 		self.health = HEALTH
 		self.damage = DAMAGE
 		self.attack = ATTACK
 		self.color = COLOR
-		self.moveUp = False
-		self.moveDown = False
-		self.moveRight = False
-		self.moveLeft = False
 		self.drawDifferent = False
 		self.moveThroughDoors = False
+		self.isDead = False
+		self.weaponx = 0
+		self.weapony = 0
 		self.canChase = True #Used to see IF an enemey can chase the player
 		self.chase = True #Set to true if chasing, false otherwise
 		self.canFlee = False #Used to see IF an enemy can flee the player
@@ -73,12 +71,12 @@ class VariableEnemy:
 		self.text = self.font.render(self.name, 1, (0,0,0))
 		self.spriteList = [self.outline_sprite]
 		self.spriteObj = None
+		#Functions To update self before spawning
 		self.getAdjectiveTraits()
 		self.getNounTraits()
 		self.getVerbTraits()
 		self.currentWeapon = Weapon.MeleeWeapon()
 		self.updateStatsToCurrentWeapon()
-		self.isDead = False
 		
 		
 		
@@ -235,6 +233,7 @@ class VariableEnemy:
 				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x-5, self.y-5), self.size/5)
 		else:
 			pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x, self.y), self.size)
+			pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (self.x, self.y), (self.weaponx, self.weapony), 1)
 			for sprite in self.spriteList:
 				Display.DISPLAYSURF.blit(pygame.transform.scale(sprite, (self.size * 2, self.size * 2)), pygame.Rect(self.x - self.size, self.y - self.size, self.size, self.size))	
 			# draw verb animation
@@ -257,18 +256,19 @@ class VariableEnemy:
 	def chaseObj(self, obj):
 		if self.chase == True:
 			if self.collision(obj) == False:
-				if obj.x > self.x:
-					self.moveRight = True
+				if obj.x > self.x: #Move right
 					self.x = self.x + self.speed
-				if obj.x < self.x:
-					self.moveLeft = True
+					self.weaponx = self.x + self.range
+				if obj.x < self.x: #Move left
 					self.x = self.x - self.speed
-				if obj.y > self.y:
-					self.moveDown = True
+					self.weaponx = self.x - self.range
+				if obj.y > self.y: #Move down
 					self.y += self.speed
-				if obj.y < self.y:
-					self.moveUp = True
+					self.weapony = self.y
+				if obj.y < self.y: #Move up
 					self.y -= self.speed
+					self.weapony = self.y
+					
 			else: #If colliding, attack!
 				EnemyCombat.attack(self, obj)
 		self.moveDown = False
@@ -283,7 +283,7 @@ class VariableEnemy:
 		"I died"
 		
 	def updateStatsToCurrentWeapon(self):
-		self.rangeAfterSize += self.currentWeapon.range
+		self.range += self.currentWeapon.range
 		self.damage += self.currentWeapon.damage
 		
 	def drawCollider(self):

@@ -51,6 +51,8 @@ def runGame():
 		myfont = pygame.font.SysFont("monospace", 15)
 		scoretext = myfont.render("Score = "+str(playerObj.score), 1, (0,0,0))
 		roomtext = myfont.render("Room = "+str(dungeonObj.currRoomIndex), 1, (0,0,0))
+		healthtext = myfont.render("Health ="+str(playerObj.health), 1, Display.RED)
+		
 		# check for key input
 		Input.checkForInputs(playerObj)
 		dungeonObj.update() 
@@ -63,7 +65,6 @@ def runGame():
 				enemy.drawCollider()
 				enemy.chaseObj(playerObj)
 				if functions.objCollision(playerObj, enemy):
-					print "attack!"
 					CombatSys.attack(playerObj, enemy)
 				if enemy.isDead == True:
 					enemylist.remove(enemy)
@@ -81,6 +82,7 @@ def runGame():
 		# draw stuff
 		Display.DISPLAYSURF.blit(scoretext, (10, 10))
 		Display.DISPLAYSURF.blit(roomtext, (10, 20))
+		Display.DISPLAYSURF.blit(healthtext, (10, 30))
 		pygame.display.update()
 		Display.FPSCLOCK.tick(Display.FPS)
 		

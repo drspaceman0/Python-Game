@@ -148,8 +148,8 @@ class Player:
 		
 		
 	def updateToWeaponStats(self):
-		self.rangeAfterSize = self.currentWeapon.range
-		self.damage = self.currentWeapon.damage
+		self.rangeAfterSize += self.currentWeapon.range
+		self.damage += self.currentWeapon.damage
 		
 	def updateColliders(self):
 		self.collisionx = self.x+24

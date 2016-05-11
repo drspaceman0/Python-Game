@@ -46,6 +46,7 @@ class Player:
 		self.spriteObj = SpriteAnimation.SpriteAnimation(self.player_down)
 		self.dungeonObj = None
 		self.currRoomObj = None
+		self.isDead = False
 		self.currentWeapon = Weapon.MeleeWeapon()
 		self.updateToWeaponStats()
 	
@@ -117,7 +118,7 @@ class Player:
 				self.currRoomObj.timeToChangeRoom = True
 			
 	def collision(self, x, y):
-		if math.sqrt(pow((self.x-24) - x, 2) + pow((self.y-24) - y, 2)) < 15:
+		if math.sqrt(pow((self.x) - x, 2) + pow((self.y) - y, 2)) < 15:
 			return True
 			
 	
@@ -138,13 +139,10 @@ class Player:
 				return 4
 				
 
-	def stillAlive(self):
-		if self.health <= 0:
-			return False
-		else:
-			return True
+
 	
 	def death(self):
+		self.isDead = True
 		print "Hero died..."
 		print "Game Over"
 		

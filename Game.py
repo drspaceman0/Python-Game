@@ -37,7 +37,9 @@ def runGame():
 	dungeonObj = Room.Dungeon(playerObj)
 	playerObj.dungeonObj = dungeonObj # temporary, need a better way to pass dungeon info to playerobj
 	dungeonObj.playerObj = playerObj
+	enemylist = []
 	VE0 = Enemy.VariableEnemy(300, 300)
+	enemylist.append(VE0)
 	
 
 	
@@ -50,20 +52,23 @@ def runGame():
 		dungeonObj.update() 
 		playerObj.update()
 		playerObj.updateColliders()
-		if functions.objCollision(playerObj, VE0):
-			print "attack!"
-			CombatSys.attack(playerObj, VE0)
-		VE0.drawSelf()
-		VE0.updateColliders()
-		VE0.drawCollider()
-		VE0.chaseObj(playerObj)
-		
+		if len(enemylist) > 0:
+			VE0.drawSelf()
+			VE0.updateColliders()
+			VE0.drawCollider()
+			VE0.chaseObj(playerObj)
+			if functions.objCollision(playerObj, VE0):
+				print "attack!"
+				CombatSys.attack(playerObj, VE0)
+			if VE0.isDead == True:
+				enemylist.remove(VE0)
+			
+			
 		
 			
 		# check if the player is alive
-		if playerObj.stillAlive() == False:
-			print "dead"
-
+		if playerObj.isDead == True:
+			print "GGWP"
 			restart()
 		
 		

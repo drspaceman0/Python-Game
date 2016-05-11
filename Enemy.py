@@ -76,6 +76,7 @@ class VariableEnemy:
 		self.getVerbTraits()
 		self.currentWeapon = Weapon.MeleeWeapon()
 		self.updateStatsToCurrentWeapon()
+		self.isDead = False
 		
 		
 		
@@ -276,7 +277,7 @@ class VariableEnemy:
 	#def patrolX(startx, endx)
 			
 	def death(self):
-		del self
+		self.isDead = True
 		"I died"
 		
 	def updateStatsToCurrentWeapon(self):
@@ -291,3 +292,6 @@ class VariableEnemy:
 	def updateColliders(self):
 		self.collisionx = self.x
 		self.collisiony = self.y
+		
+	def isPlayer(self):
+		return False

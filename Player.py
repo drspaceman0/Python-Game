@@ -22,8 +22,8 @@ class Player:
 	player_left = [pygame.transform.flip(pygame.image.load('images\player_right1.png'), True, False), pygame.transform.flip(pygame.image.load('images\player_right2.png'), True, False)]
 	
 	def __init__(self):
-		self.x = PLAYER_X
-		self.y = PLAYER_Y
+		self.x = Display.TILE_SIZE
+		self.y = Display.GAME_SCREEN_START + Display.TILE_SIZE
 		self.colliderx = self.x #playersize/2
 		self.collidery = self.y
 		self.name = "Hero"
@@ -56,8 +56,6 @@ class Player:
 		self.movePlayer()
 		# update sprites
 		self.updateSpriteList()
-		# check if player needs to go to other side
-		self.moveToOtherSide()
 		# draw player
 		self.spriteObj.update(self.x, self.y, False)
 		# check if player should move to next room
@@ -75,7 +73,7 @@ class Player:
 		if self.moveLeft and self.x - PLAYER_SPEED > 0:
 			self.x -= PLAYER_SPEED
 			self.weaponx = self.colliderx-self.range
-		if self.moveUp and self.y - PLAYER_SPEED > 0:
+		if self.moveUp and self.y - PLAYER_SPEED > Display.GAME_SCREEN_START:
 			self.y -= PLAYER_SPEED
 			self.weapony = self.collidery
 		
@@ -134,15 +132,11 @@ class Player:
 			#Check Q 4
 			if self.x > Display.QUADRANTX and self.y > Display.QUADRANTY:
 				return 4
-				
-
-
-	
+					
 	def death(self):
 		self.isDead = True
 		print "Hero died..."
 		print "Game Over"
-		
 		
 	def updateToWeaponStats(self):
 		self.range += self.currentWeapon.range

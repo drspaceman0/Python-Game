@@ -18,6 +18,7 @@ import Combat
 import functions
 import time
 import Spawnner
+import Menu
 #		
 # START GAME
 #	
@@ -47,19 +48,17 @@ def runGame():
 	spawnnerlist = []
 	SpawnnerOfPwnge = Spawnner.Spawnner(enemylist)
 	spawnnerlist.append(SpawnnerOfPwnge)
-
 	
 	while True:
-		myfont = pygame.font.SysFont("monospace", 15)
-		scoretext = myfont.render("Score = "+str(playerObj.score), 1, (0,0,0))
-		roomtext = myfont.render("Room = "+str(dungeonObj.currRoomIndex), 1, (0,0,0))
-		healthtext = myfont.render("Health ="+str(playerObj.health), 1, Display.RED)
-		
 		# check for key input
 		Input.checkForInputs(playerObj)
 		dungeonObj.update() 
+		dungeonObj.update()
+		Menu.drawMenu(playerObj, dungeonObj)
+		
 		playerObj.update()
 		playerObj.updateColliders()
+		
 		if len(spawnnerlist) > 0:
 			for spawnner in spawnnerlist:
 				spawnner.drawSpawnner()
@@ -79,20 +78,17 @@ def runGame():
 				if enemy.isDead == True:
 					enemylist.remove(enemy)
 					
-			
+		
 		
 			
 		# check if the player is alive
 		if playerObj.isDead == True:
-			print "GGWP"
 			restart()
 		
 		
 
 		# draw stuff
-		Display.DISPLAYSURF.blit(scoretext, (10, 10))
-		Display.DISPLAYSURF.blit(roomtext, (10, 20))
-		Display.DISPLAYSURF.blit(healthtext, (10, 30))
+		
 		pygame.display.update()
 		Display.FPSCLOCK.tick(Display.FPS)
 		

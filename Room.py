@@ -22,6 +22,8 @@ class Room:
 	door_left_sprite = pygame.transform.rotate(door_up_sprite, 270)
 	tile_sprite = pygame.image.load('images\\tile.png')
 	
+	
+	
 	def __init__(self, index, playerObj, color):
 		self.color = color
 		self.width = Display.SCREEN_WIDTH
@@ -29,7 +31,7 @@ class Room:
 		#x, y, True if player enters this door, connected room, 
 		self.doors =   {'leftDoor': [0, Display.SCREEN_HEIGHT/2, None, 'leftDoor'],
 						'rightDoor': [Display.SCREEN_WIDTH-DOOR_WIDTH, Display.SCREEN_HEIGHT/2, None, 'rightDoor'],
-						'upDoor': [Display.SCREEN_WIDTH/2, 0, None, 'upDoor'], 
+						'upDoor': [Display.SCREEN_WIDTH/2, Display.GAME_SCREEN_START, None, 'upDoor'], 
 						'downDoor': [Display.SCREEN_WIDTH/2, Display.SCREEN_HEIGHT - DOOR_LENGTH, None, 'downDoor']}
 		self.entranceX = 0
 		self.entranceY = 0
@@ -39,19 +41,19 @@ class Room:
 		self.index = index
 		self.playerObj = playerObj
 		Dungeon.numRooms += 1
-		
+	
 	def update(self):
 		self.drawRoom()
 	
 	def drawRoom(self):
 		Display.DISPLAYSURF.fill(self.color)
 		for x in xrange(0, Display.SCREEN_WIDTH, Display.TILE_SIZE):
-			for y in xrange(0, Display.SCREEN_HEIGHT, Display.TILE_SIZE):
+			for y in xrange(Display.GAME_SCREEN_START, Display.SCREEN_HEIGHT, Display.TILE_SIZE):
 				# upper wall
-				if y == 0: 
+				if y == Display.GAME_SCREEN_START: 
 					if x == 0: # northwest corner
 						Display.DISPLAYSURF.blit(self.wall_corner_sprite, pygame.Rect(x, y, Display.TILE_SIZE, Display.TILE_SIZE))
-					elif x > Display.SCREEN_WIDTH - Display.TILE_SIZE: # norheast corner
+					elif x >= Display.SCREEN_WIDTH - Display.TILE_SIZE: # norheast corner
 						Display.DISPLAYSURF.blit(pygame.transform.flip(self.wall_corner_sprite, True, False), pygame.Rect(x, y, Display.TILE_SIZE, Display.TILE_SIZE))
 					elif x < Display.SCREEN_WIDTH/2: #left part
 						Display.DISPLAYSURF.blit(self.wall_up_sprite, pygame.Rect(x, y, Display.TILE_SIZE, Display.TILE_SIZE))
@@ -126,8 +128,6 @@ class Dungeon:
 		self.listRooms.append(self.Room4)
 		self.listRooms.append(self.Room5)
 		self.currRoomIndex = 0
-		
-		
 		
 	def update(self):
 		if self.returnCurrentRoom().timeToChangeRoom:

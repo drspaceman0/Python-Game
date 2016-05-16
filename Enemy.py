@@ -6,6 +6,7 @@ import pygame
 import SpriteAnimation
 import Combat
 import Weapon
+import Inventory
 #Hypothetical enemy class
 
 #ADJECTIVE BASE TRAITS
@@ -14,7 +15,6 @@ SIZE = Display.TILE_SIZE/2
 HEALTH = 10
 ATTACK  = "melee"
 DAMAGE = 1 #1/20th of player starting health
-PLAYEREFFECT = "0"
 DROPRATE = 1
 RANGE = 30
 	
@@ -55,29 +55,30 @@ class VariableEnemy:
 		self.attack = ATTACK
 		self.color = COLOR
 		self.drawDifferent = False
-		self.moveThroughDoors = False
 		self.isDead = False
+		self.chase = True
 		self.weaponx = 0
 		self.weapony = 0
-		self.canChase = True #Used to see IF an enemey can chase the player
-		self.chase = True #Set to true if chasing, false otherwise
-		self.canFlee = False #Used to see IF an enemy can flee the player
-		self.flee = False #Set to true if fleeing, false otherwise
-		self.hasPlayerEffect = False #Used for things like slowing the player, perhaps bleed or poision (status effects)
-		self.playerEffect = PLAYEREFFECT #a description of what the effect is
 		self.dropRate = DROPRATE #number out of 100 for how often cool stuff drops
 		self.font = pygame.font.SysFont("monospace", 12)
 		self.text = self.font.render(self.name, 1, (0,0,0))
 		self.spriteList = [self.outline_sprite]
 		self.spriteObj = None
+		self.items = []
+		self.inventory = 0
 		#Functions To update self before spawning
 		self.getAdjectiveTraits()
 		self.getNounTraits()
 		self.getVerbTraits()
 		self.currentWeapon = Weapon.MeleeWeapon()
 		self.updateStatsToCurrentWeapon()
+		self.updateInventory()
 		
 		
+		
+	def updateInventory(self):
+		self.items.append(self.currentWeapon)
+		self.inventory = Inventory.Inventory(self.dropRate, self.items)
 		
 		
 	def printName(self):
@@ -274,6 +275,8 @@ class VariableEnemy:
 		self.moveLeft = False
 		self.moveRight = False
 		self.moveUp = False
+		#INVENTORY STUFF
+		self.inventory.printInventory()
 		
 	#def patrolX(startx, endx)
 			

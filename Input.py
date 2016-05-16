@@ -33,7 +33,7 @@ def checkForInputs(playerObj):
 				bulletDir['up'] = True
 			'''
 			if event.key == K_SPACE:
-				Player.attack()
+				playerObj.attack()
 			if event.key == K_p:
 				Player.hurt()	
 			if event.key == K_BACKSPACE:

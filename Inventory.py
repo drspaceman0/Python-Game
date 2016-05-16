@@ -11,17 +11,18 @@ BOSSDROPRATE = 10
 
 
 class Inventory:
-	items = []
-	coins = 0
+
 	
 	'''seemingly redundant, but because of how enemies are made, they will have different base items. 
 	Therefore, pass their items in a list, to inventory for easier keeping and function stuff. ALso, drops'''
 	def __init__(self, droprate, inventory):
+		self.items = []
+		self.coins = 0
 		if (len(inventory) >0):
 			for item in (inventory):
 				self.items.append(item)
 				
-		self.coins = random.randint(droprate, int(droprate*2))
+		self.coins = random.randint(int(droprate*2), int(droprate*3))
 		if droprate >= 5:
 			for extraCoin in range(5, droprate):
 				self.coins += 5
@@ -41,4 +42,5 @@ class Inventory:
 		if (len(self.items) > 0):
 			for item in (self.items):
 				print "%s, in inventory" % (item.name)
+			print "riches! %s" % (self.coins)
 				

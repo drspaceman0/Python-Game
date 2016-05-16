@@ -48,6 +48,7 @@ class Player:
 		self.isDead = False
 		self.currentWeapon = Weapon.MeleeWeapon()
 		self.updateToWeaponStats()
+		self.circle = pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.colliderx, self.collidery), self.range, 1)
 	
 	
 	def update(self):
@@ -75,7 +76,7 @@ class Player:
 			self.weaponx = self.colliderx-self.range
 		if self.moveUp and self.y - PLAYER_SPEED > Display.GAME_SCREEN_START:
 			self.y -= PLAYER_SPEED
-			self.weapony = self.collidery
+			self.weapony = self.collidery - 10
 		
 	
 	def updateSpriteList(self):
@@ -88,7 +89,7 @@ class Player:
 		elif self.direction == 'down' and self.spriteObj.images != self.player_down:
 			self.spriteObj.changeSprites(self.player_down)
 		#This circle will be our collision box where we draw our attack from 
-		pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.colliderx, self.collidery), self.range, 1)
+		#pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.colliderx, self.collidery), self.range, 1)
 		#Draw Weapon
 		pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (self.colliderx, self.collidery), (self.weaponx, self.weapony), 1)
 
@@ -148,3 +149,4 @@ class Player:
 	
 	def isPlayer(self):
 		return True
+		

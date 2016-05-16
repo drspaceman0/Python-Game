@@ -33,7 +33,9 @@ def restart():
 		runGame()
 		
 
-		
+
+def attack(count, attacker, defender):
+	pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (attacker.colliderx, attacker.collidery), (attacker.weaponx, attacker.weapony+count), 1)
 
 	'''We should consider getting a draw down, 
 	background, then loot, then spawners, then enemies, then player?'''
@@ -74,6 +76,8 @@ def runGame():
 				enemy.drawCollider()
 				enemy.chaseObj(playerObj)
 				if functions.objCollision(playerObj, enemy):
+					for count in range(-20, 20):
+						attack(count, playerObj, enemy)
 					CombatSys.attack(playerObj, enemy)
 				if enemy.isDead == True:
 					enemylist.remove(enemy)

@@ -6,9 +6,7 @@ class Combat:
 	
 	#Maybe use this to keep track of session stats?
 	def __init__(self):
-		self.kills = 0
-		#self.stuff...
-		
+		self.total_kills = 0
 	
 	def attack(self, attacker, defender):
 		defender.health -= attacker.damage
@@ -17,4 +15,3 @@ class Combat:
 		if defender.health <= 0:
 			print "%s has been struck dead!" % (defender.name)
 			defender.death()
-				

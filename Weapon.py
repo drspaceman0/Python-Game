@@ -28,7 +28,7 @@ class MeleeWeapon:
 		self.material = random.randint(0, len(WM.llmaterial)-1)
 		self.noun = random.randint(0, len(WM.llnouns)-1)
 		self.hasSpecial = False
-		if self.isSpecial() == True:
+		if self.isSpecial():
 			self.hasSpecial = True
 			self.verb = random.randint(0, len(WM.llverbs)-1)
 			self.name = WM.lladjectives[self.adjective] + " " + WM.llmaterial[self.material] + " " + WM.llnouns[self.noun] + " " + WM.llverbs[self.verb]
@@ -44,7 +44,7 @@ class MeleeWeapon:
 		#add some stuff about picking new adjectives and nouns and material to ensure it's good L00t!
 			return True
 			
-	def getAdjectiveTraits():
+	def getAdjectiveTraits(self):
 		'''Used to retrieve the trait changes of the adjective applied'''
 		if self.adjective == 0: #Tainted
 			self.damageUser = True
@@ -72,7 +72,7 @@ class MeleeWeapon:
 		else:
 			pass #Default values are fine
 	
-	def getNounTraits():
+	def getNounTraits(self):
 		if self.noun == 0: #Straightsword
 			pass #default
 		elif self.noun == 1: #Axe
@@ -80,8 +80,8 @@ class MeleeWeapon:
 			self.damage += 1
 		
 		elif self.noun == 2:#dagger
-			self.range = self.range/2
-			self.damage = self.damage/2
+			self.range /= 2
+			self.damage /= 2
 			self.speed += 3
 			self.hasEffect = True
 			self.effect = "bleed"
@@ -112,9 +112,9 @@ class MeleeWeapon:
 		else: #defaults
 			pass
 	
-	def getMaterialTraits():
+	def getMaterialTraits(self):
 		if self.material == 0: # Wood
-			damage -= 1 
+			self.damage -= 1
 			self.speed += 1 
 		
 		elif self.material == 2: # Iron
@@ -132,8 +132,8 @@ class MeleeWeapon:
 		else:
 			pass #Defaults 
 			
-	def getSpecialTraits():
-		if selfhasSpecial == True:
+	def getSpecialTraits(self):
+		if self.hasSpecial:
 			if self.verb == 0: #of smoldering
 				self.hasEffect = True
 				self.effect = "fire"
@@ -154,7 +154,7 @@ class MeleeWeapon:
 				self.effect = "poison"
 				self.dot = 1 
 			
-			else:
+			else: # TODO: log when these happen to debugging
 				pass #Shouldn't happen
 				
 				

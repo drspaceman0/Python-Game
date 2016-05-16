@@ -97,11 +97,11 @@ class VariableEnemy:
 			self.spriteList.append(self.fierce_sprite)
 			
 		elif self.adjective == 1: #Monstrous
-			self.size = self.size*2
-			self.health = self.health*2
+			self.size *= 2
+			self.health *= 2
 			self.dropRate += 1
 		elif self.adjective == 2: #Swift
-			self.speed = self.speed*2
+			self.speed *= 2
 		
 		elif self.adjective == 3: #Stalking
 			self.moveThroughDoors = True
@@ -112,15 +112,15 @@ class VariableEnemy:
 			self.spriteList.append(self.perceptive_sprite)
 		
 		elif self.adjective == 5: #Deadly
-			self.damage = self.damage*2
+			self.damage *= 2
 			self.dropRate += 1 
 			
 		elif self.adjective == 6: #Bloated
 			self.attack = "exploding"
-			self.damage = self.damage*2
+			self.damage *= 2
 		
 		elif self.adjective == 7: #Friendly
-			self.damage = self.damage*0.5
+			self.damage *= 0.5
 			self.spriteList.append(self.friendly_sprite)
 			
 		elif self.adjective == 8: #Deranged
@@ -131,8 +131,8 @@ class VariableEnemy:
 			self.flee = True
 		
 		elif self.adjective == 10: #Zombified
-			self.speed = self.speed/2
-			self.health = self.health*2
+			self.speed /= 2
+			self.health *= 2
 		
 		elif self.adjective == 11: #Slimy
 			self.hasPlayerEffect = True
@@ -191,10 +191,10 @@ class VariableEnemy:
 			
 		elif self.noun == 9: #Demon
 			self.color = Display.DEMONORANGE
-			self.size = self.size*2
-			self.damage = self.damage*1.5
-			self.health = self.health*2
-			self.dropRate = self.dropRate*2
+			self.size *= 2
+			self.damage *= 1.5
+			self.health *= 2
+			self.dropRate *= 2
 		elif self.noun == 10: #Goblin
 			self.color = Display.GOBLINGREEN
 		
@@ -224,7 +224,7 @@ class VariableEnemy:
 		self.text = self.font.render(self.name, 1, (0,0,0))	
 	
 	def drawSelf(self):
-		if self.drawDifferent == True:
+		if self.drawDifferent:
 			if self.noun == 1: #Swarm
 				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x+5, self.y-5), self.size/5)	#maybe change these
 				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x+5, self.y+5), self.size/5)	#to be random
@@ -237,7 +237,7 @@ class VariableEnemy:
 			for sprite in self.spriteList:
 				Display.DISPLAYSURF.blit(pygame.transform.scale(sprite, (self.size * 2, self.size * 2)), pygame.Rect(self.x - self.size, self.y - self.size, self.size, self.size))	
 			# draw verb animation
-			if self.spriteObj != None:
+			if self.spriteObj:
 				self.spriteObj.update(self.x - self.size*2, self.y - self.size, False)
 				self.spriteObj.update(self.x + self.size, self.y - self.size, True)
 		Display.DISPLAYSURF.blit(self.text, (self.x - self.size*2, (self.y - self.size*1.5)))
@@ -254,13 +254,13 @@ class VariableEnemy:
 		they can destroy before the enemy is there? Also, if we want to impliment
 		friendlies, this is a start'''
 	def chaseObj(self, obj):
-		if self.chase == True:
+		if self.chase:
 			if self.collision(obj) == False:
 				if obj.x > self.x: #Move right
-					self.x = self.x + self.speed
+					self.x += self.speed
 					self.weaponx = self.x + self.range
 				if obj.x < self.x: #Move left
-					self.x = self.x - self.speed
+					self.x -= self.speed
 					self.weaponx = self.x - self.range
 				if obj.y > self.y: #Move down
 					self.y += self.speed

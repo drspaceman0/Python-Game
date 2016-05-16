@@ -36,12 +36,9 @@ def main():
 	print "GAME OVER"
 	os.execl(sys.executable, sys.executable, *sys.argv)
 
-
 def restart():
 	main()
 		
-
-
 def attack(count, attacker, defender):
 	pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (attacker.collisionx, attacker.collisiony), (attacker.weaponx, attacker.weapony+count), 1)
 
@@ -62,7 +59,7 @@ def runGame():
 		# check for key input
 		Input.checkForInputs(playerObj, menuObject)
 		dungeonObj.update() 
-		dungeonObj.update()
+		dungeonObj.update() # duplicate?
 		menuObject.update()
 		
 		playerObj.update()
@@ -74,7 +71,7 @@ def runGame():
 				spawnner.update()
 				if functions.objCollision(playerObj, spawnner):
 					CombatSys.attack(playerObj, spawnner)
-				if spawnner.isDead == True:
+				if spawnner.isDead:
 					dungeonObj.returnCurrentRoom().spawnnerlist.remove(spawnner)
 		if dungeonObj.returnCurrentRoom().hasSpawners:
 			for enemy in dungeonObj.returnCurrentRoom().enemylist:
@@ -94,10 +91,6 @@ def runGame():
 				#print "%s" % (item.name)
 				item.drawAsLoot()
 					
-		
-		
-
-
 		#if functions.worldCoins > 0:
 		#	print "%s worldCoins" % (functions.worldCoins)
 
@@ -109,14 +102,13 @@ def runGame():
 			print "%s worldCoins" % (functions.worldCoins)
 			
 		# check if the player is alive
-		if playerObj.isDead == True:
+		if playerObj.isDead:
 			return False
 
 		# draw stuff		
 		pygame.display.update()
 		Display.FPSCLOCK.tick(Display.FPS)
-		
-		
+
 #
 #	END GAME
 #
@@ -124,3 +116,4 @@ def runGame():
 if __name__ == '__main__':
 	main()
 		
+#TODO: redirect stderr to file for logging/debugging purposes

@@ -10,7 +10,6 @@ DAMAGE = 1 #Base Damage dealt by weapon
 EFFECT = "none"
 WM = WeaponLabelMaker.WeaponLabelMaker()
 
-
 class MeleeWeapon:
 	def __init__(self):
 		self.range = RANGE
@@ -156,14 +155,9 @@ class MeleeWeapon:
 			
 			else: # TODO: log when these happen to debugging
 				pass #Shouldn't happen
-				
-				
-				
+
 	def printName(self):
-		print "%s" % (self.name)
-		
-	
-	
+		print "%s" % (self.name)	
 	
 	def dropWeapon(self, x, y):
 		originx = x 

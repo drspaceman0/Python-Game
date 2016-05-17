@@ -28,6 +28,7 @@ class Player:
 		self.collidery = self.y
 		self.collisionx = self.x
 		self.collisiony = self.y
+		self.attack = False
 		self.name = "Hero"
 		self.score = 0
 		self.health = 20
@@ -116,9 +117,8 @@ class Player:
 		
 	def collision(self, x, y):
 		if math.sqrt(pow(self.x - x, 2) + pow(self.y - y, 2)) < 30:
-			return True
 
-	def
+			return True
 
 	def getQuadrant(self):
 			#Check quadrant 1

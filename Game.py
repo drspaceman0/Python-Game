@@ -37,6 +37,7 @@ def main():
 	os.execl(sys.executable, sys.executable, *sys.argv)
 
 def restart():
+<<<<<<< 8329eff863ed514995d993756402e6afd9835c83
 	main()
 		
 def attack(count, attacker, defender):
@@ -44,6 +45,10 @@ def attack(count, attacker, defender):
 
 	'''We should consider getting a draw down, 
 	background, then loot, then spawners, then enemies, then player?'''
+=======
+	while True:
+		runGame()
+>>>>>>> cleanup and ideas
 	
 def runGame():
 

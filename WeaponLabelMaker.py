@@ -1,5 +1,4 @@
 
-
 class WeaponLabelMaker:
 	#ll stands for low level - 1-5
 	#ml stands for medium level - 5-10
@@ -106,8 +105,3 @@ class WeaponLabelMaker:
 		self.mlnouns.append("club") #Base weapon
 		self.mlnouns.append("greatclub") #Base weapon
 		self.mlnouns.append("hammer") #Base weapon
-		
-		
-		
-		
-		

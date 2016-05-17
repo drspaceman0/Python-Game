@@ -3,7 +3,10 @@ Move with left right up down arrow keys
 Shoot with a s d w keys
 '''
 
-import pygame, sys, os
+import pygame
+from pygame import joystick
+import sys
+import os
 import math
 import random
 from pygame.locals import *
@@ -30,14 +33,22 @@ GlobalInventorySys = Inventory.Inventory(1, items)
 
 
 def main():
-	gameNotOver = True
+	# If any controllers are connected, initialize and enumerate all of them
+	if joystick.get_count():
+		print joystick.get_count(), "joysticks detected"
+		joystick.init()
+		controllers = [joystick.Joystick(x) for x in range(joystick.get_count())]
+		print "Controller names:"
+		for controller in controllers:
+			print "\t", controller.get_name()
+			
+	gameNotOver = True	
 	while gameNotOver:
 		gameNotOver = runGame()
 	print "GAME OVER"
-	os.execl(sys.executable, sys.executable, *sys.argv)
+	os.execl(sys.executable, sys.executable, *sys.argv) # Glorious hack
 
 def restart():
-<<<<<<< 8329eff863ed514995d993756402e6afd9835c83
 	main()
 		
 def attack(count, attacker, defender):
@@ -45,10 +56,6 @@ def attack(count, attacker, defender):
 
 	'''We should consider getting a draw down, 
 	background, then loot, then spawners, then enemies, then player?'''
-=======
-	while True:
-		runGame()
->>>>>>> cleanup and ideas
 	
 def runGame():
 

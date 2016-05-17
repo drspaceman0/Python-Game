@@ -4,7 +4,9 @@ from pygame.locals import *
 import Game
 import Player
 
-# TODO: joystick
+# TODO: remapping of keybinds
+# This could be accomplished with genericized actions that map to the actual key
+# e.g event.key == moveleft, with moveleft being pygame.K_LEFT or whatever user sets
 
 def checkForInputs(playerObj, menuObject):
 	for event in pygame.event.get():
@@ -45,7 +47,17 @@ def checkForInputs(playerObj, menuObject):
 				playerObj.moveUp= False
 			if event.key == K_SPACE:
 				playerObj.isAttacking = False
-				
+		elif event.type == pygame.JOYAXISMOTION:
+			pass
+		elif event.type == pygame.JOYBALLMOTION:
+			pass
+		elif event.type == pygame.JOYHATMOTION:
+			pass
+		elif event.type == pygame.JOYBUTTONUP:
+			pass
+		elif event.type == pygame.JOYBUTTONDOWN:
+			pass
+
 def terminate():
 	pygame.quit()
 	sys.exit()

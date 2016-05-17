@@ -1,10 +1,14 @@
 # Python-Game
 A game that will always be in development, adding whatever features whenever
 
-Run game with:
+## Running the game
 python Game.py
 
-
+## Controls
 Control the Character with Arrow Keys
-Use 'wasd' keys for directional shooting 
-avoid enemies or shoot them
+Attack using spacebar
+
+## System requirements
+[Python 2.7](https://www.python.org/downloads/release/python-2711/)
+
+[Pygame 1.9.2](http://www.pygame.org/download.shtml)

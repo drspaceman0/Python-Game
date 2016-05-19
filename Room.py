@@ -1,8 +1,13 @@
 import pygame
 import math
+import Game
 import Display
 import Player
 import random
+import Spawnner
+import functions
+import Combat
+
 DOOR_WIDTH = Display.TILE_SIZE
 DOOR_LENGTH = Display.TILE_SIZE
 
@@ -32,12 +37,19 @@ class Room:
 	
 	
 	
-	def __init__(self, dungeonObject, color):
+	def __init__(self, dungeonObject, color, numSpawners):
 		self.color = color
 		self.width = Display.SCREEN_WIDTH
 		self.height = Display.SCREEN_HEIGHT
 		self.x = 0
 		self.y = 0
+		self.numSpawners = numSpawners
+		if self.numSpawners > 0:
+			self.CombatSys = Combat.Combat()
+			self.spawnnerlist = []
+			self.enemylist = []
+			self.SpawnnerOfPwnge = Spawnner.Spawnner(self.enemylist)
+			self.spawnnerlist.append(self.SpawnnerOfPwnge)
 		#x, y, True if player enters this door, connected room, 
 		
 		#self.doors =   {'leftDoor': [0, Display.SCREEN_HEIGHT/2, None, 'leftDoor'],
@@ -54,9 +66,31 @@ class Room:
 	
 	def update(self):
 		self.drawRoom()
+		self.updateSpawners()
 		self.checkPlayerDoorCollision()
 		
+	def updateSpawners(self):
+		if self.numSpawners > 0:
+			for spawnner in self.spawnnerlist:
+				spawnner.drawSpawnner()
+				spawnner.update()
+				if functions.objCollision(self.playerObj, spawnner):
+					self.CombatSys.attack(self.playerObj, spawnner)
+				if spawnner.isDead == True:
+					self.spawnnerlist.remove(spawnner)
 		
+			for enemy in self.enemylist:
+				enemy.drawSelf()
+				enemy.updateColliders()
+				enemy.drawCollider()
+				enemy.chaseObj(self.playerObj)
+				if functions.objCollision(self.playerObj, enemy):
+					for count in range(-20, 20):
+						Game.attack(count, self.playerObj, enemy)
+					self.CombatSys.attack(self.playerObj, enemy)
+				if enemy.isDead == True:
+					self.enemylist.remove(enemy)
+	
 	def checkPlayerDoorCollision(self):
 		if self.doors[LEFT_DOOR] >= 0 and self.playerObj.collision(LEFT_DOOR_CORDS[0], LEFT_DOOR_CORDS[1]):
 			self.changeRoom(RIGHT_DOOR_CORDS[0] - Player.PLAYER_WIDTH, RIGHT_DOOR_CORDS[1], LEFT_DOOR)
@@ -138,7 +172,7 @@ class Dungeon:
 		self.maxRooms = 12	
 		self.currRoomIndex = 0
 		for i in xrange(0, self.maxRooms):
-			self.listRooms.append(Room(self, Display.returnRandomColor()))
+			self.listRooms.append(Room(self, Display.returnRandomColor(), 1))
 			if self.numRooms > 1:
 				self.connectRoom(self.listRooms[self.numRooms - 1])
 		#self.printAllDoors()

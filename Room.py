@@ -59,19 +59,15 @@ class Room:
 		
 	def checkPlayerDoorCollision(self):
 		if self.doors[LEFT_DOOR] >= 0 and self.playerObj.collision(LEFT_DOOR_CORDS[0], LEFT_DOOR_CORDS[1]):
-			print "sssssss"
 			self.changeRoom(RIGHT_DOOR_CORDS[0] - Player.PLAYER_WIDTH, RIGHT_DOOR_CORDS[1], LEFT_DOOR)
 			
 		if self.doors[RIGHT_DOOR] >= 0 and self.playerObj.collision(RIGHT_DOOR_CORDS[0], RIGHT_DOOR_CORDS[1]):
-			print "aaaaaaaaaaaa"
 			self.changeRoom(LEFT_DOOR_CORDS[0] + Player.PLAYER_WIDTH, LEFT_DOOR_CORDS[1], RIGHT_DOOR)
 			
 		if self.doors[DOWN_DOOR] >= 0 and self.playerObj.collision(DOWN_DOOR_CORDS[0], DOWN_DOOR_CORDS[1]):
-			print "wwwwwwwwwwwwwww"
 			self.changeRoom(UP_DOOR_CORDS[0], UP_DOOR_CORDS[1] + Player.PLAYER_HEIGHT, DOWN_DOOR)
 			
 		if self.doors[UP_DOOR] >= 0 and self.playerObj.collision(UP_DOOR_CORDS[0], UP_DOOR_CORDS[1]):
-			print " aaaaaaassasasssssssssssssssffffffffffffff"
 			self.changeRoom(DOWN_DOOR_CORDS[0], DOWN_DOOR_CORDS[1] - Player.PLAYER_HEIGHT, UP_DOOR)
 			
 	
@@ -145,8 +141,8 @@ class Dungeon:
 			self.listRooms.append(Room(self, Display.returnRandomColor()))
 			if self.numRooms > 1:
 				self.connectRoom(self.listRooms[self.numRooms - 1])
-		self.printAllDoors()
-		self.printAllCords()
+		#self.printAllDoors()
+		#self.printAllCords()
 		
 	def returnListRooms(self):
 		return self.listRooms

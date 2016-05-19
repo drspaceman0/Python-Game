@@ -48,8 +48,8 @@ def runGame():
 	dungeonObj.playerObj = playerObj
 	enemylist = []
 	spawnnerlist = []
-	SpawnnerOfPwnge = Spawnner.Spawnner(enemylist)
-	spawnnerlist.append(SpawnnerOfPwnge)
+	#SpawnnerOfPwnge = Spawnner.Spawnner(enemylist)
+	#spawnnerlist.append(SpawnnerOfPwnge)
 	
 	while True:
 		# check for key input

@@ -12,7 +12,7 @@ PLAYER_X = 0
 PLAYER_Y = 0
 PLAYER_WIDTH = 48
 PLAYER_HEIGHT = 48
-PLAYER_SPEED = 5
+PLAYER_SPEED = 15
 
 PlayerCombat = Combat.Combat()
 class Player:
@@ -60,7 +60,7 @@ class Player:
 		# draw player
 		self.spriteObj.update(self.x, self.y, False)
 		# check if player should move to next room
-		self.checkForDoorCollision()
+		#self.checkForDoorCollision()
 		self.colliderx = self.x+24
 		self.collidery = self.y+24
 	
@@ -107,17 +107,9 @@ class Player:
 	def changePlayerPosition(self, x, y):
 		self.x = x
 		self.y = y
-	
-	def checkForDoorCollision(self):
-		for door in self.currRoomObj.doors.values():
-			if self.collision(door[0], door[1]):
-				# switch room
-				self.currRoomObj.roomIndexToChangeTo = door[2].index
-				self.currRoomObj.getRoomEntranceForNextRoom(door)
-				self.currRoomObj.timeToChangeRoom = True
-			
+		
 	def collision(self, x, y):
-		if math.sqrt(pow((self.x) - x, 2) + pow((self.y) - y, 2)) < 15:
+		if math.sqrt(pow((self.x) - x, 2) + pow((self.y) - y, 2)) < 30:
 			return True
 			
 	def getQuadrant(self):

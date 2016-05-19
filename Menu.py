@@ -35,6 +35,7 @@ def drawMenu(playerObj, dungeonObj):
 	Display.DISPLAYSURF.blit(scoretext, (450, 10))
 	Display.DISPLAYSURF.blit(roomtext, (450, 20))
 	Display.DISPLAYSURF.blit(healthtext, (450, 30))
+
 	
 	
 def drawHearts(playerObj):

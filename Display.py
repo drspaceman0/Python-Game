@@ -1,4 +1,5 @@
 import pygame
+import random
 global FPSCLOCK, DISPLAYSURF, FPS
 
 TILE_SIZE = 48
@@ -23,10 +24,14 @@ BROWN = (210, 105, 30)
 BLACK = (0, 0, 0)
 GREY = (93, 95, 96)
 
+ROOM_COLORS = [RED, ORANGE, YELLOW, GREEN, BLUE, TEAL, PURPLE, BROWN, GREY]
+
 
 QUADRANTX = int(SCREEN_WIDTH/2)
 QUADRANTY = int(SCREEN_HEIGHT/2)
 
+PLAYER_WIDTH = 48
+PLAYER_HEIGHT = 48
 
 pygame.init()
 FPS = 30 # frames per second
@@ -35,3 +40,6 @@ DISPLAYSURF = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
 pygame.display.set_caption('Game')
 
 	
+def returnRandomColor():
+	randNum = random.randint(0, len(ROOM_COLORS) - 1)
+	return ROOM_COLORS[randNum]

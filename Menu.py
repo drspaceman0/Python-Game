@@ -20,12 +20,19 @@ onequarter_heart_sprite = pygame.image.load('images\\25_heart.png')
 # weapons
 axe_sprite = pygame.image.load('images\\axe.png')
 
+dialogue_sprite = pygame.image.load('images\\dialoguebox.png')
+
 
 def update(playerObj, dungeonObj):
 	drawMenu(playerObj, dungeonObj)
 	drawHearts(playerObj)
 	drawMap(dungeonObj)
-	
+	#displayDialogue()
+
+def displayDialogue():
+	pygame.draw.rect(Display.DISPLAYSURF, Display.RED, pygame.Rect(0, Display.DIALOGUE_BOX_START, Display.SCREEN_WIDTH, Display.GAME_SCREEN_START))
+	Display.DISPLAYSURF.blit(dialogue_sprite, pygame.Rect(0, Display.DIALOGUE_BOX_START, Display.SCREEN_WIDTH, Display.GAME_SCREEN_START))	
+
 def drawMenu(playerObj, dungeonObj):
 	
 	Display.DISPLAYSURF.blit(infobar_sprite, pygame.Rect(0, 0, Display.SCREEN_WIDTH, Display.GAME_SCREEN_START))

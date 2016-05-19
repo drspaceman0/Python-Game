@@ -14,7 +14,7 @@ class Combat:
 		defender.health -= attacker.damage
 		print "%s hit %s for %s damage..." % (attacker.name, defender.name, attacker.damage)
 		print "with a %s" % (attacker.currentWeapon.name)
-		if defender.health < 0:
+		if defender.health <= 0:
 			print "%s has been struck dead!" % (defender.name)
 			defender.death()
 				

@@ -66,7 +66,7 @@ class Room:
 	
 	def update(self):
 		self.drawRoom()
-		self.updateSpawners()
+		#self.updateSpawners()
 		self.checkPlayerDoorCollision()
 		
 	def updateSpawners(self):

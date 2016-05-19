@@ -55,7 +55,7 @@ def runGame():
 	playerObj.dungeonObj = dungeonObj # temporary, need a better way to pass dungeon info to playerobj
 	dungeonObj.playerObj = playerObj
 	enemylist = []
-	spawnnerlist = []
+	#spawnnerlist = []
 	#SpawnnerOfPwnge = Spawnner.Spawnner(enemylist)
 	#spawnnerlist.append(SpawnnerOfPwnge)
 	
@@ -68,13 +68,32 @@ def runGame():
 		
 		playerObj.update()
 		playerObj.updateColliders()
+		
+		if len(dungeonObj.returnCurrentRoom().spawnnerlist) > 0:
+			for spawnner in dungeonObj.returnCurrentRoom().spawnnerlist:
+				spawnner.drawSpawnner()
+				spawnner.update()
+				if functions.objCollision(playerObj, spawnner):
+					CombatSys.attack(playerObj, spawnner)
+				if spawnner.isDead == True:
+					dungeonObj.returnCurrentRoom().spawnnerlist.remove(spawnner)
+		if len(dungeonObj.returnCurrentRoom().enemylist) > 0:
+			for enemy in dungeonObj.returnCurrentRoom().enemylist:
+				enemy.drawSelf()
+				enemy.updateColliders()
+				enemy.drawCollider()
+				enemy.chaseObj(playerObj)
+				if playerObj.isAttacking:
+					if functions.objCollision(playerObj, enemy):
+						CombatSys.attack(playerObj, enemy)
+				if enemy.isDead == True:
+					dungeonObj.returnCurrentRoom().enemylist.remove(enemy)
+
 
 		if functions.worldInventory:
 			for item in functions.worldInventory:
 				#print "%s" % (item.name)
 				item.drawAsLoot()
-		
-		
 					
 		
 		

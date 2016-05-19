@@ -6,6 +6,7 @@ TILE_SIZE = 48
 SCREEN_WIDTH = 576
 SCREEN_HEIGHT = 672
 GAME_SCREEN_START = 96
+DIALOGUE_BOX_START = SCREEN_HEIGHT - GAME_SCREEN_START
 # colors
 RED = (255, 0, 0)
 FIGHTERRED = (175, 8, 8)
@@ -33,12 +34,17 @@ QUADRANTY = int(SCREEN_HEIGHT/2)
 PLAYER_WIDTH = 48
 PLAYER_HEIGHT = 48
 
+
+
 pygame.init()
 FPS = 30 # frames per second
 FPSCLOCK = pygame.time.Clock()
 DISPLAYSURF = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
 pygame.display.set_caption('Game')
 
+
+
+	
 	
 def returnRandomColor():
 	randNum = random.randint(0, len(ROOM_COLORS) - 1)

@@ -107,6 +107,7 @@ def runGame():
 			for item in functions.worldInventory:
 				print "%s" % (item.name)
 		if functions.worldCoins > 0:
+			pygame.draw.circle(Display.DISPLAYSURF, Display.GOLD, (100, 100), 10)
 			print "%s worldCoins" % (functions.worldCoins)
 			
 		# check if the player is alive

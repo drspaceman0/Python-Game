@@ -20,6 +20,7 @@ import time
 import Spawnner
 import Menu
 import Inventory
+import Beats
 #		
 # START GAME
 #	

@@ -3,7 +3,7 @@ Move with left right up down arrow keys
 Shoot with a s d w keys
 '''
 
-import pygame, sys
+import pygame, sys, os
 import math
 import random
 from pygame.locals import *
@@ -26,25 +26,29 @@ import Inventory
 items = []
 GlobalInventorySys = Inventory.Inventory(1, items)
 
+
+
 def main():
-	while True:
-		runGame()
+	gameNotOver = True
+	while gameNotOver:
+		gameNotOver = runGame()
+	print "GAME OVER"
+	os.execl(sys.executable, sys.executable, *sys.argv)
 
 
 def restart():
-	while True:
-		runGame()
+	main()
 		
 
 
 def attack(count, attacker, defender):
-	pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (attacker.colliderx, attacker.collidery), (attacker.weaponx, attacker.weapony+count), 1)
+	pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (attacker.collisionx, attacker.collisiony), (attacker.weaponx, attacker.weapony+count), 1)
 
 	'''We should consider getting a draw down, 
 	background, then loot, then spawners, then enemies, then player?'''
 	
 def runGame():
-	
+
 	CombatSys = Combat.Combat()
 	playerObj = Player.Player()
 	dungeonObj = Room.Dungeon(playerObj)
@@ -52,8 +56,8 @@ def runGame():
 	dungeonObj.playerObj = playerObj
 	enemylist = []
 	spawnnerlist = []
-	SpawnnerOfPwnge = Spawnner.Spawnner(enemylist)
-	spawnnerlist.append(SpawnnerOfPwnge)
+	#SpawnnerOfPwnge = Spawnner.Spawnner(enemylist)
+	#spawnnerlist.append(SpawnnerOfPwnge)
 	
 	while True:
 		# check for key input
@@ -70,39 +74,28 @@ def runGame():
 				#print "%s" % (item.name)
 				item.drawAsLoot()
 		
+
 		if len(spawnnerlist) > 0:
-			for spawnner in spawnnerlist:
-				spawnner.drawSpawnner()
-				spawnner.update()
-				if functions.objCollision(playerObj, spawnner):
-					CombatSys.attack(playerObj, spawnner)
-				if spawnner.isDead == True:
-					spawnnerlist.remove(spawnner)
-		if len(enemylist) > 0:
-			for enemy in enemylist:
-				enemy.drawSelf()
-				enemy.updateColliders()
-				enemy.drawCollider()
-				enemy.chaseObj(playerObj)
-				if playerObj.isAttacking:
-					if functions.objCollision(playerObj, enemy):
-						CombatSys.attack(playerObj, enemy)
-				if enemy.isDead == True:
-					enemylist.remove(enemy)
+		
 					
 		
 		
 
+
 		#if functions.worldCoins > 0:
 		#	print "%s worldCoins" % (functions.worldCoins)
+
+		if functions.worldInventory:
+			for item in functions.worldInventory:
+				print "%s" % (item.name)
+		if functions.worldCoins > 0:
+			print "%s worldCoins" % (functions.worldCoins)
+			
 		# check if the player is alive
 		if playerObj.isDead == True:
-			restart()
-		
-		
+			return False
 
-		# draw stuff
-		
+		# draw stuff		
 		pygame.display.update()
 		Display.FPSCLOCK.tick(Display.FPS)
 		

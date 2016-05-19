@@ -24,8 +24,8 @@ class Player:
 	def __init__(self):
 		self.x = Display.TILE_SIZE
 		self.y = Display.GAME_SCREEN_START + Display.TILE_SIZE
-		self.colliderx = self.x #playersize/2
-		self.collidery = self.y
+		self.collisionx = self.x #playersize/2
+		self.collisiony = self.y
 		self.name = "Hero"
 		self.score = 0
 		self.health = 20
@@ -49,7 +49,7 @@ class Player:
 		self.isDead = False
 		self.currentWeapon = Weapon.MeleeWeapon()
 		self.updateToWeaponStats()
-		self.circle = pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.colliderx, self.collidery), self.range, 1)
+		self.circle = pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.collisionx, self.collisiony), self.range, 1)
 	
 	
 	def update(self):
@@ -62,24 +62,25 @@ class Player:
 		self.spriteObj.update(self.x, self.y, False)
 		# check if player should move to next room
 		#self.checkForDoorCollision()
-		self.colliderx = self.x+24
-		self.collidery = self.y+24
+		self.collisionx = self.x+24
+		self.collisiony = self.y+24
 		if self.isAttacking == True:
 			self.attack()
+
 	
 	def movePlayer(self):
 		if self.moveRight and self.x + PLAYER_SPEED < Display.SCREEN_WIDTH - PLAYER_WIDTH:
 			self.x += PLAYER_SPEED
-			self.weaponx = self.colliderx+self.range
+			self.weaponx = self.collisionx+self.range
 		if self.moveDown and self.y + PLAYER_SPEED < Display.SCREEN_HEIGHT - PLAYER_HEIGHT:
 			self.y += PLAYER_SPEED
-			self.weapony = self.collidery
+			self.weapony = self.collisiony
 		if self.moveLeft and self.x - PLAYER_SPEED > 0:
 			self.x -= PLAYER_SPEED
-			self.weaponx = self.colliderx-self.range
+			self.weaponx = self.collisionx-self.range
 		if self.moveUp and self.y - PLAYER_SPEED > Display.GAME_SCREEN_START:
 			self.y -= PLAYER_SPEED
-			self.weapony = self.collidery - 10
+			self.weapony = self.collisiony - 10
 		
 	
 	def updateSpriteList(self):
@@ -94,7 +95,7 @@ class Player:
 		#This circle will be our collision box where we draw our attack from 
 		#pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.colliderx, self.collidery), self.range, 1)
 		#Draw Weapon
-		pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (self.colliderx, self.collidery), (self.weaponx, self.weapony), 1)
+		pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (self.collisionx, self.collisiony), (self.weaponx, self.weapony), 1)
 
 
 	def moveToOtherSide(self):
@@ -147,5 +148,5 @@ class Player:
 		
 	def attack(self):
 		for count in range (-20, 30):
-			pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (self.colliderx, self.collidery), (self.weaponx, self.weapony+count), 1)
+			pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (self.collisionx, self.collisiony), (self.weaponx, self.weapony+count), 1)
 		

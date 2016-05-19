@@ -38,8 +38,7 @@ def checkForInputs(playerObj):
 			if event.key == K_p:
 				Player.hurt()	
 			if event.key == K_BACKSPACE:
-				print "reset"
-				Game.restart()
+				playerObj.isDead = True
 			if event.key == K_ESCAPE:
 				terminate()
 		elif event.type == KEYUP:

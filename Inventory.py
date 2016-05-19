@@ -3,6 +3,7 @@ import random
 import Enemy
 import Potions
 import Weapon
+import functions
 
 ENEMYDROPRATE = 1
 CHESTDROPRATE = 5
@@ -42,5 +43,16 @@ class Inventory:
 		if (len(self.items) > 0):
 			for item in (self.items):
 				print "%s, in inventory" % (item.name)
+		if self.coins > 0:
 			print "riches! %s" % (self.coins)
+	
+	#Pass it global container
+	def dropItems(self):
+		if self.items:
+			for item in self.items:
+				functions.worldInventory.append(item)
+				print "appended %s" % (item.name)
+				functions.worldCoins += self.coins
+				print "coin added"
+import Game
 				

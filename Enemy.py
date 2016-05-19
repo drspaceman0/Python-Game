@@ -276,12 +276,13 @@ class VariableEnemy:
 		self.moveRight = False
 		self.moveUp = False
 		#INVENTORY STUFF
-		self.inventory.printInventory()
+		#self.inventory.printInventory()
 		
 	#def patrolX(startx, endx)
 			
 	def death(self):
 		self.isDead = True
+		self.dropLoot()
 		"I died"
 		
 	def updateStatsToCurrentWeapon(self):
@@ -299,3 +300,7 @@ class VariableEnemy:
 		
 	def isPlayer(self):
 		return False
+		
+		
+	def dropLoot(self):
+		self.inventory.dropItems()

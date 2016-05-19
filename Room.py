@@ -84,10 +84,7 @@ class Room:
 				enemy.updateColliders()
 				enemy.drawCollider()
 				enemy.chaseObj(self.playerObj)
-				if functions.objCollision(self.playerObj, enemy):
-					for count in range(-20, 20):
-						Game.attack(count, self.playerObj, enemy)
-					self.CombatSys.attack(self.playerObj, enemy)
+				
 				if enemy.isDead == True:
 					self.enemylist.remove(enemy)
 	

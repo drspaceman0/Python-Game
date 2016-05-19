@@ -19,9 +19,12 @@ import functions
 import time
 import Spawnner
 import Menu
+import Inventory
 #		
 # START GAME
 #	
+items = []
+GlobalInventorySys = Inventory.Inventory(1, items)
 
 
 
@@ -45,7 +48,7 @@ def attack(count, attacker, defender):
 	background, then loot, then spawners, then enemies, then player?'''
 	
 def runGame():
-	global gameNotOver
+
 	CombatSys = Combat.Combat()
 	playerObj = Player.Player()
 	dungeonObj = Room.Dungeon(playerObj)
@@ -80,13 +83,21 @@ def runGame():
 				enemy.updateColliders()
 				enemy.drawCollider()
 				enemy.chaseObj(playerObj)
-				if functions.objCollision(playerObj, enemy):
-					for count in range(-20, 20):
-						attack(count, playerObj, enemy)
-					CombatSys.attack(playerObj, enemy)
+				if playerObj.isAttacking:
+					if functions.objCollision(playerObj, enemy):
+						CombatSys.attack(playerObj, enemy)
 				if enemy.isDead == True:
 					enemylist.remove(enemy)
 		'''			
+					
+		
+		
+		if functions.worldInventory:
+			for item in functions.worldInventory:
+				print "%s" % (item.name)
+		if functions.worldCoins > 0:
+			print "%s worldCoins" % (functions.worldCoins)
+			
 		# check if the player is alive
 		if playerObj.isDead == True:
 			return False

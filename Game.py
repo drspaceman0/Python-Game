@@ -74,8 +74,6 @@ def runGame():
 				#print "%s" % (item.name)
 				item.drawAsLoot()
 		
-
-		if len(spawnnerlist) > 0:
 		
 					
 		

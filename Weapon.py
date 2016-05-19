@@ -2,7 +2,7 @@ import WeaponLabelMaker
 import random
 import math
 import Display
-
+import pygame
 
 #Weapon Defaults
 RANGE = 20 #swing across this many pixels collide with objects in range, hurt them
@@ -33,8 +33,9 @@ class MeleeWeapon:
 			self.verb = random.randint(0, len(WM.llverbs)-1)
 			self.name = WM.lladjectives[self.adjective] + " " + WM.llmaterial[self.material] + " " + WM.llnouns[self.noun] + " " + WM.llverbs[self.verb]
 		else:
-			self.name = self.name = WM.lladjectives[self.adjective] + " " + WM.llmaterial[self.material] + " " + WM.llnouns[self.noun]
-		
+			self.name = WM.lladjectives[self.adjective] + " " + WM.llmaterial[self.material] + " " + WM.llnouns[self.noun]
+		self.font = pygame.font.SysFont("monospace", 12)
+		self.text = self.font.render(self.name, 1, (0,0,0))
 	
 	
 	#This adds special "effects" - magic, bleed, etc. if the drop rate is above 3
@@ -161,5 +162,15 @@ class MeleeWeapon:
 	def printName(self):
 		print "%s" % (self.name)
 		
-	#def drawWeapon(self, owner):
-	#	pygame.draw.aaline(Display.DISPLAYSURF, (0,0,0) (owner.x, owner.y),  )
+	
+	
+	
+	def dropWeapon(self, x, y):
+		originx = x 
+		originy = y
+		
+	def drawAsLoot(self):
+		print "drawn weapon"
+		pygame.draw.line(Display.DISPLAYSURF, Display.BLACK, (self.originx, self.originy), (self.originx + 50, self.originy), 1)
+		Display.DISPLAYSURF.blit(self.text, (self.originx -5, (self.originy)))
+		

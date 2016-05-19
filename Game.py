@@ -64,6 +64,11 @@ def runGame():
 		
 		playerObj.update()
 		playerObj.updateColliders()
+
+		if functions.worldInventory:
+			for item in functions.worldInventory:
+				#print "%s" % (item.name)
+				item.drawAsLoot()
 		
 		if len(spawnnerlist) > 0:
 			for spawnner in spawnnerlist:
@@ -87,11 +92,9 @@ def runGame():
 					
 		
 		
-		if functions.worldInventory:
-			for item in functions.worldInventory:
-				print "%s" % (item.name)
-		if functions.worldCoins > 0:
-			print "%s worldCoins" % (functions.worldCoins)
+
+		#if functions.worldCoins > 0:
+		#	print "%s worldCoins" % (functions.worldCoins)
 		# check if the player is alive
 		if playerObj.isDead == True:
 			restart()

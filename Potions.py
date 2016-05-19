@@ -30,7 +30,7 @@ class Potion:
 	def updatePotion(self):
 		if self.type == NG.types[0]:
 			self.isHealth = True
-			self.name = self.adjective + " " + self.type
+			self.name = self.adjective + " potion " + self.type
 	
 	def setToHealthPotion(self):
 		self.type = NG.types[0] #Health

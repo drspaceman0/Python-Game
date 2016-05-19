@@ -39,6 +39,7 @@ class Player:
 		self.moveDown = False
 		self.moveLeft = False
 		self.moveRight = False
+		self.isAttacking = False
 		self.width = PLAYER_WIDTH
 		self.height = PLAYER_HEIGHT
 		self.color = Display.RED
@@ -63,6 +64,8 @@ class Player:
 		#self.checkForDoorCollision()
 		self.colliderx = self.x+24
 		self.collidery = self.y+24
+		if self.isAttacking == True:
+			self.attack()
 	
 	def movePlayer(self):
 		if self.moveRight and self.x + PLAYER_SPEED < Display.SCREEN_WIDTH - PLAYER_WIDTH:
@@ -141,4 +144,8 @@ class Player:
 	
 	def isPlayer(self):
 		return True
+		
+	def attack(self):
+		for count in range (-20, 30):
+			pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (self.colliderx, self.collidery), (self.weaponx, self.weapony+count), 1)
 		

@@ -88,10 +88,20 @@ def runGame():
 						CombatSys.attack(playerObj, enemy)
 				if enemy.isDead == True:
 					dungeonObj.returnCurrentRoom().enemylist.remove(enemy)
-	
+
+
+		if functions.worldInventory:
+			for item in functions.worldInventory:
+				#print "%s" % (item.name)
+				item.drawAsLoot()
 					
 		
 		
+
+
+		#if functions.worldCoins > 0:
+		#	print "%s worldCoins" % (functions.worldCoins)
+
 		if functions.worldInventory:
 			for item in functions.worldInventory:
 				print "%s" % (item.name)

@@ -303,4 +303,6 @@ class VariableEnemy:
 		
 		
 	def dropLoot(self):
+		self.currentWeapon.dropWeapon(self.x, self.y)
+		print "Dropped"
 		self.inventory.dropItems()

@@ -35,3 +35,6 @@ class Potion:
 	def setToHealthPotion(self):
 		self.type = NG.types[0] #Health
 		self.updatePotion()
+		
+	def drawAsLoot(self):
+		print "drawn potion goes here"

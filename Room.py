@@ -51,7 +51,6 @@ class Room:
 		self.playerObj = dungeonObject.playerObj
 		self.dungeonObject = dungeonObject
 		Dungeon.numRooms += 1
-		print Dungeon.numRooms
 	
 	def update(self):
 		self.drawRoom()
@@ -143,12 +142,14 @@ class Dungeon:
 		self.maxRooms = 12	
 		self.currRoomIndex = 0
 		for i in xrange(0, self.maxRooms):
-			print "Add room" + str(i)
 			self.listRooms.append(Room(self, Display.returnRandomColor()))
-			print "num rooms" + str(self.numRooms)
 			if self.numRooms > 1:
 				self.connectRoom(self.listRooms[self.numRooms - 1])
 		self.printAllDoors()
+		self.printAllCords()
+		
+	def returnListRooms(self):
+		return self.listRooms
 		
 	def update(self):
 		#if self.returnCurrentRoom().timeToChangeRoom:
@@ -158,6 +159,10 @@ class Dungeon:
 	def printAllDoors(self):
 		for i in xrange(0, self.numRooms):
 			print self.listDoors[i*4 : i*4 + 4]
+	
+	def printAllCords(self):
+		for i in xrange(0, self.numRooms):
+			print "(" + str(self.listRooms[i].x) + ", " + str(self.listRooms[i].y) + ")"
 	
 	def roomHasSpecificDoorFree(self, room, door):
 		if room.doors[door] == -1:
@@ -192,18 +197,25 @@ class Dungeon:
 			return UP_DOOR
 	
 	def connectableRoom(self, room, door):
-		print self.listDoors
 		for i in xrange(0, self.numRooms):
-			print i
-			print "Door: " + str(door)
-			print self.listDoors[room.index * 4 + door]
-			
 			if room.index != i and self.listDoors[room.index * 4 + door] == -1 and self.listDoors[i * 4 + self.oppositeDoor(door)] == -1:
-				print self.listDoors[i * 4 + self.oppositeDoor(door)]
 				return self.listRooms[i]
-		print "Failure"
 		return None
 	
+	def assignRoomToGrid(self, newRoom, oldRoom, door):
+		if door == LEFT_DOOR:
+			newRoom.x = oldRoom.x + 1
+			newRoom.y = oldRoom.y
+		elif door == RIGHT_DOOR:
+			newRoom.x = oldRoom.x - 1
+			newRoom.y = oldRoom.y
+		elif door == UP_DOOR:
+			newRoom.x = oldRoom.x 
+			newRoom.y = oldRoom.y + 1
+		elif door == DOWN_DOOR:
+			newRoom.x = oldRoom.x 
+			newRoom.y = oldRoom.y - 1
+			
 	def connectRoom(self, room1):
 		if self.roomHasFreeDoors(room1):
 			# give each room a grid
@@ -216,7 +228,7 @@ class Dungeon:
 				exit(1)
 			room1.doors[door] = room2.index
 			room2.doors[self.oppositeDoor(door)] = room1.index
-			
+			self.assignRoomToGrid(room1, room2, door)
 			self.listDoors[room1.index*4 + door] = room2.index # assign room to door
 			self.listDoors[room2.index*4 + self.oppositeDoor(door)] = room1.index
 		

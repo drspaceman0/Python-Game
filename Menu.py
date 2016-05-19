@@ -8,7 +8,7 @@ import Weapon
 import functions
 import time
 import Spawnner
-
+import Room
 
 #info bar stuff
 infobar_sprite = pygame.image.load('images\\infobar.png')
@@ -21,6 +21,11 @@ onequarter_heart_sprite = pygame.image.load('images\\25_heart.png')
 axe_sprite = pygame.image.load('images\\axe.png')
 
 
+def update(playerObj, dungeonObj):
+	drawMenu(playerObj, dungeonObj)
+	drawHearts(playerObj)
+	drawMap(dungeonObj)
+	
 def drawMenu(playerObj, dungeonObj):
 	
 	Display.DISPLAYSURF.blit(infobar_sprite, pygame.Rect(0, 0, Display.SCREEN_WIDTH, Display.GAME_SCREEN_START))
@@ -36,7 +41,13 @@ def drawMenu(playerObj, dungeonObj):
 	Display.DISPLAYSURF.blit(roomtext, (450, 20))
 	Display.DISPLAYSURF.blit(healthtext, (450, 30))
 
-	
+def drawMap(dungeonObj):
+	currentRoom = dungeonObj.returnCurrentRoom()
+	for room in dungeonObj.returnListRooms():
+		if room == currentRoom:
+			pygame.draw.rect(Display.DISPLAYSURF, Display.YELLOW, (380 + room.x*8, 40 + room.y*8, 6, 6))
+		else:
+			pygame.draw.rect(Display.DISPLAYSURF, Display.RED, (380 + room.x*8, 40 + room.y*8, 6, 6))
 	
 def drawHearts(playerObj):
 	healthBits = playerObj.health

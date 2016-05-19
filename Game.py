@@ -56,7 +56,7 @@ def runGame():
 		Input.checkForInputs(playerObj)
 		dungeonObj.update() 
 		dungeonObj.update()
-		Menu.drawMenu(playerObj, dungeonObj)
+		Menu.update(playerObj, dungeonObj)
 		
 		playerObj.update()
 		playerObj.updateColliders()

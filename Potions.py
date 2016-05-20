@@ -52,7 +52,8 @@ class Potion:
 		
 	def pickup(self):
 		if self.shouldDraw == True:
-			functions.moveCoinFromWorldToPlayerInv(self)
+			print "acquired potion!"
+			functions.movePotionFromWorldToPlayerInv(self)
 			self.shouldDraw = False
 		else:
 			pass

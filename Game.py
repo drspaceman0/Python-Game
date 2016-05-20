@@ -24,6 +24,7 @@ import Spawnner
 import Menu
 import Inventory
 import Beats
+import Potions
 #		
 # START GAME
 #	
@@ -66,6 +67,7 @@ def runGame():
 	playerObj.dungeonObj = dungeonObj # temporary, need a better way to pass dungeon info to playerobj
 	dungeonObj.playerObj = playerObj
 	dungeonObj.menuObject = menuObject
+
 	
 	while True:
 		# check for key input
@@ -85,6 +87,9 @@ def runGame():
 					if functions.objCollision(playerObj, spawnner):
 						CombatSys.attack(playerObj, spawnner)
 				if spawnner.isDead:
+					p = Potions.Potion()
+					p.setDrawInfo(spawnner.x, spawnner.y)
+					functions.worldInventory.append(p)
 					dungeonObj.returnCurrentRoom().spawnnerlist.remove(spawnner)
 		if dungeonObj.returnCurrentRoom().hasSpawners:
 			for enemy in dungeonObj.returnCurrentRoom().enemylist:
@@ -99,7 +104,6 @@ def runGame():
 					playerObj.score += 1
 					dungeonObj.returnCurrentRoom().enemylist.remove(enemy)
 					 
-
 
 		if functions.worldInventory:
 			for item in functions.worldInventory:

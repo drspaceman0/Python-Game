@@ -3,7 +3,10 @@ Move with left right up down arrow keys
 Shoot with a s d w keys
 '''
 
-import pygame, sys, os
+import pygame
+from pygame import joystick
+import sys
+import os
 import math
 import random
 from pygame.locals import *
@@ -30,18 +33,23 @@ GlobalInventorySys = Inventory.Inventory(1, items)
 
 
 def main():
-	gameNotOver = True
+	# If any controllers are connected, initialize and enumerate all of them
+	controllers = []
+	if joystick.get_count():
+		print joystick.get_count(), "joysticks detected"
+		joystick.init()
+		controllers = [joystick.Joystick(x) for x in range(joystick.get_count())]
+		Input.listControllers(controllers) # For testing purposes
+			
+	gameNotOver = True	
 	while gameNotOver:
 		gameNotOver = runGame()
 	print "GAME OVER"
-	os.execl(sys.executable, sys.executable, *sys.argv)
-
+	os.execl(sys.executable, sys.executable, *sys.argv) # Glorious hack
 
 def restart():
 	main()
 		
-
-
 def attack(count, attacker, defender):
 	pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (attacker.collisionx, attacker.collisiony), (attacker.weaponx, attacker.weapony+count), 1)
 
@@ -62,7 +70,7 @@ def runGame():
 		# check for key input
 		Input.checkForInputs(playerObj, menuObject)
 		dungeonObj.update() 
-		dungeonObj.update()
+		dungeonObj.update() # duplicate?
 		menuObject.update()
 		
 		playerObj.update()
@@ -74,7 +82,7 @@ def runGame():
 				spawnner.update()
 				if functions.objCollision(playerObj, spawnner):
 					CombatSys.attack(playerObj, spawnner)
-				if spawnner.isDead == True:
+				if spawnner.isDead:
 					dungeonObj.returnCurrentRoom().spawnnerlist.remove(spawnner)
 		if dungeonObj.returnCurrentRoom().hasSpawners:
 			for enemy in dungeonObj.returnCurrentRoom().enemylist:
@@ -94,10 +102,6 @@ def runGame():
 				#print "%s" % (item.name)
 				item.drawAsLoot()
 					
-		
-		
-
-
 		#if functions.worldCoins > 0:
 		#	print "%s worldCoins" % (functions.worldCoins)
 
@@ -109,14 +113,13 @@ def runGame():
 			print "%s worldCoins" % (functions.worldCoins)
 			
 		# check if the player is alive
-		if playerObj.isDead == True:
+		if playerObj.isDead:
 			return False
 
 		# draw stuff		
 		pygame.display.update()
 		Display.FPSCLOCK.tick(Display.FPS)
-		
-		
+
 #
 #	END GAME
 #
@@ -124,3 +127,4 @@ def runGame():
 if __name__ == '__main__':
 	main()
 		
+#TODO: redirect stderr to file for logging/debugging purposes

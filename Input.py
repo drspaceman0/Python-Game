@@ -1,12 +1,14 @@
-import pygame, sys
+import pygame
+import sys
 from pygame.locals import *
 import Game
 import Player
 
-bulletDir = {'left': False, 'right': False, 'up': False, 'down': False} 
+# TODO: remapping of keybinds
+# This could be accomplished with genericized actions that map to the actual key
+# e.g event.key == moveleft, with moveleft being pygame.K_LEFT or whatever user sets
 
 def checkForInputs(playerObj, menuObject):
-
 	for event in pygame.event.get():
 		if event.type == QUIT:
 			terminate()
@@ -23,28 +25,17 @@ def checkForInputs(playerObj, menuObject):
 			if event.key == K_UP:
 				playerObj.moveUp= True
 				playerObj.direction = 'up'
-			'''if event.key == K_a:
-				bulletDir['left'] = True
-			if event.key == K_d:
-				bulletDir['right'] = True
-			if event.key == K_s:
-				bulletDir['down'] = True
-			if event.key == K_w:
-				bulletDir['up'] = True
-			'''
 			if event.key == K_x:
 				menuObject.activateText()
 			if event.key == K_SPACE:
 				playerObj.isAttacking = True
-				playerObj.attack()
 			if event.key == K_p:
 				Player.hurt()	
 			if event.key == K_BACKSPACE:
 				playerObj.isDead = True
 			if event.key == K_ESCAPE:
 				terminate()
-		elif event.type == KEYUP:
-			# stop moving the player
+		elif event.type == KEYUP: # stop moving the player
 			if event.key == K_LEFT:
 				playerObj.moveLeft= False
 			if event.key == K_RIGHT:
@@ -53,36 +44,32 @@ def checkForInputs(playerObj, menuObject):
 				playerObj.moveDown= False
 			if event.key == K_UP:
 				playerObj.moveUp= False
-			if event.key == K_a:
-				bulletDir['left'] = False
-			if event.key == K_d:
-				bulletDir['right'] = False
-			if event.key == K_s:
-				bulletDir['down'] = False
-			if event.key == K_w:
-				bulletDir['up'] = False
 			if event.key == K_SPACE:
 				playerObj.isAttacking = False
-	updateBullets(playerObj)
+		elif event.type == pygame.JOYAXISMOTION:
+			print "axis motion"
+		elif event.type == pygame.JOYBALLMOTION:
+			print "ball motion"
+		elif event.type == pygame.JOYHATMOTION:
+			print "hat motion"
+		elif event.type == pygame.JOYBUTTONUP:
+			print "button up"
+		elif event.type == pygame.JOYBUTTONDOWN:
+			print "button down"
 
-def updateBullets(playerObj):
-	if bulletDir['left']:
-		Bullet.Bullet(playerObj, 'left')
-	if bulletDir['right']:
-		Bullet.Bullet(playerObj, 'right')
-	if bulletDir['up']:
-		Bullet.Bullet(playerObj, 'up')
-	if bulletDir['down']:
-		Bullet.Bullet(playerObj, 'down')
-				
 def terminate():
 	pygame.quit()
 	sys.exit()
 
 def checkForQuit():
-	 for event in pygame.event.get(QUIT): # get all the QUIT events
-		 terminate() # terminate if any QUIT events are present
-	 for event in pygame.event.get(KEYUP): # get all the KEYUP events
-		 if event.key == K_ESCAPE:
-			 terminate() # terminate if the KEYUP event was for the Esc key
-		 pygame.event.post(event) # put the other KEYUP event objects back
+	for event in pygame.event.get(pygame.QUIT): # get all the QUIT events
+		terminate() # terminate if any QUIT events are present
+	for event in pygame.event.get(pygame.KEYUP): # get all the KEYUP events
+		if event.key == pygame.K_ESCAPE:
+			terminate() # terminate if the KEYUP event was for the Esc key
+		pygame.event.post(event) # put the other KEYUP event objects back
+
+def listControllers(controllers):
+	print "Controller names:"
+	for controller in controllers:
+		print "\t", controller.get_name()

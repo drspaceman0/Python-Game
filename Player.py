@@ -24,7 +24,9 @@ class Player:
 	def __init__(self):
 		self.x = Display.TILE_SIZE
 		self.y = Display.GAME_SCREEN_START + Display.TILE_SIZE
-		self.collisionx = self.x #playersize/2
+		self.colliderx = self.x #playersize/2
+		self.collidery = self.y
+		self.collisionx = self.x
 		self.collisiony = self.y
 		self.name = "Hero"
 		self.score = 0
@@ -64,7 +66,7 @@ class Player:
 		#self.checkForDoorCollision()
 		self.collisionx = self.x+24
 		self.collisiony = self.y+24
-		if self.isAttacking == True:
+		if self.isAttacking:
 			self.attack()
 
 	
@@ -113,9 +115,10 @@ class Player:
 		self.y = y
 		
 	def collision(self, x, y):
-		if math.sqrt(pow((self.x) - x, 2) + pow((self.y) - y, 2)) < 30:
+		if math.sqrt(pow(self.x - x, 2) + pow(self.y - y, 2)) < 30:
+
 			return True
-			
+
 	def getQuadrant(self):
 			#Check quadrant 1
 			if self.x < Display.QUADRANTX and self.y < Display.QUADRANTY:
@@ -129,7 +132,7 @@ class Player:
 			#Check Q 4
 			if self.x > Display.QUADRANTX and self.y > Display.QUADRANTY:
 				return 4
-					
+
 	def death(self):
 		self.isDead = True
 		print "Hero died..."

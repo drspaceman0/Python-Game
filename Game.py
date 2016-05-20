@@ -34,13 +34,12 @@ GlobalInventorySys = Inventory.Inventory(1, items)
 
 def main():
 	# If any controllers are connected, initialize and enumerate all of them
+	controllers = []
 	if joystick.get_count():
 		print joystick.get_count(), "joysticks detected"
 		joystick.init()
 		controllers = [joystick.Joystick(x) for x in range(joystick.get_count())]
-		print "Controller names:"
-		for controller in controllers:
-			print "\t", controller.get_name()
+		Input.listControllers(controllers) # For testing purposes
 			
 	gameNotOver = True	
 	while gameNotOver:

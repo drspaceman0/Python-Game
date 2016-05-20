@@ -48,15 +48,15 @@ def checkForInputs(playerObj, menuObject):
 			if event.key == K_SPACE:
 				playerObj.isAttacking = False
 		elif event.type == pygame.JOYAXISMOTION:
-			pass
+			print "axis motion"
 		elif event.type == pygame.JOYBALLMOTION:
-			pass
+			print "ball motion"
 		elif event.type == pygame.JOYHATMOTION:
-			pass
+			print "hat motion"
 		elif event.type == pygame.JOYBUTTONUP:
-			pass
+			print "button up"
 		elif event.type == pygame.JOYBUTTONDOWN:
-			pass
+			print "button down"
 
 def terminate():
 	pygame.quit()
@@ -69,3 +69,8 @@ def checkForQuit():
 		if event.key == pygame.K_ESCAPE:
 			terminate() # terminate if the KEYUP event was for the Esc key
 		pygame.event.post(event) # put the other KEYUP event objects back
+
+def listControllers(controllers):
+	print "Controller names:"
+	for controller in controllers:
+		print "\t", controller.get_name()

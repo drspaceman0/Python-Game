@@ -164,7 +164,6 @@ class MeleeWeapon:
 		originy = y
 		
 	def drawAsLoot(self):
-		print "drawn weapon"
 		pygame.draw.line(Display.DISPLAYSURF, Display.BLACK, (self.originx, self.originy), (self.originx + 50, self.originy), 1)
 		Display.DISPLAYSURF.blit(self.text, (self.originx -5, (self.originy)))
 		

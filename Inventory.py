@@ -51,8 +51,6 @@ class Inventory:
 		if self.items:
 			for item in self.items:
 				functions.worldInventory.append(item)
-				print "appended %s" % (item.name)
-				functions.worldCoins += self.coins
-				print "coin added"
+				#functions.worldCoins += self.coins
 import Game
 				

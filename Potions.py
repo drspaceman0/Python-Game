@@ -37,4 +37,5 @@ class Potion:
 		self.updatePotion()
 		
 	def drawAsLoot(self):
-		print "drawn potion goes here"
+		#print "drawn potion goes here"
+		pass

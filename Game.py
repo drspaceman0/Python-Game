@@ -45,6 +45,7 @@ def main():
 	while gameNotOver:
 		gameNotOver = runGame()
 	print "GAME OVER"
+	functions.printPlayerStats()
 	os.execl(sys.executable, sys.executable, *sys.argv) # Glorious hack
 
 def restart():
@@ -95,6 +96,7 @@ def runGame():
 						CombatSys.attack(playerObj, enemy)
 				if enemy.isDead == True:
 					dungeonObj.returnCurrentRoom().enemylist.remove(enemy)
+					 
 
 
 		if functions.worldInventory:
@@ -102,15 +104,14 @@ def runGame():
 				#print "%s" % (item.name)
 				item.drawAsLoot()
 					
-		#if functions.worldCoins > 0:
-		#	print "%s worldCoins" % (functions.worldCoins)
-
-		if functions.worldInventory:
-			for item in functions.worldInventory:
-				print "%s" % (item.name)
-		if functions.worldCoins > 0:
-			pygame.draw.circle(Display.DISPLAYSURF, Display.GOLD, (100, 100), 10)
-			print "%s worldCoins" % (functions.worldCoins)
+		if functions.worldCoins:
+			for coin in functions.worldCoins:
+				coin.drawSelf()
+				if functions.objCollision(playerObj, coin) == True:
+					print "pickup coin"
+					functions.worldCoins.remove(coin)
+					coin.pickup()
+					
 			
 		# check if the player is alive
 		if playerObj.isDead:

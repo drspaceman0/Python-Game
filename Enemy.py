@@ -7,6 +7,8 @@ import SpriteAnimation
 import Combat
 import Weapon
 import Inventory
+import Coin
+import functions
 
 #ADJECTIVE BASE TRAITS
 SPEED = 2 #playerObj/2
@@ -58,6 +60,7 @@ class VariableEnemy:
 		self.weaponx = 0
 		self.weapony = 0
 		self.dropRate = DROPRATE #number out of 100 for how often cool stuff drops
+		self.coin = Coin.Coin()
 		self.font = pygame.font.SysFont("monospace", 12)
 		self.text = self.font.render(self.name, 1, (0,0,0))
 		self.spriteList = [self.outline_sprite]
@@ -280,6 +283,7 @@ class VariableEnemy:
 	#def patrolX(startx, endx)
 			
 	def death(self):
+		functions.worldEnemiesKilled += 1
 		self.isDead = True
 		self.dropLoot()
 		"I died"
@@ -304,3 +308,5 @@ class VariableEnemy:
 		self.currentWeapon.dropWeapon(self.x, self.y)
 		print "Dropped"
 		self.inventory.dropItems()
+		functions.worldCoins.append(self.coin)
+		self.coin.setDrawInfo(self.inventory.coins, self.x, self.y)

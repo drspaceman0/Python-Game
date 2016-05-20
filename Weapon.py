@@ -3,6 +3,7 @@ import random
 import math
 import Display
 import pygame
+import SpriteAnimation
 
 #Weapon Defaults
 RANGE = 20 #swing across this many pixels collide with objects in range, hurt them
@@ -11,7 +12,19 @@ EFFECT = "none"
 WM = WeaponLabelMaker.WeaponLabelMaker()
 
 class MeleeWeapon:
+	default_sprite = pygame.image.load('images\weapon_swing.png')
+
+	sprite_list_right = [pygame.transform.rotate(default_sprite, 0), pygame.transform.rotate(default_sprite, 0)]
+	sprite_list_down = [pygame.transform.rotate(default_sprite, 270), pygame.transform.rotate(default_sprite, 270)]
+	sprite_list_left = [pygame.transform.rotate(default_sprite, 180), pygame.transform.rotate(default_sprite, 180)]
+	sprite_list_up = [pygame.transform.rotate(default_sprite, 90), pygame.transform.rotate(default_sprite, 90)]
+	
+	
+	
+	
 	def __init__(self):
+		self.sprite = self.default_sprite
+		self.spriteObj = SpriteAnimation.SpriteAnimation(self.sprite_list_left)
 		self.range = RANGE
 		self.damage = DAMAGE
 		self.hasEffect = False

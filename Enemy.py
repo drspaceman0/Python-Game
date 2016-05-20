@@ -242,8 +242,8 @@ class VariableEnemy:
 				Display.DISPLAYSURF.blit(pygame.transform.scale(sprite, (self.size * 2, self.size * 2)), pygame.Rect(self.x - self.size, self.y - self.size, self.size, self.size))	
 			# draw verb animation
 			if self.spriteObj:
-				self.spriteObj.update(self.x - self.size*2, self.y - self.size, False)
-				self.spriteObj.update(self.x + self.size, self.y - self.size, True)
+				self.spriteObj.update(self.x - self.size*2, self.y - self.size, False, 0)
+				self.spriteObj.update(self.x + self.size, self.y - self.size, True, 0)
 		Display.DISPLAYSURF.blit(self.text, (self.x - self.size*2, (self.y - self.size*1.5)))
 
 	def collision(self, obj):

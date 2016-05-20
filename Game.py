@@ -51,25 +51,23 @@ def runGame():
 
 	CombatSys = Combat.Combat()
 	playerObj = Player.Player()
-	dungeonObj = Room.Dungeon(playerObj)
+	dungeonObj = Room.Dungeon(playerObj, 10)
+	menuObject = Menu.Menu(playerObj, dungeonObj)
 	playerObj.dungeonObj = dungeonObj # temporary, need a better way to pass dungeon info to playerobj
 	dungeonObj.playerObj = playerObj
-	enemylist = []
-	#spawnnerlist = []
-	#SpawnnerOfPwnge = Spawnner.Spawnner(enemylist)
-	#spawnnerlist.append(SpawnnerOfPwnge)
+	dungeonObj.menuObject = menuObject
 	
 	while True:
 		# check for key input
-		Input.checkForInputs(playerObj)
+		Input.checkForInputs(playerObj, menuObject)
 		dungeonObj.update() 
 		dungeonObj.update()
-		Menu.update(playerObj, dungeonObj)
+		menuObject.update()
 		
 		playerObj.update()
 		playerObj.updateColliders()
 		
-		if len(dungeonObj.returnCurrentRoom().spawnnerlist) > 0:
+		if dungeonObj.returnCurrentRoom().hasSpawners:
 			for spawnner in dungeonObj.returnCurrentRoom().spawnnerlist:
 				spawnner.drawSpawnner()
 				spawnner.update()
@@ -77,7 +75,7 @@ def runGame():
 					CombatSys.attack(playerObj, spawnner)
 				if spawnner.isDead == True:
 					dungeonObj.returnCurrentRoom().spawnnerlist.remove(spawnner)
-		if len(dungeonObj.returnCurrentRoom().enemylist) > 0:
+		if dungeonObj.returnCurrentRoom().hasSpawners:
 			for enemy in dungeonObj.returnCurrentRoom().enemylist:
 				enemy.drawSelf()
 				enemy.updateColliders()

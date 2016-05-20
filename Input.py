@@ -5,7 +5,7 @@ import Player
 
 bulletDir = {'left': False, 'right': False, 'up': False, 'down': False} 
 
-def checkForInputs(playerObj):
+def checkForInputs(playerObj, menuObject):
 
 	for event in pygame.event.get():
 		if event.type == QUIT:
@@ -32,6 +32,8 @@ def checkForInputs(playerObj):
 			if event.key == K_w:
 				bulletDir['up'] = True
 			'''
+			if event.key == K_x:
+				menuObject.activateText()
 			if event.key == K_SPACE:
 				playerObj.isAttacking = True
 				playerObj.attack()

@@ -7,6 +7,7 @@ import random
 import Spawnner
 import functions
 import Combat
+import NPC
 
 DOOR_WIDTH = Display.TILE_SIZE
 DOOR_LENGTH = Display.TILE_SIZE
@@ -38,18 +39,22 @@ class Room:
 	
 	
 	def __init__(self, dungeonObject, color, numSpawners):
+		self.NPCObject = NPC.NPC(356, Display.GAME_SCREEN_START + 56, self, "Hey! you found me! youre a dick")
+		self.winNPC = NPC.NPC(356, Display.GAME_SCREEN_START + 56, self, "You killed all the spawners. How could you do that? They were endangered. I hope you're happy. Dick")
+		self.text = ""
 		self.color = color
 		self.width = Display.SCREEN_WIDTH
 		self.height = Display.SCREEN_HEIGHT
 		self.x = 0
 		self.y = 0
-		self.numSpawners = numSpawners
-		if self.numSpawners > 0:
+		self.hasSpawners = False
+		for i in xrange(0, numSpawners):
+			self.hasSpawners = True
 			self.CombatSys = Combat.Combat()
 			self.spawnnerlist = []
 			self.enemylist = []
-			self.SpawnnerOfPwnge = Spawnner.Spawnner(self.enemylist)
-			self.spawnnerlist.append(self.SpawnnerOfPwnge)
+			self.spawnnerlist.append(Spawnner.Spawnner(self.enemylist))
+			
 		#x, y, True if player enters this door, connected room, 
 		
 		#self.doors =   {'leftDoor': [0, Display.SCREEN_HEIGHT/2, None, 'leftDoor'],
@@ -66,27 +71,19 @@ class Room:
 	
 	def update(self):
 		self.drawRoom()
-		#self.updateSpawners()
+		if self.returnNumberOfFreeDoors() == 3:
+			self.NPCObject.update()
+		if self.dungeonObject.returnTotalNumSpawners() == 0:
+			self.winNPC.update()
+		
 		self.checkPlayerDoorCollision()
-		
-	def updateSpawners(self):
-		if self.numSpawners > 0:
-			for spawnner in self.spawnnerlist:
-				spawnner.drawSpawnner()
-				spawnner.update()
-				if functions.objCollision(self.playerObj, spawnner):
-					self.CombatSys.attack(self.playerObj, spawnner)
-				if spawnner.isDead == True:
-					self.spawnnerlist.remove(spawnner)
-		
-			for enemy in self.enemylist:
-				enemy.drawSelf()
-				enemy.updateColliders()
-				enemy.drawCollider()
-				enemy.chaseObj(self.playerObj)
-				
-				if enemy.isDead == True:
-					self.enemylist.remove(enemy)
+	
+	def returnNumberOfFreeDoors(self):
+		total = 0
+		for i in xrange(0,4):
+			if self.doors[i] == -1:
+				total += 1
+		return total
 	
 	def checkPlayerDoorCollision(self):
 		if self.doors[LEFT_DOOR] >= 0 and self.playerObj.collision(LEFT_DOOR_CORDS[0], LEFT_DOOR_CORDS[1]):
@@ -164,24 +161,34 @@ class Dungeon:
 	numRooms = 0
 	listRooms = []
 	listDoors = []
-	def __init__(self, playerObj):
+	def __init__(self, playerObj, num):
 		self.playerObj = playerObj
-		self.maxRooms = 12	
+		self.menuObject = None
+		self.maxRooms = num
 		self.currRoomIndex = 0
 		for i in xrange(0, self.maxRooms):
-			self.listRooms.append(Room(self, Display.returnRandomColor(), 1))
+			self.listRooms.append(Room(self, Display.returnRandomColor(), random.randint(0,3)))
 			if self.numRooms > 1:
-				self.connectRoom(self.listRooms[self.numRooms - 1])
+				self.addRoomToDungeon(self.listRooms[self.numRooms - 1])
+		for j in xrange(0, self.maxRooms):
+			self.connectNeighboringRooms(self.listRooms[j])
 		#self.printAllDoors()
 		#self.printAllCords()
-		
+	
+	def returnTotalNumSpawners(self):
+		total = 0
+		for room in self.listRooms:
+			if room.hasSpawners:
+				total += len(room.spawnnerlist)
+		return total
+	
 	def returnListRooms(self):
 		return self.listRooms
-		
+	
 	def update(self):
-		#if self.returnCurrentRoom().timeToChangeRoom:
-		#	self.changeRoom()
 		self.returnCurrentRoom().update()
+		# check for npc conversation
+		self.menuObject.dialogue = self.returnCurrentRoom().text
 	
 	def printAllDoors(self):
 		for i in xrange(0, self.numRooms):
@@ -208,7 +215,7 @@ class Dungeon:
 					randInt = 0
 			
 	def roomHasFreeDoors(self, room):
-		for i in xrange(0, 3):
+		for i in xrange(0, 4):
 			if room.doors[i] == -1:
 				return True
 		return False
@@ -223,12 +230,13 @@ class Dungeon:
 		elif door == DOWN_DOOR:
 			return UP_DOOR
 	
-	def connectableRoom(self, room, door):
+	def connectableRooms(self, room, door):
+		connectableRoomsList = []
 		for i in xrange(0, self.numRooms):
 			if room.index != i and self.listDoors[room.index * 4 + door] == -1 and self.listDoors[i * 4 + self.oppositeDoor(door)] == -1:
-				return self.listRooms[i]
-		return None
-	
+				connectableRoomsList.append(self.listRooms[i])
+		return connectableRoomsList
+			
 	def assignRoomToGrid(self, newRoom, oldRoom, door):
 		if door == LEFT_DOOR:
 			newRoom.x = oldRoom.x + 1
@@ -243,24 +251,61 @@ class Dungeon:
 			newRoom.x = oldRoom.x 
 			newRoom.y = oldRoom.y - 1
 			
-	def connectRoom(self, room1):
+	def addRoomToDungeon(self, room1):
 		if self.roomHasFreeDoors(room1):
 			# give each room a grid
 			
 			door = self.returnRandomFreeDoor(room1)
-			room2 = self.connectableRoom(room1, door)
-			if room2 == None:
+			listOfConnectableRooms = self.connectableRooms(room1, door)
+			if len(listOfConnectableRooms) == 0:
 				# couldnt find a connecting room, which should be impossible
 				print "wtf"
 				exit(1)
-			room1.doors[door] = room2.index
-			room2.doors[self.oppositeDoor(door)] = room1.index
-			self.assignRoomToGrid(room1, room2, door)
-			self.listDoors[room1.index*4 + door] = room2.index # assign room to door
-			self.listDoors[room2.index*4 + self.oppositeDoor(door)] = room1.index
-		
-		
-		#self.Room1.doors['upDoor'][2] = self.Room2
-		
+			for room2 in listOfConnectableRooms:
+				self.assignRoomToGrid(room1, room2, door)
+				if self.roomIsNotOverlapping(room1) == False:
+					# room is overlapping, try next room
+					continue
+				else:
+					self.connectTwoRooms(room1, room2, door)
+					return
+	
+	def connectNeighboringRooms(self, room1):
+		for i in xrange(0, 4):
+			if room1.doors[i] == -1:
+				room2 = None
+				if i == UP_DOOR:
+					room2 = self.returnRoomWithGrid(room1.x, room1.y-1)
+				elif i == RIGHT_DOOR:
+					room2 = self.returnRoomWithGrid(room1.x+1, room1.y)
+				elif i == DOWN_DOOR:
+					room2 = self.returnRoomWithGrid(room1.x, room1.y+1)
+				elif i == LEFT_DOOR:
+					room2 = self.returnRoomWithGrid(room1.x-1, room1.y)
+				
+				if room2 != None:
+					self.connectTwoRooms(room1, room2, i)
+						
+	def connectTwoRooms(self, room1, room2, door):
+		room1.doors[door] = room2.index
+		room2.doors[self.oppositeDoor(door)] = room1.index
+		self.listDoors[room1.index*4 + door] = room2.index # assign room to door
+		self.listDoors[room2.index*4 + self.oppositeDoor(door)] = room1.index
+	
+	def returnRoomWithGrid(self, x, y):
+		for tempRoom in self.listRooms:
+			if tempRoom.x == x and tempRoom.y == y:
+				return tempRoom
+		return None
+	
+	def roomIsNotOverlapping(self, room):
+		for tempRoom in self.listRooms:
+			if room != tempRoom and tempRoom.x == room.x and tempRoom.y == room.y:
+				return False
+		return True
+			
 	def returnCurrentRoom(self):
 		return self.listRooms[self.currRoomIndex]
+	
+
+			

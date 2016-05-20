@@ -28,7 +28,7 @@ import Beats
 # START GAME
 #	
 items = []
-GlobalInventorySys = Inventory.Inventory(1, items)
+
 
 
 
@@ -81,8 +81,9 @@ def runGame():
 			for spawnner in dungeonObj.returnCurrentRoom().spawnnerlist:
 				spawnner.drawSpawnner()
 				spawnner.update()
-				if functions.objCollision(playerObj, spawnner):
-					CombatSys.attack(playerObj, spawnner)
+				if playerObj.isAttacking:
+					if functions.objCollision(playerObj, spawnner):
+						CombatSys.attack(playerObj, spawnner)
 				if spawnner.isDead:
 					dungeonObj.returnCurrentRoom().spawnnerlist.remove(spawnner)
 		if dungeonObj.returnCurrentRoom().hasSpawners:
@@ -104,15 +105,21 @@ def runGame():
 			for item in functions.worldInventory:
 				#print "%s" % (item.name)
 				item.drawAsLoot()
-					
+				if playerObj.pickup == True:
+					if functions.objCollision(playerObj, item) == True:
+						print "pickup %s" % (item.name)
+						functions.worldInventory.remove(item)
+						item.pickup()
+						
 		if functions.worldCoins:
 			for coin in functions.worldCoins:
 				coin.drawSelf()
-				if functions.objCollision(playerObj, coin) == True:
-					print "pickup coin"
-					functions.worldCoins.remove(coin)
-					coin.pickup()
-					
+				if playerObj.pickup == True:
+					if functions.objCollision(playerObj, coin) == True:
+						print "pickup coin"
+						functions.worldCoins.remove(coin)
+						coin.pickup()
+						
 			
 		# check if the player is alive
 		if playerObj.isDead:

@@ -9,7 +9,7 @@ import Display
 worldInventory = []
 worldCoins = []
 playerCoins = []
-#playerInventory = [] This is done in the player class, but might be smoother here...
+playerInventory = [] #This is done in the player class, but might be smoother here...
 
 #Keep track of player stats
 worldEnemiesKilled = 0
@@ -27,6 +27,10 @@ def moveCoinFromWorldToPlayerInv(coin):
 		#worldInventory.remove(coin)
 		if coin not in playerCoins:
 			playerCoins.append(coin)
+			
+def movePotionFromWorldToPlayerInv(potion):
+	if potion not in playerInventory:
+		playerInventory.append(potion)
 	
 	
 	

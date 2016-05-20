@@ -42,6 +42,7 @@ class Player:
 		self.moveLeft = False
 		self.moveRight = False
 		self.isAttacking = False
+		self.pickup = False
 		self.width = PLAYER_WIDTH
 		self.height = PLAYER_HEIGHT
 		self.color = Display.RED

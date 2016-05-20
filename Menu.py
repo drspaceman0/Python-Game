@@ -10,6 +10,7 @@ import functions
 import time
 import Spawnner
 import Room
+import functions
 
 class Menu:
 

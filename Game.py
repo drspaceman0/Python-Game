@@ -95,6 +95,7 @@ def runGame():
 					if functions.objCollision(playerObj, enemy):
 						CombatSys.attack(playerObj, enemy)
 				if enemy.isDead == True:
+					playerObj.score += 1
 					dungeonObj.returnCurrentRoom().enemylist.remove(enemy)
 					 
 

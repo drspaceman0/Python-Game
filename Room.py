@@ -167,7 +167,7 @@ class Dungeon:
 		self.maxRooms = num
 		self.currRoomIndex = 0
 		for i in xrange(0, self.maxRooms):
-			self.listRooms.append(Room(self, Display.returnRandomColor(), random.randint(0,3)))
+			self.listRooms.append(Room(self, Display.returnRandomColor(), random.randint(0,1)))
 			if self.numRooms > 1:
 				self.addRoomToDungeon(self.listRooms[self.numRooms - 1])
 		for j in xrange(0, self.maxRooms):

@@ -28,7 +28,6 @@ class Player:
 		self.collidery = self.y
 		self.collisionx = self.x
 		self.collisiony = self.y
-		self.attack = False
 		self.name = "Hero"
 		self.score = 0
 		self.health = 20
@@ -67,7 +66,7 @@ class Player:
 		#self.checkForDoorCollision()
 		self.collisionx = self.x+24
 		self.collisiony = self.y+24
-		if self.isAttacking == True:
+		if self.isAttacking:
 			self.attack()
 
 	

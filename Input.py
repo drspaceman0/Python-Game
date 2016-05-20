@@ -29,7 +29,6 @@ def checkForInputs(playerObj, menuObject):
 				menuObject.activateText()
 			if event.key == K_SPACE:
 				playerObj.isAttacking = True
-				playerObj.attack = True
 			if event.key == K_p:
 				Player.hurt()	
 			if event.key == K_BACKSPACE:

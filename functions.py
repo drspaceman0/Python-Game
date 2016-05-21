@@ -22,7 +22,6 @@ def objCollision(obj1, obj2):
 
 def rectCollision(rect1, rect2):
 	if rect1.colliderect(rect2):
-		print "XXXXXXXXXXXXXXXXXXXx"
 		return True
 	else:
 		return False

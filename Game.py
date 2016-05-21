@@ -85,7 +85,7 @@ def runGame():
 				spawnner.update()
 				if playerObj.isAttacking:
 					if functions.objCollision(playerObj, spawnner):
-						CombatSys.attack(playerObj, spawnner)
+						CombatSys.attack(playerObj, spawnner, playerObj.currentWeapon.spriteObj.rect, pygame.rect(spawnner.x, spawnner.y, spawnner.size, spawnner	.size))
 				if spawnner.isDead:
 					p = Potions.Potion()
 					p.setDrawInfo(spawnner.x, spawnner.y)
@@ -99,7 +99,7 @@ def runGame():
 				enemy.chaseObj(playerObj)
 				if playerObj.isAttacking:
 					if functions.objCollision(playerObj, enemy):
-						CombatSys.attack(playerObj, enemy)
+						CombatSys.attack(playerObj, enemy, playerObj.currentWeapon.spriteObj.rect, pygame.Rect(enemy.x, enemy.y, enemy.size, enemy.size))
 				if enemy.isDead == True:
 					playerObj.score += 1
 					dungeonObj.returnCurrentRoom().enemylist.remove(enemy)

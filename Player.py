@@ -72,6 +72,8 @@ class Player:
 
 	
 	def movePlayer(self):
+		if self.isAttacking:
+			return
 		if self.moveRight and self.x + PLAYER_SPEED < Display.SCREEN_WIDTH - PLAYER_WIDTH:
 			self.x += PLAYER_SPEED
 			self.weaponx = self.collisionx+self.range
@@ -155,6 +157,7 @@ class Player:
 	
 	def isPlayer(self):
 		return True
+		
 	def attack(self):		
 		count = 1
 		if self.direction == 'left':

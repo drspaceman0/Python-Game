@@ -23,14 +23,14 @@ class Player:
 	player_right = [pygame.image.load('images\player_right1.png'), pygame.image.load('images\player_right2.png')]
 	player_left = [pygame.transform.flip(pygame.image.load('images\player_right1.png'), True, False), pygame.transform.flip(pygame.image.load('images\player_right2.png'), True, False)]
 	
-	def __init__(self):
+	def __init__(self, player_name):
 		self.x = Display.TILE_SIZE
 		self.y = Display.GAME_SCREEN_START + Display.TILE_SIZE
 		self.colliderx = self.x #playersize/2
 		self.collidery = self.y
 		self.collisionx = self.x
 		self.collisiony = self.y
-		self.name = "Hero"
+		self.name = player_name
 		self.score = 0
 		self.health = 20
 		self.damage = 1
@@ -56,7 +56,7 @@ class Player:
 		self.updateToWeaponStats()
 		self.circle = pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.collisionx, self.collisiony), self.range, 1)
 		self.logger = logging.getLogger(__name__)
-		self.logger.debug('Initialized')
+		self.logger.debug('Player %s Initialized', self.name)
 	
 	def update(self):
 		# update room if need be
@@ -145,7 +145,7 @@ class Player:
 				return 4
 
 	def death(self):
-		self.logger.info('Death')
+		self.logger.info('Player %s is dead', self.name)
 		self.isDead = True
 		print "Hero died..."
 		print "Game Over"
@@ -163,7 +163,6 @@ class Player:
 		return True
 		
 	def attack(self):		
-		count = 1
 		if self.direction == 'left':
 			self.currentWeapon.spriteObj.update(self.x - Display.TILE_SIZE, self.y - Display.TILE_SIZE , False, 0)
 		elif self.direction == 'right':

@@ -5,6 +5,7 @@ from subprocess import Popen
 import os
 import logging
 
+# Network defaults
 PORT = 12999
 
 

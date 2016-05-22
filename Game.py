@@ -1,6 +1,5 @@
 """
 Move with left right up down arrow keys
-Shoot with a s d w keys
 """
 
 import pygame
@@ -25,9 +24,6 @@ import Beats
 import functions
 import Potions
 
-items = []
-
-
 
 def main():
 	if joystick.get_count():
@@ -46,23 +42,22 @@ def main():
 	os.execl(sys.executable, sys.executable, *sys.argv) # Glorious hack
 
 def restart():
-	logging.debug('restart()')
+	logging.debug('restart')
 	main()
 		
-def attack(count, attacker, defender):
+def attack(count, attacker, defender): #TODO: where is this being used, and why isn't defender being used in it?
 	pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (attacker.collisionx, attacker.collisiony), (attacker.weaponx, attacker.weapony+count), 1)
 
 def runGame():
 	CombatSys = Combat.Combat()
-	playerObj = Player.Player()
+	playerObj = Player.Player("Hero")
 	dungeonObj = Room.Dungeon(playerObj, 10)
 	menuObject = Menu.Menu(playerObj, dungeonObj)
 	playerObj.dungeonObj = dungeonObj # temporary, need a better way to pass dungeon info to playerobj
 	dungeonObj.playerObj = playerObj
 	dungeonObj.menuObject = menuObject
+	logging.debug('Finished initializations for runGame')
 
-
-	
 	while True:
 		if functions.gameTimer == 30:
 			functions.gameTimer = 0
@@ -103,24 +98,24 @@ def runGame():
 			for item in functions.worldInventory:
 				print "%s" % item.name
 				item.drawAsLoot()
-				if playerObj.pickup == True:
-					if functions.objCollision(playerObj, item) == True:
-						print "pickup %s" % (item.name)
+				if playerObj.pickup:
+					if functions.objCollision(playerObj, item):
+						print "pickup %s" % item.name
 						functions.worldInventory.remove(item)
 						item.pickup()
 						
 		if functions.worldCoins:
 			for coin in functions.worldCoins:
 				coin.drawSelf()
-				if playerObj.pickup == True:
-					if functions.objCollision(playerObj, coin) == True:
+				if playerObj.pickup:
+					if functions.objCollision(playerObj, coin):
 						print "pickup coin"
 						functions.worldCoins.remove(coin)
 						coin.pickup()
 			
 		# check if the player is alive
 		if playerObj.isDead:
-			logging.info('Player is dead')
+			logging.info('Player %s is dead', playerObj.name)
 			return False
 
 		# draw stuff		

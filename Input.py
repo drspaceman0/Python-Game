@@ -48,6 +48,8 @@ def checkForInputs(playerObj, menuObject):
 				playerObj.isAttacking = False
 			if event.key == K_e:
 				playerObj.pickup = False
+			if event.key == K_q:
+				playerObj.usePotion()
 		elif event.type == pygame.JOYAXISMOTION:
 			print "axis motion"
 		elif event.type == pygame.JOYBALLMOTION:

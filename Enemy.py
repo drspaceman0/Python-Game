@@ -258,31 +258,26 @@ class VariableEnemy:
 		they can destroy before the enemy is there? Also, if we want to implement
 		friendlies, this is a start"""
 	def chaseObj(self, obj):
+		self.shouldFlankPlayer()
 		if self.chase and self.shouldFlank == False:
-			if not self.collision(obj):
-				if obj.x > self.x: #Move right
-					self.x += self.speed
-					self.weaponx = self.x + self.range
-				if obj.x < self.x: #Move left
-					self.x -= self.speed
-					self.weaponx = self.x - self.range
-				if obj.y > self.y: #Move down
-					self.y += self.speed
-					self.weapony = self.y
-				if obj.y < self.y: #Move up
-					self.y -= self.speed
-					self.weapony = self.y
+			#if not self.collision(obj):
+			if obj.x > self.x: #Move right
+				self.x += self.speed
+				self.weaponx = self.x + self.range
+			if obj.x < self.x: #Move left
+				self.x -= self.speed
+				self.weaponx = self.x - self.range
+			if obj.y > self.y: #Move down
+				self.y += self.speed
+				self.weapony = self.y
+			if obj.y < self.y: #Move up
+				self.y -= self.speed
+				self.weapony = self.y
 		if self.chase and self.shouldFlank == True:
 			if not self.collision(obj):
-				if obj.x > self.x:
-					if obj.y > self.y:
-						self.y -= self.speed
-						self.x += self.speed
-				if obj.x < self.x:
-					if obj.y > self.y:
-						self.y -= self.speed
-						self.x -= self.speed
-			else: #If colliding, attack!
+				self.flank(obj)
+				
+		else: #If colliding, attack!
 				#EnemyCombat.attack(self, obj)
 				EnemyCombat.attack(self, obj, pygame.Rect(self.x, self.y, self.size, self.size), pygame.Rect(obj.x, obj.y, obj.height, obj.width))
 
@@ -294,6 +289,16 @@ class VariableEnemy:
 		#self.inventory.printInventory()
 		
 	#def patrolX(startx, endx)
+			
+	def flank(self, obj):
+		if obj.x+20 > self.x:
+			self.x += self.speed
+		if obj.x-20 < self.x:
+			self.x -= self.speed
+		if obj.y+20 > self.y:
+			self.y += self.speed
+		if obj.y-20 < self.y:
+			self.y -= self.speed
 			
 	def death(self):
 		functions.worldEnemiesKilled += 1
@@ -325,7 +330,10 @@ class VariableEnemy:
 		self.coin.setDrawInfo(self.inventory.coins, self.x, self.y)
 		
 	def shouldFlankPlayer(self):
-		if numberOfEnemies > 2:
-			self.shouldFlank = True
-		else:
-			self.shouldFlank = False
+		'''if VariableEnemy.numberOfEnemies > 2:
+			chance = random.randint(1, 10)
+			if chance % 9 == 0:
+				self.shouldFlank = True
+			else:
+				self.shouldFlank = False'''
+		pass

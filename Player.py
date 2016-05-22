@@ -6,6 +6,7 @@ import math
 import Weapon
 import Combat
 import Enemy
+import functions
 
 # player variables defaults
 PLAYER_X = 0
@@ -169,3 +170,14 @@ class Player:
 		elif self.direction == 'down':
 			self.currentWeapon.spriteObj.update(self.x - Display.TILE_SIZE, self.y  , False, 0)
 		
+	def usePotion(self):
+		if functions.playerPotions:
+			if self.health == 20:
+				print "Well, that was dumb..."
+			usedPotion = functions.playerPotions.pop()
+			self.health += usedPotion.size
+			if self.health >= 20:
+				self.health = 20
+			print "Used a %s! %s potions left..." % (usedPotion.name, len(functions.playerPotions))
+		else:
+			print "No potions... buy some from NPC friendly for the low low price of 100 Gold!"

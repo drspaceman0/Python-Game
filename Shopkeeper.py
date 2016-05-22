@@ -22,9 +22,7 @@ class Shopkeeper(NPC.NPC):
 		
 	
 	def trade(self):
-		print "open trade"
 		if functions.playerInventory:
-			print "NPC trading"
 			gold = Coin.Coin()
 			counter = 0
 			for item in functions.playerInventory:
@@ -43,7 +41,6 @@ class Shopkeeper(NPC.NPC):
 		if self.checkPlayerCollision():
 			self.roomObj.text = self.dialogue
 			if self.roomObj.playerObj.isTrading == True:
-				print "initiating trade"
 				self.trade()
 		else:
 			self.roomObj.text = ""

@@ -61,8 +61,11 @@ def runGame():
 	dungeonObj.playerObj = playerObj
 	dungeonObj.menuObject = menuObject
 
+
 	
 	while True:
+		if functions.gameTimer == 30:
+			functions.gameTimer = 0
 		# check for key input
 		Input.checkForInputs(playerObj, menuObject)
 		dungeonObj.update() 
@@ -123,6 +126,7 @@ def runGame():
 		# draw stuff		
 		pygame.display.update()
 		Display.FPSCLOCK.tick(Display.FPS)
+		functions.gameTimer += 1
 
 
 if __name__ == '__main__':

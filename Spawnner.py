@@ -9,7 +9,6 @@ class Spawnner():
 	def __init__(self, arr):
 		self.name = "GateToHELL!"
 		self.container = arr
-		self.counter = 0
 		self.x = 400
 		self.y = 400
 		self.collisionx = self.x
@@ -35,10 +34,9 @@ class Spawnner():
 		
 	def update(self):
 		if self.health > 0:
-			self.counter += 1
-			if self.counter == 90:
+			if functions.gameTimer == 1:
 				self.container.append(functions.spawnEnemy(self.x, self.y))
-				self.counter = 0
+				spawnTimer = 0
 		if self.health <= 0:
 			print "Gate to hell closed!"
 		

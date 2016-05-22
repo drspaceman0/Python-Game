@@ -8,6 +8,7 @@ import math
 import Weapon
 import Combat
 import Enemy
+import functions
 
 # player variables defaults
 PLAYER_X = 0
@@ -33,6 +34,7 @@ class Player:
 		self.name = player_name
 		self.score = 0
 		self.health = 20
+		self.stamina = 10
 		self.damage = 1
 		self.range = 50
 		self.size = 48
@@ -172,3 +174,21 @@ class Player:
 		elif self.direction == 'down':
 			self.currentWeapon.spriteObj.update(self.x - Display.TILE_SIZE, self.y  , False, 0)
 		
+	def usePotion(self):
+		if functions.playerPotions:
+			usedPotion = functions.playerPotions.pop()
+			if usedPotion.isHealth == True:
+				if self.health == 20:
+					print "Well, that was dumb..."
+				self.health += usedPotion.size
+				if self.health >= 20:
+					self.health = 20
+			elif usedPotion.isStamina == True:
+				if self.stamina == 10:
+					print "What a dummie..."
+				self.stamina += usedPotion.size
+				if self.stamina >= 10:
+					self.stamina = 10
+			print "Used a %s! %s potions left..." % (usedPotion.name, len(functions.playerPotions))
+		else:
+			print "No potions... buy some from NPC friendly for the low low price of 100 Gold!"

@@ -16,6 +16,7 @@ class Spawnner():
 		self.color = Display.YELLOW
 		self.size = 40
 		self.health = 50
+		self.count = 0
 		self.spawnRate = 1 # per second
 		self.isDead = False
 		self.font = pygame.font.SysFont("monospace", 12)
@@ -30,13 +31,14 @@ class Spawnner():
 			
 	def death(self):
 		self.isDead = True
-		print "Dastroyed"
 		
 	def update(self):
 		if self.health > 0:
 			if functions.gameTimer == 1:
-				self.container.append(functions.spawnEnemy(self.x, self.y))
-				spawnTimer = 0
+				self.count += 1
+				if self.count == 3:
+					self.container.append(functions.spawnEnemy(self.x, self.y))
+					self.count = 0
 		if self.health <= 0:
 			print "Gate to hell closed!"
 		

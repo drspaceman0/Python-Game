@@ -32,6 +32,7 @@ class Player:
 		self.name = "Hero"
 		self.score = 0
 		self.health = 20
+		self.stamina = 10
 		self.damage = 1
 		self.range = 50
 		self.size = 48
@@ -172,12 +173,19 @@ class Player:
 		
 	def usePotion(self):
 		if functions.playerPotions:
-			if self.health == 20:
-				print "Well, that was dumb..."
 			usedPotion = functions.playerPotions.pop()
-			self.health += usedPotion.size
-			if self.health >= 20:
-				self.health = 20
+			if usedPotion.isHealth == True:
+				if self.health == 20:
+					print "Well, that was dumb..."
+				self.health += usedPotion.size
+				if self.health >= 20:
+					self.health = 20
+			elif usedPotion.isStamina == True:
+				if self.stamina == 10:
+					print "What a dummie..."
+				self.stamina += usedPotion.size
+				if self.stamina >= 10:
+					self.stamina = 10
 			print "Used a %s! %s potions left..." % (usedPotion.name, len(functions.playerPotions))
 		else:
 			print "No potions... buy some from NPC friendly for the low low price of 100 Gold!"

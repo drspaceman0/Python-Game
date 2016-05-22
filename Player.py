@@ -1,4 +1,6 @@
 import pygame
+import logging
+
 import Display
 import SpriteAnimation
 import Room
@@ -52,7 +54,8 @@ class Player:
 		self.currentWeapon = Weapon.MeleeWeapon()
 		self.updateToWeaponStats()
 		self.circle = pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.collisionx, self.collisiony), self.range, 1)
-	
+		self.logger = logging.getLogger(__name__)
+		self.logger.debug('Initialized')
 	
 	def update(self):
 		# update room if need be
@@ -116,7 +119,6 @@ class Player:
 		
 	def collision(self, x, y):
 		if math.sqrt(pow(self.x - x, 2) + pow(self.y - y, 2)) < 30:
-
 			return True
 
 	def getQuadrant(self):
@@ -134,6 +136,7 @@ class Player:
 				return 4
 
 	def death(self):
+		self.logger.info('Death')
 		self.isDead = True
 		print "Hero died..."
 		print "Game Over"
@@ -145,8 +148,9 @@ class Player:
 	def updateColliders(self):
 		self.collisionx = self.x+24
 		self.collisiony = self.y+24
-	
-	def isPlayer(self):
+
+	@staticmethod
+	def isPlayer():
 		return True
 		
 	def attack(self):

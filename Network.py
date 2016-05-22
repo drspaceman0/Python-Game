@@ -25,9 +25,11 @@ class PlayerJoin(legume.messages.BaseMessage):
     }
 
 def start_server():
+    logging.debug('Starting a new server process')
     return Popen(["python", os.path.dirname(__file__) + "/" + "Server.py"])
 
 def start_client():
+    logging.debug('Starting a new client process')
     return Popen(["python", os.path.dirname(__file__) + "/" + "Client.py"])
 
 

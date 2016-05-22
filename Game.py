@@ -1,15 +1,15 @@
-'''
+"""
 Move with left right up down arrow keys
 Shoot with a s d w keys
-'''
+"""
 
 import pygame
 from pygame import joystick
+
 import sys
 import os
-import math
-import random
-from pygame.locals import *
+import logging
+
 import Display
 import SpriteAnimation
 import Player
@@ -18,46 +18,40 @@ import Room
 import Enemy
 import Weapon
 import Combat
-import functions
-import time
 import Spawnner
 import Menu
 import Inventory
 import Beats
-#		
-# START GAME
-#	
+import functions
+
+
 items = []
 GlobalInventorySys = Inventory.Inventory(1, items)
 
 
-
 def main():
-	# If any controllers are connected, initialize and enumerate all of them
-	controllers = []
 	if joystick.get_count():
+		logging.info('Controllers found')
 		print joystick.get_count(), "joysticks detected"
-		joystick.init()
+		joystick.init() # initialize all connected controllers
 		controllers = [joystick.Joystick(x) for x in range(joystick.get_count())]
-		Input.listControllers(controllers) # For testing purposes
+		Input.listControllers(controllers)
 			
 	gameNotOver = True	
 	while gameNotOver:
 		gameNotOver = runGame()
 	print "GAME OVER"
+	logging.info('GAME OVER')
 	os.execl(sys.executable, sys.executable, *sys.argv) # Glorious hack
 
 def restart():
+	logging.debug('restart()')
 	main()
 		
 def attack(count, attacker, defender):
 	pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (attacker.collisionx, attacker.collisiony), (attacker.weaponx, attacker.weapony+count), 1)
 
-	'''We should consider getting a draw down, 
-	background, then loot, then spawners, then enemies, then player?'''
-	
 def runGame():
-
 	CombatSys = Combat.Combat()
 	playerObj = Player.Player()
 	dungeonObj = Room.Dungeon(playerObj, 10)
@@ -93,38 +87,33 @@ def runGame():
 				if playerObj.isAttacking:
 					if functions.objCollision(playerObj, enemy):
 						CombatSys.attack(playerObj, enemy)
-				if enemy.isDead == True:
+				if enemy.isDead:
 					dungeonObj.returnCurrentRoom().enemylist.remove(enemy)
 
 
 		if functions.worldInventory:
 			for item in functions.worldInventory:
-				#print "%s" % (item.name)
+				print "%s" % item.name
 				item.drawAsLoot()
 					
 		#if functions.worldCoins > 0:
 		#	print "%s worldCoins" % (functions.worldCoins)
 
-		if functions.worldInventory:
-			for item in functions.worldInventory:
-				print "%s" % (item.name)
 		if functions.worldCoins > 0:
 			pygame.draw.circle(Display.DISPLAYSURF, Display.GOLD, (100, 100), 10)
-			print "%s worldCoins" % (functions.worldCoins)
+			print "%s worldCoins" % functions.worldCoins
 			
 		# check if the player is alive
 		if playerObj.isDead:
+			logging.info('Player is dead')
 			return False
 
 		# draw stuff		
 		pygame.display.update()
 		Display.FPSCLOCK.tick(Display.FPS)
 
-#
-#	END GAME
-#
 
 if __name__ == '__main__':
+	logging.basicConfig(filename='Game.log',level=logging.DEBUG) # add filemode='w' to overwrite previous log files
 	main()
-		
-#TODO: redirect stderr to file for logging/debugging purposes
+	logging.debug('Exited main')

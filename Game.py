@@ -20,7 +20,7 @@ import Combat
 import Spawnner
 import Menu
 import Inventory
-import Beats
+import Audio
 import functions
 import Potions
 
@@ -51,6 +51,9 @@ def attack(count, attacker, defender): #TODO: where is this being used, and why 
 def runGame():
 	CombatSys = Combat.Combat()
 	playerObj = Player.Player("Hero")
+	audioObj = Audio.GameAudio()
+	audioObj.load_music('music\Damnation.mp3')
+	#audioObj.play_next_song()
 	dungeonObj = Room.Dungeon(playerObj, 10)
 	menuObject = Menu.Menu(playerObj, dungeonObj)
 	playerObj.dungeonObj = dungeonObj # temporary, need a better way to pass dungeon info to playerobj
@@ -69,6 +72,8 @@ def runGame():
 		
 		playerObj.update()
 		playerObj.updateColliders()
+
+		audioObj.update()
 		
 		if dungeonObj.returnCurrentRoom().hasSpawners:
 			for spawnner in dungeonObj.returnCurrentRoom().spawnnerlist:

@@ -7,6 +7,8 @@ import SpriteAnimation
 import Combat
 import Weapon
 import Inventory
+import Coin
+import functions
 
 #ADJECTIVE BASE TRAITS
 SPEED = 2 #playerObj/2
@@ -58,10 +60,12 @@ class VariableEnemy:
 		self.weaponx = 0
 		self.weapony = 0
 		self.dropRate = DROPRATE #number out of 100 for how often cool stuff drops
+		self.coin = Coin.Coin()
 		self.font = pygame.font.SysFont("monospace", 12)
 		self.text = self.font.render(self.name, 1, (0,0,0))
 		self.spriteList = [self.outline_sprite]
-		self.spriteObj = None
+		self.spriteObj = SpriteAnimation.SpriteAnimation([self.outline_sprite, self.outline_sprite])
+		self.verbAnimSpriteObj = None
 		self.items = []
 		self.inventory = 0
 		#Functions To update self before spawning
@@ -209,11 +213,11 @@ class VariableEnemy:
 			self.speed -= 1
 			
 		elif self.verb == 2: #Polluting
-			self.spriteObj = SpriteAnimation.SpriteAnimation(self.polluting_sprite)
+			self.verbAnimSpriteObj = SpriteAnimation.SpriteAnimation(self.polluting_sprite)
 			self.attack = "poision"
 		
 		elif self.verb == 3: #Disgusting
-			self.spriteObj = SpriteAnimation.SpriteAnimation(self.disgusting_sprite)
+			self.verbAnimSpriteObj = SpriteAnimation.SpriteAnimation(self.disgusting_sprite)
 			pass #Player fear level?	
 
 		else:
@@ -238,9 +242,9 @@ class VariableEnemy:
 			for sprite in self.spriteList:
 				Display.DISPLAYSURF.blit(pygame.transform.scale(sprite, (self.size * 2, self.size * 2)), pygame.Rect(self.x - self.size, self.y - self.size, self.size, self.size))	
 			# draw verb animation
-			if self.spriteObj:
-				self.spriteObj.update(self.x - self.size*2, self.y - self.size, False)
-				self.spriteObj.update(self.x + self.size, self.y - self.size, True)
+			if self.verbAnimSpriteObj:
+				self.verbAnimSpriteObj.update(self.x - self.size*2, self.y - self.size, False, 0)
+				self.verbAnimSpriteObj.update(self.x + self.size, self.y - self.size, True, 0)
 		Display.DISPLAYSURF.blit(self.text, (self.x - self.size*2, (self.y - self.size*1.5)))
 
 	def collision(self, obj):
@@ -268,7 +272,8 @@ class VariableEnemy:
 					self.y -= self.speed
 					self.weapony = self.y
 			else: #If colliding, attack!
-				EnemyCombat.attack(self, obj)
+				#EnemyCombat.attack(self, obj)
+				EnemyCombat.attack(self, obj, pygame.Rect(self.x, self.y, self.size, self.size), pygame.Rect(obj.x, obj.y, obj.height, obj.width))
 
 		self.moveDown = False
 		self.moveLeft = False
@@ -280,6 +285,7 @@ class VariableEnemy:
 	#def patrolX(startx, endx)
 			
 	def death(self):
+		functions.worldEnemiesKilled += 1
 		self.isDead = True
 		self.dropLoot()
 		"I died"
@@ -304,3 +310,5 @@ class VariableEnemy:
 		self.currentWeapon.dropWeapon(self.x, self.y)
 		print "Dropped"
 		self.inventory.dropItems()
+		functions.worldCoins.append(self.coin)
+		self.coin.setDrawInfo(self.inventory.coins, self.x, self.y)

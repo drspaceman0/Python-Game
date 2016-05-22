@@ -44,6 +44,7 @@ class Player:
 		self.moveLeft = False
 		self.moveRight = False
 		self.isAttacking = False
+		self.pickup = False
 		self.width = PLAYER_WIDTH
 		self.height = PLAYER_HEIGHT
 		self.color = Display.RED
@@ -64,7 +65,7 @@ class Player:
 		# update sprites
 		self.updateSpriteList()
 		# draw player
-		self.spriteObj.update(self.x, self.y, False)
+		self.spriteObj.update(self.x, self.y, False, 0)
 		# check if player should move to next room
 		#self.checkForDoorCollision()
 		self.collisionx = self.x+24
@@ -74,6 +75,8 @@ class Player:
 
 	
 	def movePlayer(self):
+		if self.isAttacking:
+			return
 		if self.moveRight and self.x + PLAYER_SPEED < Display.SCREEN_WIDTH - PLAYER_WIDTH:
 			self.x += PLAYER_SPEED
 			self.weaponx = self.collisionx+self.range
@@ -89,18 +92,24 @@ class Player:
 		
 	
 	def updateSpriteList(self):
+		pygame.draw.rect(Display.DISPLAYSURF, Display.BLACK, (self.x, self.y, self.width, self.height), 1) 
 		if self.direction == 'right' and self.spriteObj.images != self.player_right:
 			self.spriteObj.changeSprites(self.player_right)
+			self.currentWeapon.spriteObj.changeSprites(self.currentWeapon.sprite_list_right)
 		elif self.direction == 'left' and self.spriteObj.images != self.player_left:
 			self.spriteObj.changeSprites(self.player_left)
-		if self.direction == 'up' and self.spriteObj.images != self.player_up:
+			self.currentWeapon.spriteObj.changeSprites(self.currentWeapon.sprite_list_left)
+		elif self.direction == 'up' and self.spriteObj.images != self.player_up:
 			self.spriteObj.changeSprites(self.player_up)
-		elif self.direction == 'down' and self.spriteObj.images != self.player_down:
+			self.currentWeapon.spriteObj.changeSprites(self.currentWeapon.sprite_list_up)
+		elif self.direction == 'down' and self.spriteObj.images != self.player_down:	
 			self.spriteObj.changeSprites(self.player_down)
+			self.currentWeapon.spriteObj.changeSprites(self.currentWeapon.sprite_list_down)
+			
 		#This circle will be our collision box where we draw our attack from 
 		#pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.colliderx, self.collidery), self.range, 1)
 		#Draw Weapon
-		pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (self.collisionx, self.collisiony), (self.weaponx, self.weapony), 1)
+		#pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (self.collisionx, self.collisiony), (self.weaponx, self.weapony), 1)
 
 
 	def moveToOtherSide(self):
@@ -153,7 +162,14 @@ class Player:
 	def isPlayer():
 		return True
 		
-	def attack(self):
-		for count in range (-20, 30):
-			pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (self.collisionx, self.collisiony), (self.weaponx, self.weapony+count), 1)
+	def attack(self):		
+		count = 1
+		if self.direction == 'left':
+			self.currentWeapon.spriteObj.update(self.x - Display.TILE_SIZE, self.y - Display.TILE_SIZE , False, 0)
+		elif self.direction == 'right':
+			self.currentWeapon.spriteObj.update(self.x , self.y , False, 0)
+		elif self.direction == 'up':
+			self.currentWeapon.spriteObj.update(self.x , self.y - Display.TILE_SIZE, False, 0)
+		elif self.direction == 'down':
+			self.currentWeapon.spriteObj.update(self.x - Display.TILE_SIZE, self.y  , False, 0)
 		

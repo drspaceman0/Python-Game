@@ -29,8 +29,8 @@ def checkForInputs(playerObj, menuObject):
 				menuObject.activateText()
 			if event.key == K_SPACE:
 				playerObj.isAttacking = True
-			if event.key == K_p:
-				Player.hurt()	
+			if event.key == K_e:
+				playerObj.pickup = True
 			if event.key == K_BACKSPACE:
 				playerObj.isDead = True
 			if event.key == K_ESCAPE:
@@ -46,6 +46,8 @@ def checkForInputs(playerObj, menuObject):
 				playerObj.moveUp= False
 			if event.key == K_SPACE:
 				playerObj.isAttacking = False
+			if event.key == K_e:
+				playerObj.pickup = False
 		elif event.type == pygame.JOYAXISMOTION:
 			print "axis motion"
 		elif event.type == pygame.JOYBALLMOTION:

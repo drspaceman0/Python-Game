@@ -3,6 +3,7 @@ import random
 import math
 import Display
 import pygame
+import SpriteAnimation
 
 #Weapon Defaults
 RANGE = 20 #swing across this many pixels collide with objects in range, hurt them
@@ -11,7 +12,19 @@ EFFECT = "none"
 WM = WeaponLabelMaker.WeaponLabelMaker()
 
 class MeleeWeapon:
+	default_sprite = pygame.image.load('images\weapon_swing.png')
+
+	sprite_list_right = [pygame.transform.rotate(default_sprite, 0), pygame.transform.rotate(default_sprite, 0)]
+	sprite_list_down = [pygame.transform.rotate(default_sprite, 270), pygame.transform.rotate(default_sprite, 270)]
+	sprite_list_left = [pygame.transform.rotate(default_sprite, 180), pygame.transform.rotate(default_sprite, 180)]
+	sprite_list_up = [pygame.transform.rotate(default_sprite, 90), pygame.transform.rotate(default_sprite, 90)]
+	
+	
+	
+	
 	def __init__(self):
+		self.sprite = self.default_sprite
+		self.spriteObj = SpriteAnimation.SpriteAnimation(self.sprite_list_left)
 		self.range = RANGE
 		self.damage = DAMAGE
 		self.hasEffect = False
@@ -22,6 +35,8 @@ class MeleeWeapon:
 		self.damateToUser = 0
 		self.originx = 0
 		self.originy = 0
+		self.collisionx = 0
+		self.collisiony = 0
 		self.direction = "none"
 		self.adjective = random.randint(0, len(WM.lladjectives)-1)
 		self.material = random.randint(0, len(WM.llmaterial)-1)
@@ -160,11 +175,14 @@ class MeleeWeapon:
 		print "%s" % (self.name)	
 	
 	def dropWeapon(self, x, y):
-		originx = x 
-		originy = y
+		self.originx = x 
+		self.collisionx = x
+		self.originy = y
+		self.collisiony = y
 		
 	def drawAsLoot(self):
-		print "drawn weapon"
 		pygame.draw.line(Display.DISPLAYSURF, Display.BLACK, (self.originx, self.originy), (self.originx + 50, self.originy), 1)
 		Display.DISPLAYSURF.blit(self.text, (self.originx -5, (self.originy)))
 		
+	def pickup(self):
+		print "weapon pickup"

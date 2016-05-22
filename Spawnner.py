@@ -21,6 +21,7 @@ class Spawnner():
 		self.isDead = False
 		self.font = pygame.font.SysFont("monospace", 12)
 		self.text = self.font.render(self.name, 1, (0,0,0))
+		#self.spriteObj = 
 			
 			
 	def drawSpawnner(self):

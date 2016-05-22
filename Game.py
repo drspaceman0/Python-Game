@@ -23,10 +23,10 @@ import Menu
 import Inventory
 import Beats
 import functions
-
+import Potions
 
 items = []
-GlobalInventorySys = Inventory.Inventory(1, items)
+
 
 
 def main():
@@ -42,6 +42,7 @@ def main():
 		gameNotOver = runGame()
 	print "GAME OVER"
 	logging.info('GAME OVER')
+	functions.printPlayerStats()
 	os.execl(sys.executable, sys.executable, *sys.argv) # Glorious hack
 
 def restart():
@@ -59,6 +60,7 @@ def runGame():
 	playerObj.dungeonObj = dungeonObj # temporary, need a better way to pass dungeon info to playerobj
 	dungeonObj.playerObj = playerObj
 	dungeonObj.menuObject = menuObject
+
 	
 	while True:
 		# check for key input
@@ -74,9 +76,13 @@ def runGame():
 			for spawnner in dungeonObj.returnCurrentRoom().spawnnerlist:
 				spawnner.drawSpawnner()
 				spawnner.update()
-				if functions.objCollision(playerObj, spawnner):
-					CombatSys.attack(playerObj, spawnner)
+				if playerObj.isAttacking:
+					if functions.objCollision(playerObj, spawnner):
+						CombatSys.attack(playerObj, spawnner, playerObj.currentWeapon.spriteObj.rect, pygame.Rect(spawnner.x, spawnner.y, spawnner.size, spawnner	.size))
 				if spawnner.isDead:
+					p = Potions.Potion()
+					p.setDrawInfo(spawnner.x, spawnner.y)
+					functions.worldInventory.append(p)
 					dungeonObj.returnCurrentRoom().spawnnerlist.remove(spawnner)
 		if dungeonObj.returnCurrentRoom().hasSpawners:
 			for enemy in dungeonObj.returnCurrentRoom().enemylist:
@@ -85,23 +91,29 @@ def runGame():
 				enemy.drawCollider()
 				enemy.chaseObj(playerObj)
 				if playerObj.isAttacking:
-					if functions.objCollision(playerObj, enemy):
-						CombatSys.attack(playerObj, enemy)
+					CombatSys.attack(playerObj, enemy, playerObj.currentWeapon.spriteObj.rect, pygame.Rect(enemy.x, enemy.y, enemy.size, enemy.size))
 				if enemy.isDead:
+					playerObj.score += 1
 					dungeonObj.returnCurrentRoom().enemylist.remove(enemy)
-
 
 		if functions.worldInventory:
 			for item in functions.worldInventory:
 				print "%s" % item.name
 				item.drawAsLoot()
-					
-		#if functions.worldCoins > 0:
-		#	print "%s worldCoins" % (functions.worldCoins)
-
-		if functions.worldCoins > 0:
-			pygame.draw.circle(Display.DISPLAYSURF, Display.GOLD, (100, 100), 10)
-			print "%s worldCoins" % functions.worldCoins
+				if playerObj.pickup == True:
+					if functions.objCollision(playerObj, item) == True:
+						print "pickup %s" % (item.name)
+						functions.worldInventory.remove(item)
+						item.pickup()
+						
+		if functions.worldCoins:
+			for coin in functions.worldCoins:
+				coin.drawSelf()
+				if playerObj.pickup == True:
+					if functions.objCollision(playerObj, coin) == True:
+						print "pickup coin"
+						functions.worldCoins.remove(coin)
+						coin.pickup()
 			
 		# check if the player is alive
 		if playerObj.isDead:

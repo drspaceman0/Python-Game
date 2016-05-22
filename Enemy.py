@@ -57,6 +57,7 @@ class VariableEnemy:
 		self.drawDifferent = False
 		self.isDead = False
 		self.chase = True
+		self.shouldFlank = False
 		self.weaponx = 0
 		self.weapony = 0
 		self.dropRate = DROPRATE #number out of 100 for how often cool stuff drops
@@ -257,7 +258,7 @@ class VariableEnemy:
 		they can destroy before the enemy is there? Also, if we want to implement
 		friendlies, this is a start"""
 	def chaseObj(self, obj):
-		if self.chase:
+		if self.chase and self.shouldFlank == False:
 			if not self.collision(obj):
 				if obj.x > self.x: #Move right
 					self.x += self.speed
@@ -271,6 +272,16 @@ class VariableEnemy:
 				if obj.y < self.y: #Move up
 					self.y -= self.speed
 					self.weapony = self.y
+		if self.chase and self.shouldFlank == True:
+			if not self.collision(obj):
+				if obj.x > self.x:
+					if obj.y > self.y:
+						self.y -= self.speed
+						self.x += self.speed
+				if obj.x < self.x:
+					if obj.y > self.y:
+						self.y -= self.speed
+						self.x -= self.speed
 			else: #If colliding, attack!
 				#EnemyCombat.attack(self, obj)
 				EnemyCombat.attack(self, obj, pygame.Rect(self.x, self.y, self.size, self.size), pygame.Rect(obj.x, obj.y, obj.height, obj.width))
@@ -312,3 +323,9 @@ class VariableEnemy:
 		self.inventory.dropItems()
 		functions.worldCoins.append(self.coin)
 		self.coin.setDrawInfo(self.inventory.coins, self.x, self.y)
+		
+	def shouldFlankPlayer(self):
+		if numberOfEnemies > 2:
+			self.shouldFlank = True
+		else:
+			self.shouldFlank = False

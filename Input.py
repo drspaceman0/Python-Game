@@ -31,6 +31,8 @@ def checkForInputs(playerObj, menuObject):
 				playerObj.isAttacking = True
 			if event.key == K_e:
 				playerObj.pickup = True
+				playerObj.isTrading = True
+				print "attempting trade"
 			if event.key == K_BACKSPACE:
 				playerObj.isDead = True
 			if event.key == K_ESCAPE:
@@ -48,6 +50,7 @@ def checkForInputs(playerObj, menuObject):
 				playerObj.isAttacking = False
 			if event.key == K_e:
 				playerObj.pickup = False
+				playerObj.isTrading = False
 			if event.key == K_q:
 				playerObj.usePotion()
 		elif event.type == pygame.JOYAXISMOTION:

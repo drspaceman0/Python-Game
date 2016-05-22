@@ -1,8 +1,10 @@
+""" User input handling """
+
 import pygame
-import sys
 from pygame.locals import *
-import Game
-import Player
+
+import sys
+import logging
 
 # TODO: remapping of keybinds
 # This could be accomplished with genericized actions that map to the actual key
@@ -60,16 +62,9 @@ def checkForInputs(playerObj, menuObject):
 			print "button down"
 
 def terminate():
+	logging.info('Quit game')
 	pygame.quit()
 	sys.exit()
-
-def checkForQuit():
-	for event in pygame.event.get(pygame.QUIT): # get all the QUIT events
-		terminate() # terminate if any QUIT events are present
-	for event in pygame.event.get(pygame.KEYUP): # get all the KEYUP events
-		if event.key == pygame.K_ESCAPE:
-			terminate() # terminate if the KEYUP event was for the Esc key
-		pygame.event.post(event) # put the other KEYUP event objects back
 
 def listControllers(controllers):
 	print "Controller names:"

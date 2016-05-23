@@ -4,6 +4,7 @@ import math
 import Display
 import pygame
 import SpriteAnimation
+import functions
 
 #Weapon Defaults
 RANGE = 48 + 48 #swing across this many pixels collide with objects in range, hurt them
@@ -184,4 +185,4 @@ class MeleeWeapon:
 		Display.DISPLAYSURF.blit(self.text, (self.originx -5, (self.originy)))
 		
 	def pickup(self):
-		print "weapon pickup"
+		functions.playerInventory.append(self)

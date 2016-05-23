@@ -3,6 +3,7 @@ import sys
 from pygame.locals import *
 import Game
 import Player
+import functions
 
 # TODO: remapping of keybinds
 # This could be accomplished with genericized actions that map to the actual key
@@ -31,6 +32,9 @@ def checkForInputs(playerObj, menuObject):
 				playerObj.isAttacking = 1
 			if event.key == K_e:
 				playerObj.pickup = True
+				if functions.playerInventory:
+					playerObj.isTrading = True
+					print "attempting trade"
 			if event.key == K_BACKSPACE:
 				playerObj.isDead = True
 			if event.key == K_ESCAPE:
@@ -49,6 +53,9 @@ def checkForInputs(playerObj, menuObject):
 				playerObj.isAttacking = 0
 			if event.key == K_e:
 				playerObj.pickup = False
+				playerObj.isTrading = False
+			if event.key == K_q:
+				playerObj.usePotion()
 		elif event.type == pygame.JOYAXISMOTION:
 			print "axis motion"
 		elif event.type == pygame.JOYBALLMOTION:

@@ -57,6 +57,7 @@ class VariableEnemy:
 		self.drawDifferent = False
 		self.isDead = False
 		self.chase = True
+		self.shouldFlank = False
 		self.weaponx = 0
 		self.weapony = 0
 		self.dropRate = DROPRATE #number out of 100 for how often cool stuff drops
@@ -97,62 +98,12 @@ class VariableEnemy:
 			self.playerObj.score += 1
 			self.playerObj.dungeonObj.returnCurrentRoom().enemylist.remove(self)	
 	
-	def drawSelf(self):
-		if self.drawDifferent:
-			if self.noun == 1: #Swarm
-				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x+5, self.y-5), self.size/5)	#maybe change these
-				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x+5, self.y+5), self.size/5)	#to be random
-				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x, self.y), self.size/5)		#between 1-5
-				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x-5, self.y+5), self.size/5)	#for swarm movement
-				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x-5, self.y-5), self.size/5)
-		else:
-			pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x + self.size/2, self.y + self.size/2), self.size/2)
-			pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (self.x, self.y), (self.weaponx, self.weapony), 1)
-			for sprite in self.spriteList:
-				Display.DISPLAYSURF.blit(pygame.transform.scale(sprite, (self.size, self.size)), pygame.Rect(self.x, self.y, self.size, self.size))	
-			# draw verb animation
-			if self.verbAnimSpriteObj:
-				self.verbAnimSpriteObj.update(self.x - self.size/2, self.y - self.size/2, False, 0)
-				self.verbAnimSpriteObj.update(self.x + self.size/2, self.y - self.size/2, True, 0)
-
-		Display.DISPLAYSURF.blit(self.text, (self.x - self.size*2, (self.y - self.size*1.5)))
 
 	def collision(self, obj):
 		"""distance formula"""
 		if math.sqrt(pow(self.x - obj.x, 2) + pow(self.y - obj.y, 2)) <= self.range:
 			return True
 
-	"""Written so that the Enemy may chase any object, not just the player
-		in doing so, we allow them to chase objects, perhaps chests or loot
-		they can destroy before the enemy is there? Also, if we want to implement
-		friendlies, this is a start"""
-	def chaseObj(self, obj):
-		if self.chase:
-			if not self.collision(obj):
-				if obj.x > self.x: #Move right
-					self.x += self.speed
-					self.weaponx = self.x + self.range
-				if obj.x < self.x: #Move left
-					self.x -= self.speed
-					self.weaponx = self.x - self.range
-				if obj.y > self.y: #Move down
-					self.y += self.speed
-					self.weapony = self.y
-				if obj.y < self.y: #Move up
-					self.y -= self.speed
-					self.weapony = self.y
-			else: #If colliding, attack!
-				#EnemyCombat.attack(self, obj)
-				Combat.attack(self, obj, False)
-
-		self.moveDown = False
-		self.moveLeft = False
-		self.moveRight = False
-		self.moveUp = False
-		#INVENTORY STUFF
-		#self.inventory.printInventory()
-		
-	#def patrolX(startx, endx)
 			
 	def death(self):
 		functions.worldEnemiesKilled += 1
@@ -326,3 +277,113 @@ class VariableEnemy:
 	def updateName(self):
 		self.font = pygame.font.SysFont("monospace", 12)
 		self.text = self.font.render(self.name, 1, (0,0,0))	
+	
+	def drawSelf(self):
+		if self.drawDifferent:
+			if self.noun == 1: #Swarm
+				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x+5, self.y-5), self.size/5)	#maybe change these
+				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x+5, self.y+5), self.size/5)	#to be random
+				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x, self.y), self.size/5)		#between 1-5
+				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x-5, self.y+5), self.size/5)	#for swarm movement
+				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x-5, self.y-5), self.size/5)
+		else:
+			pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x + self.size/2, self.y + self.size/2), self.size/2)
+			pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (self.x, self.y), (self.weaponx, self.weapony), 1)
+			for sprite in self.spriteList:
+				Display.DISPLAYSURF.blit(pygame.transform.scale(sprite, (self.size, self.size)), pygame.Rect(self.x, self.y, self.size, self.size))	
+			# draw verb animation
+			if self.verbAnimSpriteObj:
+				self.verbAnimSpriteObj.update(self.x - self.size/2, self.y - self.size/2, False, 0)
+				self.verbAnimSpriteObj.update(self.x + self.size/2, self.y - self.size/2, True, 0)
+
+		Display.DISPLAYSURF.blit(self.text, (self.x - self.size*2, (self.y - self.size*1.5)))
+
+	def collision(self, obj):
+		"""distance formula"""
+		if math.sqrt(pow(self.x - obj.x, 2) + pow(self.y - obj.y, 2)) <= self.range:
+			return True
+
+	"""Written so that the Enemy may chase any object, not just the player
+		in doing so, we allow them to chase objects, perhaps chests or loot
+		they can destroy before the enemy is there? Also, if we want to implement
+		friendlies, this is a start"""
+	def chaseObj(self, obj):
+		self.shouldFlankPlayer()
+		if self.chase and self.shouldFlank == False:
+			#if not self.collision(obj):
+			if obj.x > self.x: #Move right
+				self.x += self.speed
+				self.weaponx = self.x + self.range
+			if obj.x < self.x: #Move left
+				self.x -= self.speed
+				self.weaponx = self.x - self.range
+			if obj.y > self.y: #Move down
+				self.y += self.speed
+				self.weapony = self.y
+			if obj.y < self.y: #Move up
+				self.y -= self.speed
+				self.weapony = self.y
+		if self.chase and self.shouldFlank == True:
+			if not self.collision(obj):
+				self.flank(obj)
+				
+		else: #If colliding, attack!
+				#EnemyCombat.attack(self, obj)
+				Combat.attack(self, self.playerObj, False)
+
+		self.moveDown = False
+		self.moveLeft = False
+		self.moveRight = False
+		self.moveUp = False
+		#INVENTORY STUFF
+		#self.inventory.printInventory()
+		
+	#def patrolX(startx, endx)
+			
+	def flank(self, obj):
+		if obj.x+20 > self.x:
+			self.x += self.speed
+		if obj.x-20 < self.x:
+			self.x -= self.speed
+		if obj.y+20 > self.y:
+			self.y += self.speed
+		if obj.y-20 < self.y:
+			self.y -= self.speed
+			
+	def death(self):
+		functions.worldEnemiesKilled += 1
+		self.isDead = True
+		self.dropLoot()
+		"I died"
+		
+	def updateStatsToCurrentWeapon(self):
+		self.range += self.currentWeapon.range
+		self.damage += self.currentWeapon.damage
+
+	def drawCollider(self):
+		""" This circle will be our collision box where we draw our attack from """
+		pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.collisionx, self.collisiony), self.size+2, 1)
+				
+	def updateColliders(self):
+		self.collisionx = self.x
+		self.collisiony = self.y
+		
+	def isPlayer(self):
+		return False
+		
+		
+	def dropLoot(self):
+		self.currentWeapon.dropWeapon(self.x, self.y)
+		print "Dropped"
+		self.inventory.dropItems()
+		functions.worldCoins.append(self.coin)
+		self.coin.setDrawInfo(self.inventory.coins, self.x, self.y)
+		
+	def shouldFlankPlayer(self):
+		'''if VariableEnemy.numberOfEnemies > 2:
+			chance = random.randint(1, 10)
+			if chance % 9 == 0:
+				self.shouldFlank = True
+			else:
+				self.shouldFlank = False'''
+		pass

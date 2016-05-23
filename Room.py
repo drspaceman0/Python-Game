@@ -8,6 +8,7 @@ import Spawnner
 import functions
 import Combat
 import NPC
+import Shopkeeper
 
 DOOR_WIDTH = Display.TILE_SIZE
 DOOR_LENGTH = Display.TILE_SIZE
@@ -41,6 +42,7 @@ class Room:
 	def __init__(self, dungeonObject, color, numSpawners):
 		self.NPCObject = NPC.NPC(356, Display.GAME_SCREEN_START + 56, self, "Hey! you found me! youre a dick")
 		self.winNPC = NPC.NPC(356, Display.GAME_SCREEN_START + 56, self, "You killed all the spawners. How could you do that? They were endangered. I hope you're happy. Dick")
+		self.merchant = Shopkeeper.Shopkeeper(356, Display.GAME_SCREEN_START + 300, self, "Hello friend! Let's trade!" )
 		self.text = ""
 		self.color = color
 		self.width = Display.SCREEN_WIDTH
@@ -75,6 +77,7 @@ class Room:
 			self.NPCObject.update()
 		if self.dungeonObject.returnTotalNumSpawners() == 0:
 			self.winNPC.update()
+			self.merchant.update()
 		
 		self.checkPlayerDoorCollision()
 	

@@ -9,7 +9,6 @@ class Spawnner():
 	def __init__(self, playerObj, arr):
 		self.name = "GateToHELL!"
 		self.container = arr
-		self.counter = 0
 		self.x = 400
 		self.y = 400
 		self.collisionx = self.x
@@ -18,6 +17,7 @@ class Spawnner():
 		self.size = 80
 		self.rect = pygame.Rect(self.x, self.y, self.size, self.size)
 		self.health = 50
+		self.count = 0
 		self.spawnRate = 1 # per second
 		self.isDead = False
 		self.font = pygame.font.SysFont("monospace", 12)
@@ -33,14 +33,14 @@ class Spawnner():
 			
 	def death(self):
 		self.isDead = True
-		print "Dastroyed"
 		
 	def update(self):
 		if self.health > 0:
-			self.counter += 1
-			if self.counter == 90:
-				self.container.append(functions.spawnEnemy(self.playerObj, self.x, self.y))
-				self.counter = 0
+			if functions.gameTimer == 1:
+				self.count += 1
+				if self.count == 3:
+					self.container.append(functions.spawnEnemy(self.playerObj, self.x, self.y))
+					self.count = 0
 		if self.health <= 0:
 			print "Gate to hell closed!"
 		

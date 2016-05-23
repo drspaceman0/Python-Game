@@ -67,8 +67,11 @@ def runGame():
 	dungeonObj.playerObj = playerObj
 	dungeonObj.menuObject = menuObject
 
+
 	
 	while True:
+		if functions.gameTimer == 30:
+			functions.gameTimer = 0
 		# check for key input
 		Input.checkForInputs(playerObj, menuObject)
 		dungeonObj.update() 
@@ -85,6 +88,7 @@ def runGame():
 				if spawnner.isDead:
 					p = Potions.Potion()
 					p.setDrawInfo(spawnner.x, spawnner.y)
+					p.setToHealthPotion()
 					functions.worldInventory.append(p)
 					dungeonObj.returnCurrentRoom().spawnnerlist.remove(spawnner)
 		if dungeonObj.returnCurrentRoom().hasSpawners:
@@ -119,6 +123,7 @@ def runGame():
 		# draw stuff		
 		pygame.display.update()
 		Display.FPSCLOCK.tick(Display.FPS)
+		functions.gameTimer += 1
 
 #
 #	END GAME

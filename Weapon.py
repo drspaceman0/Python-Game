@@ -7,25 +7,24 @@ import SpriteAnimation
 import functions
 
 #Weapon Defaults
-RANGE = 20 #swing across this many pixels collide with objects in range, hurt them
+RANGE = 48 + 48 #swing across this many pixels collide with objects in range, hurt them
 DAMAGE = 1 #Base Damage dealt by weapon
 EFFECT = "none"
 WM = WeaponLabelMaker.WeaponLabelMaker()
 
 class MeleeWeapon:
-	default_sprite = pygame.image.load('images\weapon_swing.png')
+	default_sprite1 = pygame.transform.scale(pygame.image.load('images\weapon_swing1.png'), (RANGE, RANGE))
+	default_sprite2 = pygame.transform.scale(pygame.image.load('images\weapon_swing2.png'), (RANGE, RANGE))
+	default_sprite3 = pygame.transform.scale(pygame.image.load('images\weapon_swing3.png'), (RANGE, RANGE))
+	sprite_list_right = [pygame.transform.rotate(default_sprite1, 0), pygame.transform.rotate(default_sprite2, 0), pygame.transform.rotate(default_sprite3, 0)]
+	sprite_list_down = [pygame.transform.rotate(default_sprite1, 270), pygame.transform.rotate(default_sprite2, 270), pygame.transform.rotate(default_sprite3, 270)]
+	sprite_list_left = [pygame.transform.rotate(default_sprite1, 180), pygame.transform.rotate(default_sprite2, 180), pygame.transform.rotate(default_sprite3, 180)]
+	sprite_list_up = [pygame.transform.rotate(default_sprite1, 90), pygame.transform.rotate(default_sprite2, 90), pygame.transform.rotate(default_sprite3, 90)]
 
-	sprite_list_right = [pygame.transform.rotate(default_sprite, 0), pygame.transform.rotate(default_sprite, 0)]
-	sprite_list_down = [pygame.transform.rotate(default_sprite, 270), pygame.transform.rotate(default_sprite, 270)]
-	sprite_list_left = [pygame.transform.rotate(default_sprite, 180), pygame.transform.rotate(default_sprite, 180)]
-	sprite_list_up = [pygame.transform.rotate(default_sprite, 90), pygame.transform.rotate(default_sprite, 90)]
-	
-	
-	
 	
 	def __init__(self):
-		self.sprite = self.default_sprite
-		self.spriteObj = SpriteAnimation.SpriteAnimation(self.sprite_list_left)
+		self.sprite = self.default_sprite1
+		self.spriteObj = SpriteAnimation.SpriteAnimation(self.sprite_list_left, 1)
 		self.range = RANGE
 		self.damage = DAMAGE
 		self.hasEffect = False

@@ -34,7 +34,7 @@ def checkForInputs(playerObj, menuObject):
 			if event.key == K_x:
 				menuObject.activateText()
 			if event.key == K_SPACE:
-				playerObj.isAttacking = True
+				playerObj.isAttacking = 1
 			if event.key == K_e:
 				playerObj.pickup = True
 				if functions.playerInventory:
@@ -51,10 +51,11 @@ def checkForInputs(playerObj, menuObject):
 				playerObj.moveRight= False
 			if event.key == K_DOWN:
 				playerObj.moveDown= False
+				playerObj.currentWeapon.spriteObj.resetSpriteList()
 			if event.key == K_UP:
 				playerObj.moveUp= False
 			if event.key == K_SPACE:
-				playerObj.isAttacking = False
+				playerObj.isAttacking = 0
 			if event.key == K_e:
 				playerObj.pickup = False
 				playerObj.isTrading = False

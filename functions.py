@@ -28,13 +28,13 @@ def objCollision(obj1, obj2):
 		return True
 
 def rectCollision(rect1, rect2):
-	if rect1.colliderect(rect2):
+	if rect1.x >= rect2.x and rect1.x <= rect2.x + rect2.width and rect1.y >= rect2.y and rect1.y <= rect2.y + rect2.height or rect2.x >= rect1.x and rect2.x <= rect1.x + rect1.width and rect2.y >= rect1.y and rect2.y <= rect1.y + rect1.height:
 		return True
 
-def spawnEnemy(x,y):
+def spawnEnemy(playerObj, x, y):
 	logging.debug('spawnEnemy')
-	return Enemy.VariableEnemy(x,y)
-	
+	return Enemy.VariableEnemy(playerObj, x, y)
+
 def moveCoinFromWorldToPlayerInv(coin):
 	#worldInventory.remove(coin)
 	if coin not in playerCoins:

@@ -12,7 +12,7 @@ import functions
 
 #ADJECTIVE BASE TRAITS
 SPEED = 2 #playerObj/2
-SIZE = Display.TILE_SIZE/2
+SIZE = Display.TILE_SIZE
 HEALTH = 10
 ATTACK  = "melee"
 DAMAGE = 1 #1/20th of player starting health
@@ -20,7 +20,6 @@ DROPRATE = 1
 RANGE = 30
 COLOR = Display.BLACK
 nameGenerator = EnemyLabelMaker.EnemyLabelMaker()
-EnemyCombat = Combat.Combat()
 
 class VariableEnemy:
 	enemyList = []
@@ -36,7 +35,7 @@ class VariableEnemy:
 	polluting_sprite = [pygame.image.load('images\\polluting1.png'), pygame.image.load('images\\polluting2.png')]
 
 	#Note that this has default values if we don't pass it stuff. The "stuff" comes from the spawner calling it, allowing for types of spawners
-	def __init__(self, locationx, locationy, adjective = random.randint(0, len(nameGenerator.adjectives)-1), noun = random.randint(0, len(nameGenerator.nouns)-1), verb = random.randint(0, len(nameGenerator.verbs)-1)):
+	def __init__(self, playerObj, locationx, locationy, adjective = random.randint(0, len(nameGenerator.adjectives)-1), noun = random.randint(0, len(nameGenerator.nouns)-1), verb = random.randint(0, len(nameGenerator.verbs)-1)):
 		VariableEnemy.enemyList.append(self)
 		VariableEnemy.numberOfEnemies += 1
 		self.adjective = adjective
@@ -48,6 +47,7 @@ class VariableEnemy:
 		self.collisionx = self.x
 		self.collisiony = self.y
 		self.size = SIZE
+		self.rect = pygame.Rect(self.x, self.y, self.size, self.size)
 		self.range = RANGE
 		self.speed = SPEED
 		self.health = HEALTH
@@ -65,8 +65,9 @@ class VariableEnemy:
 		self.font = pygame.font.SysFont("monospace", 12)
 		self.text = self.font.render(self.name, 1, (0,0,0))
 		self.spriteList = [self.outline_sprite]
-		self.spriteObj = SpriteAnimation.SpriteAnimation([self.outline_sprite, self.outline_sprite])
+		self.spriteObj = SpriteAnimation.SpriteAnimation([self.outline_sprite, self.outline_sprite], 10)
 		self.verbAnimSpriteObj = None
+		self.playerObj = playerObj
 		self.items = []
 		self.inventory = 0
 		#Functions To update self before spawning
@@ -86,6 +87,54 @@ class VariableEnemy:
 		
 	def printName(self):
 		print "%s" % (self.name)
+		
+	def update(self):
+		self.rect = pygame.Rect(self.x, self.y, self.size, self.size)
+		self.drawSelf()
+		self.updateColliders()
+		#self.drawCollider()
+		self.chaseObj(self.playerObj)
+		if self.isDead == True:
+			self.playerObj.score += 1
+			self.playerObj.dungeonObj.returnCurrentRoom().enemylist.remove(self)	
+	
+
+	def collision(self, obj):
+		"""distance formula"""
+		if math.sqrt(pow(self.x - obj.x, 2) + pow(self.y - obj.y, 2)) <= self.range:
+			return True
+
+			
+	def death(self):
+		functions.worldEnemiesKilled += 1
+		self.isDead = True
+		self.dropLoot()
+		"I died"
+	
+
+			
+	def updateStatsToCurrentWeapon(self):
+		self.range += self.currentWeapon.range
+		self.damage += self.currentWeapon.damage
+
+	def drawCollider(self):
+		""" This circle will be our collision box where we draw our attack from """
+		pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.collisionx, self.collisiony), self.size+2, 1)
+				
+	def updateColliders(self):
+		self.collisionx = self.x
+		self.collisiony = self.y
+		
+	def isPlayer(self):
+		return False
+		
+		
+	def dropLoot(self):
+		self.currentWeapon.dropWeapon(self.x, self.y)
+		print "Dropped"
+		self.inventory.dropItems()
+		functions.worldCoins.append(self.coin)
+		self.coin.setDrawInfo(self.inventory.coins, self.x, self.y)
 		
 	def getAdjectiveTraits(self):
 		'''Balance teseting required, 
@@ -214,11 +263,11 @@ class VariableEnemy:
 			self.speed -= 1
 			
 		elif self.verb == 2: #Polluting
-			self.verbAnimSpriteObj = SpriteAnimation.SpriteAnimation(self.polluting_sprite)
+			self.verbAnimSpriteObj = SpriteAnimation.SpriteAnimation(self.polluting_sprite, 10)
 			self.attack = "poision"
 		
 		elif self.verb == 3: #Disgusting
-			self.verbAnimSpriteObj = SpriteAnimation.SpriteAnimation(self.disgusting_sprite)
+			self.verbAnimSpriteObj = SpriteAnimation.SpriteAnimation(self.disgusting_sprite, 10)
 			pass #Player fear level?	
 
 		else:
@@ -238,14 +287,15 @@ class VariableEnemy:
 				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x-5, self.y+5), self.size/5)	#for swarm movement
 				pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x-5, self.y-5), self.size/5)
 		else:
-			pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x, self.y), self.size)
+			pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x + self.size/2, self.y + self.size/2), self.size/2)
 			pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (self.x, self.y), (self.weaponx, self.weapony), 1)
 			for sprite in self.spriteList:
-				Display.DISPLAYSURF.blit(pygame.transform.scale(sprite, (self.size * 2, self.size * 2)), pygame.Rect(self.x - self.size, self.y - self.size, self.size, self.size))	
+				Display.DISPLAYSURF.blit(pygame.transform.scale(sprite, (self.size, self.size)), pygame.Rect(self.x, self.y, self.size, self.size))	
 			# draw verb animation
 			if self.verbAnimSpriteObj:
-				self.verbAnimSpriteObj.update(self.x - self.size*2, self.y - self.size, False, 0)
-				self.verbAnimSpriteObj.update(self.x + self.size, self.y - self.size, True, 0)
+				self.verbAnimSpriteObj.update(self.x - self.size/2, self.y - self.size/2, False, 0)
+				self.verbAnimSpriteObj.update(self.x + self.size/2, self.y - self.size/2, True, 0)
+
 		Display.DISPLAYSURF.blit(self.text, (self.x - self.size*2, (self.y - self.size*1.5)))
 
 	def collision(self, obj):
@@ -279,7 +329,7 @@ class VariableEnemy:
 				
 		else: #If colliding, attack!
 				#EnemyCombat.attack(self, obj)
-				EnemyCombat.attack(self, obj, pygame.Rect(self.x, self.y, self.size, self.size), pygame.Rect(obj.x, obj.y, obj.height, obj.width))
+				Combat.attack(self, self.playerObj, False)
 
 		self.moveDown = False
 		self.moveLeft = False

@@ -49,13 +49,7 @@ class Room:
 		self.height = Display.SCREEN_HEIGHT
 		self.x = 0
 		self.y = 0
-		self.hasSpawners = False
-		for i in xrange(0, numSpawners):
-			self.hasSpawners = True
-			self.CombatSys = Combat.Combat()
-			self.spawnnerlist = []
-			self.enemylist = []
-			self.spawnnerlist.append(Spawnner.Spawnner(self.enemylist))
+		
 			
 		#x, y, True if player enters this door, connected room, 
 		
@@ -69,6 +63,12 @@ class Room:
 		self.index = dungeonObject.numRooms
 		self.playerObj = dungeonObject.playerObj
 		self.dungeonObject = dungeonObject
+		self.hasSpawners = False
+		self.spawnnerlist = []
+		self.enemylist = []
+		for i in xrange(0, numSpawners):
+			self.hasSpawners = True
+			self.spawnnerlist.append(Spawnner.Spawnner(self.playerObj, self.enemylist))
 		Dungeon.numRooms += 1
 	
 	def update(self):

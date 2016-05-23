@@ -6,7 +6,7 @@ import functions
 
 class Spawnner():
 	
-	def __init__(self, arr):
+	def __init__(self, playerObj, arr):
 		self.name = "GateToHELL!"
 		self.container = arr
 		self.x = 400
@@ -14,19 +14,21 @@ class Spawnner():
 		self.collisionx = self.x
 		self.collisiony = self.y
 		self.color = Display.YELLOW
-		self.size = 40
+		self.size = 80
+		self.rect = pygame.Rect(self.x, self.y, self.size, self.size)
 		self.health = 50
 		self.count = 0
 		self.spawnRate = 1 # per second
 		self.isDead = False
 		self.font = pygame.font.SysFont("monospace", 12)
 		self.text = self.font.render(self.name, 1, (0,0,0))
+		self.playerObj = playerObj
 		#self.spriteObj = 
 			
 			
 	def drawSpawnner(self):
-		pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x, self.y), self.size)
-		Display.DISPLAYSURF.blit(self.text, (self.x - self.size-10, (self.y - self.size-20)))
+		pygame.draw.circle(Display.DISPLAYSURF, self.color, (self.x + self.size/2, self.y + self.size/2), self.size/2)
+		Display.DISPLAYSURF.blit(self.text, (self.x - self.size/2-10, (self.y - self.size/2-20)))
 			
 			
 	def death(self):
@@ -37,7 +39,7 @@ class Spawnner():
 			if functions.gameTimer == 1:
 				self.count += 1
 				if self.count == 3:
-					self.container.append(functions.spawnEnemy(self.x, self.y))
+					self.container.append(functions.spawnEnemy(self.playerObj, self.x, self.y))
 					self.count = 0
 		if self.health <= 0:
 			print "Gate to hell closed!"

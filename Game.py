@@ -49,7 +49,6 @@ def attack(count, attacker, defender): #TODO: where is this being used, and why 
 	pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (attacker.collisionx, attacker.collisiony), (attacker.weaponx, attacker.weapony+count), 1)
 
 def runGame():
-	CombatSys = Combat.Combat()
 	playerObj = Player.Player("Hero")
 	audioObj = Audio.GameAudio()
 	audioObj.load_music('music\Damnation.mp3')

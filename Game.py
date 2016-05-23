@@ -85,6 +85,7 @@ def runGame():
 				if spawnner.isDead:
 					p = Potions.Potion()
 					p.setDrawInfo(spawnner.x, spawnner.y)
+					p.setToHealthPotion()
 					functions.worldInventory.append(p)
 					dungeonObj.returnCurrentRoom().spawnnerlist.remove(spawnner)
 		if dungeonObj.returnCurrentRoom().hasSpawners:

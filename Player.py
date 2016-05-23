@@ -6,6 +6,7 @@ import math
 import Weapon
 import Combat
 import Enemy
+import functions
 
 # player variables defaults
 PLAYER_X = 0
@@ -14,7 +15,7 @@ PLAYER_WIDTH = 48
 PLAYER_HEIGHT = 48
 PLAYER_SPEED = 15
 
-PlayerCombat = Combat.Combat()
+
 class Player:
 	player_down = [pygame.image.load('images\player_down1.png'), pygame.image.load('images\player_down2.png')]
 	player_up = [pygame.image.load('images\player_up1.png'), pygame.image.load('images\player_up2.png')]
@@ -24,6 +25,8 @@ class Player:
 	def __init__(self):
 		self.x = Display.TILE_SIZE
 		self.y = Display.GAME_SCREEN_START + Display.TILE_SIZE
+		self.rect = pygame.Rect(self.x, self.y, PLAYER_WIDTH, PLAYER_HEIGHT)
+		
 		self.colliderx = self.x #playersize/2
 		self.collidery = self.y
 		self.collisionx = self.x
@@ -41,23 +44,25 @@ class Player:
 		self.moveDown = False
 		self.moveLeft = False
 		self.moveRight = False
-		self.isAttacking = False
+		self.isAttacking = 0
 		self.pickup = False
 		self.width = PLAYER_WIDTH
 		self.height = PLAYER_HEIGHT
 		self.color = Display.RED
-		self.spriteObj = SpriteAnimation.SpriteAnimation(self.player_down)
+		self.spriteObj = SpriteAnimation.SpriteAnimation(self.player_down, 10)
 		self.dungeonObj = None
 		self.currRoomObj = None
 		self.isDead = False
 		self.currentWeapon = Weapon.MeleeWeapon()
 		self.updateToWeaponStats()
+		self.attackRect =  pygame.Rect(self.x, self.y, self.currentWeapon.range, self.currentWeapon.range)
 		self.circle = pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.collisionx, self.collisiony), self.range, 1)
 	
 	
 	def update(self):
 		# update room if need be
 		self.currRoomObj = self.dungeonObj.returnCurrentRoom()
+		self.updateRects()
 		self.movePlayer()
 		# update sprites
 		self.updateSpriteList()
@@ -67,12 +72,23 @@ class Player:
 		#self.checkForDoorCollision()
 		self.collisionx = self.x+24
 		self.collisiony = self.y+24
-		if self.isAttacking:
+		if self.isAttacking == 1:
+			self.updateAttackSprite()
 			self.attack()
-
+	
+	def updateRects(self):
+		self.rect = pygame.Rect(self.x, self.y, PLAYER_WIDTH, PLAYER_HEIGHT)
+		
+		
+	def attack(self):
+		for enemy in self.dungeonObj.returnCurrentRoom().enemylist:
+			Combat.attack(self, enemy, True)
+		for spawnner in self.dungeonObj.returnCurrentRoom().spawnnerlist:
+			Combat.attack(self, spawnner, True)
+		
 	
 	def movePlayer(self):
-		if self.isAttacking:
+		if self.isAttacking == 1:
 			return
 		if self.moveRight and self.x + PLAYER_SPEED < Display.SCREEN_WIDTH - PLAYER_WIDTH:
 			self.x += PLAYER_SPEED
@@ -89,7 +105,6 @@ class Player:
 		
 	
 	def updateSpriteList(self):
-		pygame.draw.rect(Display.DISPLAYSURF, Display.BLACK, (self.x, self.y, self.width, self.height), 1) 
 		if self.direction == 'right' and self.spriteObj.images != self.player_right:
 			self.spriteObj.changeSprites(self.player_right)
 			self.currentWeapon.spriteObj.changeSprites(self.currentWeapon.sprite_list_right)
@@ -157,15 +172,22 @@ class Player:
 	
 	def isPlayer(self):
 		return True
-		
-	def attack(self):		
-		count = 1
+
+	def updateAttackSprite(self):	
+		if self.currentWeapon.spriteObj.loops == 1:
+			self.currentWeapon.spriteObj.loops = 0
+			self.isAttacking = 2
+			return
 		if self.direction == 'left':
-			self.currentWeapon.spriteObj.update(self.x - Display.TILE_SIZE, self.y - Display.TILE_SIZE , False, 0)
+			self.attackRect = pygame.Rect(self.x - self.currentWeapon.range + self.width, self.y - self.currentWeapon.range + self.width, self.currentWeapon.range, self.currentWeapon.range)
+			self.currentWeapon.spriteObj.update(self.x - self.currentWeapon.range + self.width, self.y - self.currentWeapon.range + self.width, False, 0)
 		elif self.direction == 'right':
+			self.attackRect = pygame.Rect(self.x, self.y, self.currentWeapon.range, self.currentWeapon.range)
 			self.currentWeapon.spriteObj.update(self.x , self.y , False, 0)
 		elif self.direction == 'up':
-			self.currentWeapon.spriteObj.update(self.x , self.y - Display.TILE_SIZE, False, 0)
+			self.attackRect = pygame.Rect(self.x , self.y - self.currentWeapon.range + self.height, self.currentWeapon.range, self.currentWeapon.range)
+			self.currentWeapon.spriteObj.update(self.x , self.y - self.currentWeapon.range + self.height, False, 0)
 		elif self.direction == 'down':
-			self.currentWeapon.spriteObj.update(self.x - Display.TILE_SIZE, self.y  , False, 0)
+			self.attackRect = pygame.Rect(self.x - self.currentWeapon.range + self.width, self.y, self.currentWeapon.range, self.currentWeapon.range)
+			self.currentWeapon.spriteObj.update(self.x - self.currentWeapon.range + self.width, self.y, False, 0)
 		

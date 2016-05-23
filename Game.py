@@ -60,7 +60,6 @@ def attack(count, attacker, defender):
 	
 def runGame():
 
-	CombatSys = Combat.Combat()
 	playerObj = Player.Player()
 	dungeonObj = Room.Dungeon(playerObj, 10)
 	menuObject = Menu.Menu(playerObj, dungeonObj)
@@ -83,9 +82,6 @@ def runGame():
 			for spawnner in dungeonObj.returnCurrentRoom().spawnnerlist:
 				spawnner.drawSpawnner()
 				spawnner.update()
-				if playerObj.isAttacking:
-					if functions.objCollision(playerObj, spawnner):
-						CombatSys.attack(playerObj, spawnner, playerObj.currentWeapon.spriteObj.rect, pygame.Rect(spawnner.x, spawnner.y, spawnner.size, spawnner	.size))
 				if spawnner.isDead:
 					p = Potions.Potion()
 					p.setDrawInfo(spawnner.x, spawnner.y)
@@ -93,15 +89,7 @@ def runGame():
 					dungeonObj.returnCurrentRoom().spawnnerlist.remove(spawnner)
 		if dungeonObj.returnCurrentRoom().hasSpawners:
 			for enemy in dungeonObj.returnCurrentRoom().enemylist:
-				enemy.drawSelf()
-				enemy.updateColliders()
-				enemy.drawCollider()
-				enemy.chaseObj(playerObj)
-				if playerObj.isAttacking:
-					CombatSys.attack(playerObj, enemy, playerObj.currentWeapon.spriteObj.rect, pygame.Rect(enemy.x, enemy.y, enemy.size, enemy.size))
-				if enemy.isDead == True:
-					playerObj.score += 1
-					dungeonObj.returnCurrentRoom().enemylist.remove(enemy)
+				enemy.update()
 					 
 
 		if functions.worldInventory:

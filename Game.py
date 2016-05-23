@@ -1,15 +1,14 @@
-'''
+"""
 Move with left right up down arrow keys
-Shoot with a s d w keys
-'''
+"""
 
 import pygame
 from pygame import joystick
+
 import sys
 import os
-import math
-import random
-from pygame.locals import *
+import logging
+
 import Display
 import SpriteAnimation
 import Player
@@ -18,57 +17,50 @@ import Room
 import Enemy
 import Weapon
 import Combat
-import functions
-import time
 import Spawnner
 import Menu
 import Inventory
-import Beats
+import Audio
+import functions
 import Potions
-#		
-# START GAME
-#	
-items = []
-
-
 
 
 def main():
-	# If any controllers are connected, initialize and enumerate all of them
-	controllers = []
 	if joystick.get_count():
+		logging.info('Controllers found')
 		print joystick.get_count(), "joysticks detected"
-		joystick.init()
+		joystick.init() # initialize all connected controllers
 		controllers = [joystick.Joystick(x) for x in range(joystick.get_count())]
-		Input.listControllers(controllers) # For testing purposes
+		Input.listControllers(controllers)
 			
 	gameNotOver = True	
 	while gameNotOver:
 		gameNotOver = runGame()
 	print "GAME OVER"
+	logging.info('GAME OVER')
 	functions.printPlayerStats()
 	os.execl(sys.executable, sys.executable, *sys.argv) # Glorious hack
 
 def restart():
+	logging.debug('restart')
 	main()
 		
-def attack(count, attacker, defender):
+def attack(count, attacker, defender): #TODO: where is this being used, and why isn't defender being used in it?
 	pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (attacker.collisionx, attacker.collisiony), (attacker.weaponx, attacker.weapony+count), 1)
 
-	'''We should consider getting a draw down, 
-	background, then loot, then spawners, then enemies, then player?'''
-	
 def runGame():
+	playerObj = Player.Player("Hero")
+	audioObj = Audio.GameAudio()
+	audioObj.load_music('music\Damnation.mp3')
+	#audioObj.play_next_song()
 
-	playerObj = Player.Player()
 	dungeonObj = Room.Dungeon(playerObj, 10)
 	menuObject = Menu.Menu(playerObj, dungeonObj)
 	playerObj.dungeonObj = dungeonObj # temporary, need a better way to pass dungeon info to playerobj
 	dungeonObj.playerObj = playerObj
 	dungeonObj.menuObject = menuObject
+	logging.debug('Finished initializations for runGame')
 
-
-	
 	while True:
 		if functions.gameTimer == 30:
 			functions.gameTimer = 0
@@ -80,6 +72,8 @@ def runGame():
 		
 		playerObj.update()
 		playerObj.updateColliders()
+
+		audioObj.update()
 		
 		if dungeonObj.returnCurrentRoom().hasSpawners:
 			for spawnner in dungeonObj.returnCurrentRoom().spawnnerlist:
@@ -94,30 +88,30 @@ def runGame():
 		if dungeonObj.returnCurrentRoom().hasSpawners:
 			for enemy in dungeonObj.returnCurrentRoom().enemylist:
 				enemy.update()
-					 
+
 
 		if functions.worldInventory:
 			for item in functions.worldInventory:
-				#print "%s" % (item.name)
+				print "%s" % item.name
 				item.drawAsLoot()
-				if playerObj.pickup == True:
-					if functions.objCollision(playerObj, item) == True:
-						print "pickup %s" % (item.name)
+				if playerObj.pickup:
+					if functions.objCollision(playerObj, item):
+						print "pickup %s" % item.name
 						functions.worldInventory.remove(item)
 						item.pickup()
 						
 		if functions.worldCoins:
 			for coin in functions.worldCoins:
 				coin.drawSelf()
-				if playerObj.pickup == True:
-					if functions.objCollision(playerObj, coin) == True:
+				if playerObj.pickup:
+					if functions.objCollision(playerObj, coin):
 						print "pickup coin"
 						functions.worldCoins.remove(coin)
 						coin.pickup()
-						
 			
 		# check if the player is alive
 		if playerObj.isDead:
+			logging.info('Player %s is dead', playerObj.name)
 			return False
 
 		# draw stuff		
@@ -125,11 +119,8 @@ def runGame():
 		Display.FPSCLOCK.tick(Display.FPS)
 		functions.gameTimer += 1
 
-#
-#	END GAME
-#
 
 if __name__ == '__main__':
+	logging.basicConfig(filename='Game.log',level=logging.DEBUG) # add filemode='w' to overwrite previous log files
 	main()
-		
-#TODO: redirect stderr to file for logging/debugging purposes
+	logging.debug('Exited main')

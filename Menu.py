@@ -1,7 +1,6 @@
 import pygame
-import sys
-import math
-import random
+import logging
+
 import Display
 import SpriteAnimation
 import Player
@@ -13,7 +12,6 @@ import Room
 import functions
 
 class Menu:
-
 	#info bar stuff
 	infobar_sprite = pygame.image.load('images\\infobar.png')
 	full_heart_sprite = pygame.image.load('images\\100_heart.png')
@@ -24,6 +22,7 @@ class Menu:
 	# weapons
 	axe_sprite = pygame.image.load('images\\axe.png')
 
+	# Dialogue
 	dialogue_sprite = pygame.image.load('images\\dialoguebox.png')
 
 	def __init__(self, playerObj, dungeonObj):
@@ -31,21 +30,21 @@ class Menu:
 		self.playerObj = playerObj
 		self.dungeonObj = dungeonObj
 		self.showText = False
-		
-		
+		self.logger = logging.getLogger(__name__)
+		self.logger.debug('Menu Initialized')
+
 	def update(self):
 		self.drawMenu()
 		self.drawHearts()
 		self.drawMap()
 		if self.dialogue != "":
+			self.logger.debug('Displaying dialogue: %s', self.dialogue)
 			self.displayDialogue()
-	
+
 	def activateText(self):
-		if self.showText == False:
-			self.showText = True
-		else:
-			self.showText = True
-	
+		self.showText = True
+		self.logger.debug('Activating menu')
+
 	def displayDialogue(self):
 		pygame.draw.rect(Display.DISPLAYSURF, Display.RED, pygame.Rect(0, Display.DIALOGUE_BOX_START, Display.SCREEN_WIDTH, Display.GAME_SCREEN_START))
 		Display.DISPLAYSURF.blit(self.dialogue_sprite, pygame.Rect(0, Display.DIALOGUE_BOX_START, Display.SCREEN_WIDTH, Display.GAME_SCREEN_START))	
@@ -56,7 +55,6 @@ class Menu:
 			Display.DISPLAYSURF.blit(text, (15, Display.DIALOGUE_BOX_START + 10 + 15*x/61))
 
 	def drawMenu(self):
-		
 		Display.DISPLAYSURF.blit(self.infobar_sprite, pygame.Rect(0, 0, Display.SCREEN_WIDTH, Display.GAME_SCREEN_START))
 		self.drawHearts()
 		Display.DISPLAYSURF.blit(self.axe_sprite, pygame.Rect(280, 18, Display.TILE_SIZE, Display.TILE_SIZE))

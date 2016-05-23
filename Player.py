@@ -1,4 +1,6 @@
 import pygame
+import logging
+
 import Display
 import SpriteAnimation
 import Room
@@ -22,7 +24,7 @@ class Player:
 	player_right = [pygame.image.load('images\player_right1.png'), pygame.image.load('images\player_right2.png')]
 	player_left = [pygame.transform.flip(pygame.image.load('images\player_right1.png'), True, False), pygame.transform.flip(pygame.image.load('images\player_right2.png'), True, False)]
 	
-	def __init__(self):
+	def __init__(self, player_name):
 		self.x = Display.TILE_SIZE
 		self.y = Display.GAME_SCREEN_START + Display.TILE_SIZE
 		self.rect = pygame.Rect(self.x, self.y, PLAYER_WIDTH, PLAYER_HEIGHT)
@@ -31,7 +33,7 @@ class Player:
 		self.collidery = self.y
 		self.collisionx = self.x
 		self.collisiony = self.y
-		self.name = "Hero"
+		self.name = player_name
 		self.score = 0
 		self.health = 20
 		self.stamina = 10
@@ -59,7 +61,8 @@ class Player:
 		self.updateToWeaponStats()
 		self.attackRect =  pygame.Rect(self.x, self.y, self.currentWeapon.range, self.currentWeapon.range)
 		self.circle = pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.collisionx, self.collisiony), self.range, 1)
-	
+		self.logger = logging.getLogger(__name__)
+		self.logger.debug('Player %s Initialized', self.name)
 	
 	def update(self):
 		# update room if need be
@@ -142,7 +145,6 @@ class Player:
 		
 	def collision(self, x, y):
 		if math.sqrt(pow(self.x - x, 2) + pow(self.y - y, 2)) < 30:
-
 			return True
 
 	def getQuadrant(self):
@@ -160,6 +162,7 @@ class Player:
 				return 4
 
 	def death(self):
+		self.logger.info('Player %s is dead', self.name)
 		self.isDead = True
 		print "Hero died..."
 		print "Game Over"
@@ -171,8 +174,9 @@ class Player:
 	def updateColliders(self):
 		self.collisionx = self.x+24
 		self.collisiony = self.y+24
-	
-	def isPlayer(self):
+
+	@staticmethod
+	def isPlayer():
 		return True
 
 	def updateAttackSprite(self):	

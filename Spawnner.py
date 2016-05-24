@@ -19,6 +19,7 @@ class Spawnner():
 		self.health = 50
 		self.count = 0
 		self.spawnRate = 1 # per second
+		self.knocksBack = False
 		self.isDead = False
 		self.font = pygame.font.SysFont("monospace", 12)
 		self.text = self.font.render(self.name, 1, (0,0,0))

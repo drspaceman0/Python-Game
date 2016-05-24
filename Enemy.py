@@ -58,6 +58,7 @@ class VariableEnemy:
 		self.isDead = False
 		self.chase = True
 		self.shouldFlank = False
+		self.knocksBack = True
 		self.weaponx = 0
 		self.weapony = 0
 		self.dropRate = DROPRATE #number out of 100 for how often cool stuff drops

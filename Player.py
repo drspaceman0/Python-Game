@@ -50,6 +50,7 @@ class Player:
 		self.isAttacking = 0
 		self.isTrading = False
 		self.pickup = False
+		self.knocksBack = True
 		self.width = PLAYER_WIDTH
 		self.height = PLAYER_HEIGHT
 		self.color = Display.RED
@@ -83,7 +84,6 @@ class Player:
 	
 	def updateRects(self):
 		self.rect = pygame.Rect(self.x, self.y, PLAYER_WIDTH, PLAYER_HEIGHT)
-		
 		
 	def attack(self):
 		for enemy in self.dungeonObj.returnCurrentRoom().enemylist:
@@ -182,9 +182,10 @@ class Player:
 	def updateAttackSprite(self):	
 		if self.currentWeapon.spriteObj.loops == 1:
 			self.currentWeapon.spriteObj.loops = 0
-			self.isAttacking = 2
+			self.isAttacking = 0
 			return
 		if self.direction == 'left':
+			print "LEFTTTTTTTTTTTTT"
 			self.attackRect = pygame.Rect(self.x - self.currentWeapon.range + self.width, self.y - self.currentWeapon.range + self.width, self.currentWeapon.range, self.currentWeapon.range)
 			self.currentWeapon.spriteObj.update(self.x - self.currentWeapon.range + self.width, self.y - self.currentWeapon.range + self.width, False, 0)
 		elif self.direction == 'right':

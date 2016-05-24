@@ -50,6 +50,9 @@ class MeleeWeapon:
 			self.name = WM.lladjectives[self.adjective] + " " + WM.llmaterial[self.material] + " " + WM.llnouns[self.noun]
 		self.font = pygame.font.SysFont("monospace", 12)
 		self.text = self.font.render(self.name, 1, (0,0,0))
+		self.getAdjectiveTraits()
+		self.getMaterialTraits()
+		self.getNounTraits()
 	
 	
 	#This adds special "effects" - magic, bleed, etc. if the drop rate is above 3
@@ -71,20 +74,24 @@ class MeleeWeapon:
 		
 		#Between 2 and 11 are default values - handled in ELSE
 		elif self.adjective == 12: #Rotten 
+			self.hasEffect = True
 			self.effect = "poison"
 			self.dot = 1
 		elif self.adjective == 13: #Moldy
+			self.hasEffect = True
 			self.effect = "poison"
 			self.dot = 1
 		elif self.adjective == 14: #Sharp
+			self.hasEffect = True
 			self.effect = "bleed"
 			self.dot = 1
 		elif self.adjective == 15: #Ancient
+			self.hasEffect = True
 			self.effect = "magic"
 			self.dot = 1
 			
 		else:
-			pass #Default values are fine
+			pass
 	
 	def getNounTraits(self):
 		if self.noun == 0: #Straightsword
@@ -99,7 +106,7 @@ class MeleeWeapon:
 			self.speed += 3
 			self.hasEffect = True
 			self.effect = "bleed"
-			self.dot = .5
+			self.dot = 1
 		
 		elif self.noun == 3: #mace
 			self.damage += 2 

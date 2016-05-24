@@ -59,6 +59,8 @@ class VariableEnemy:
 		self.chase = True
 		self.shouldFlank = False
 		self.knocksBack = True
+		self.dot = False
+		self.dotCount = 3
 		self.weaponx = 0
 		self.weapony = 0
 		self.dropRate = DROPRATE #number out of 100 for how often cool stuff drops
@@ -97,7 +99,9 @@ class VariableEnemy:
 		self.chaseObj(self.playerObj)
 		if self.isDead == True:
 			self.playerObj.score += 1
-			self.playerObj.dungeonObj.returnCurrentRoom().enemylist.remove(self)	
+			self.playerObj.dungeonObj.returnCurrentRoom().enemylist.remove(self)
+		if self.dot == True:
+			self.takeEffectDamage()
 	
 
 	def collision(self, obj):
@@ -388,3 +392,16 @@ class VariableEnemy:
 			else:
 				self.shouldFlank = False'''
 		pass
+
+		
+		
+	def damageOverTime(self, damage):
+		self.dot = True
+		
+	def takeEffectDamage(self):
+		if functions.gameTimer == 1:
+			print "Enemy takes effect damage of 1!"
+			self.health -= 1
+			self.dotCount -= 1
+			if self.dotCount == 0:
+				self.dot == False		

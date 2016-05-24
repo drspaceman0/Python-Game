@@ -51,6 +51,8 @@ class Player:
 		self.isTrading = False
 		self.pickup = False
 		self.knocksBack = True
+		self.dot = False
+		self.dotCount = 3
 		self.width = PLAYER_WIDTH
 		self.height = PLAYER_HEIGHT
 		self.color = Display.RED
@@ -81,6 +83,8 @@ class Player:
 		if self.isAttacking == 1:
 			self.updateAttackSprite()
 			self.attack()
+		if self.dot == True:
+			self.takeEffectDamage()
 	
 	def updateRects(self):
 		self.rect = pygame.Rect(self.x, self.y, PLAYER_WIDTH, PLAYER_HEIGHT)
@@ -182,6 +186,7 @@ class Player:
 				if self.health == 20:
 					print "Well, that was dumb..."
 				self.health += usedPotion.size
+				self.dot = False
 				if self.health >= 20:
 					self.health = 20
 			elif usedPotion.isStamina == True:
@@ -193,4 +198,15 @@ class Player:
 			print "Used a %s! %s potions left..." % (usedPotion.name, len(functions.playerPotions))
 		else:
 			print "No potions... buy some from NPC friendly for the low low price of 100 Gold!"
+			
+	def damageOverTime(self, damage):
+		self.dot = True
+		
+	def takeEffectDamage(self):
+		if functions.gameTimer == 1:
+			print "Hero takes effect damage of 1!"
+			self.dotCount -= 1
+			self.health -= 1
+			if self.dotCount <= 0:
+				self.dot = False
 

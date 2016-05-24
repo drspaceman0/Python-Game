@@ -53,4 +53,24 @@ def printPlayerStats():
 	print "%s gold held!" % total
 	print "%s enemies slain by Hero" % worldEnemiesKilled
 	print "Hero sucked %s times!" % worldDeaths
+	
+def updateItems(player):
+	if worldInventory:
+		for item in worldInventory:
+				item.drawAsLoot()
+				if player.pickup:
+					if objCollision(player, item):
+						print "Hero picked %s up!" % item.name
+						worldInventory.remove(item)
+						item.pickup()
+						
+def updateCoins(player):
+	if worldCoins:
+		for coin in worldCoins:
+			coin.drawSelf()
+			if player.pickup:
+				if objCollision(player, coin):
+					print "Hero acquired %s gold!" % (coin.value)
+					worldCoins.remove(coin)
+					coin.pickup()
 

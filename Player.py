@@ -128,38 +128,16 @@ class Player:
 		#Draw Weapon
 		#pygame.draw.aaline(Display.DISPLAYSURF, Display.BLACK, (self.collisionx, self.collisiony), (self.weaponx, self.weapony), 1)
 
-
-	def moveToOtherSide(self):
-		if self.moveRight and self.x >= Display.SCREEN_WIDTH:
-			self.x = 0
-		if self.moveLeft and self.x <= 0 - PLAYER_WIDTH:
-			self.x = Display.SCREEN_WIDTH
-		if self.moveDown and self.y >= Display.SCREEN_HEIGHT:
-			self.y = 0
-		if self.moveUp and self.y <= 0 - PLAYER_HEIGHT:
-			self.y = Display.SCREEN_HEIGHT
+	
 
 	def changePlayerPosition(self, x, y):
 		self.x = x
 		self.y = y
-		
+	
 	def collision(self, x, y):
 		if math.sqrt(pow(self.x - x, 2) + pow(self.y - y, 2)) < 30:
 			return True
 
-	def getQuadrant(self):
-			#Check quadrant 1
-			if self.x < Display.QUADRANTX and self.y < Display.QUADRANTY:
-				return 1
-			#Check quadrant 2
-			if self.x > Display.QUADRANTX and self.y < Display.QUADRANTY:
-				return 2
-			#Check Q 3
-			if self.x < Display.QUADRANTX and self.y > Display.QUADRANTY:
-				return 3
-			#Check Q 4
-			if self.x > Display.QUADRANTX and self.y > Display.QUADRANTY:
-				return 4
 
 	def death(self):
 		self.logger.info('Player %s is dead', self.name)
@@ -185,7 +163,6 @@ class Player:
 			self.isAttacking = 0
 			return
 		if self.direction == 'left':
-			print "LEFTTTTTTTTTTTTT"
 			self.attackRect = pygame.Rect(self.x - self.currentWeapon.range + self.width, self.y - self.currentWeapon.range + self.width, self.currentWeapon.range, self.currentWeapon.range)
 			self.currentWeapon.spriteObj.update(self.x - self.currentWeapon.range + self.width, self.y - self.currentWeapon.range + self.width, False, 0)
 		elif self.direction == 'right':

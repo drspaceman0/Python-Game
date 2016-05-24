@@ -57,7 +57,7 @@ def runGame():
 	dungeonObj = Room.Dungeon(playerObj, 10)
 	menuObject = Menu.Menu(playerObj, dungeonObj)
 	playerObj.dungeonObj = dungeonObj # temporary, need a better way to pass dungeon info to playerobj
-	dungeonObj.playerObj = playerObj
+	dungeonObj.playerObj = playerObj	#This line and the last are hella confusing....
 	dungeonObj.menuObject = menuObject
 	logging.debug('Finished initializations for runGame')
 
@@ -67,12 +67,9 @@ def runGame():
 		# check for key input
 		Input.checkForInputs(playerObj, menuObject)
 		dungeonObj.update() 
-		dungeonObj.update() # duplicate?
 		menuObject.update()
-		
 		playerObj.update()
 		playerObj.updateColliders()
-
 		audioObj.update()
 		
 		if dungeonObj.returnCurrentRoom().hasSpawners:
@@ -80,34 +77,14 @@ def runGame():
 				spawnner.drawSpawnner()
 				spawnner.update()
 				if spawnner.isDead:
-					p = Potions.Potion()
-					p.setDrawInfo(spawnner.x, spawnner.y)
-					p.setToHealthPotion()
-					functions.worldInventory.append(p)
 					dungeonObj.returnCurrentRoom().spawnnerlist.remove(spawnner)
 		if dungeonObj.returnCurrentRoom().hasSpawners:
 			for enemy in dungeonObj.returnCurrentRoom().enemylist:
 				enemy.update()
 
 
-		if functions.worldInventory:
-			for item in functions.worldInventory:
-				print "%s" % item.name
-				item.drawAsLoot()
-				if playerObj.pickup:
-					if functions.objCollision(playerObj, item):
-						print "pickup %s" % item.name
-						functions.worldInventory.remove(item)
-						item.pickup()
-						
-		if functions.worldCoins:
-			for coin in functions.worldCoins:
-				coin.drawSelf()
-				if playerObj.pickup:
-					if functions.objCollision(playerObj, coin):
-						print "pickup coin"
-						functions.worldCoins.remove(coin)
-						coin.pickup()
+		functions.updateItems(playerObj)
+		functions.updateCoins(playerObj)
 			
 		# check if the player is alive
 		if playerObj.isDead:

@@ -3,6 +3,7 @@ import random
 import pygame
 import Display
 import functions
+import Potions
 
 class Spawnner():
 	
@@ -33,6 +34,10 @@ class Spawnner():
 			
 			
 	def death(self):
+		p = Potions.Potion()
+		p.setDrawInfo(self.x, self.y)
+		p.setToHealthPotion()
+		functions.worldInventory.append(p)
 		self.isDead = True
 		
 	def update(self):

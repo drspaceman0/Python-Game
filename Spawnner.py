@@ -49,5 +49,7 @@ class Spawnner():
 					self.count = 0
 		if self.health <= 0:
 			print "Gate to hell closed!"
-		
+	
+	def damageOverTime(self, playerObj):
+		print "Spawner immune to DOT attacks"
 		

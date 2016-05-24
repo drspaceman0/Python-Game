@@ -39,7 +39,6 @@ def checkForInputs(playerObj, menuObject):
 				playerObj.pickup = True
 				if functions.playerInventory:
 					playerObj.isTrading = True
-					print "attempting trade"
 			if event.key == K_BACKSPACE:
 				playerObj.isDead = True
 			if event.key == K_ESCAPE:

@@ -9,6 +9,8 @@ def attack(attacker, defender, isPlayerAttacking):
 	# use player's attack rectangle 
 	if attacker.name == "Hero":
 		if functions.rectCollision(attacker.attackRect, defender.rect):
+			if checkForEffect(attacker):
+				applyEffect(attacker, defender)
 			defender.health -= attacker.damage
 			knockBack(attacker, defender)
 			print "%s hit %s for %s damage..." % (attacker.name, defender.name, attacker.damage)
@@ -18,6 +20,8 @@ def attack(attacker, defender, isPlayerAttacking):
 			defender.death()
 	else:
 		if functions.rectCollision(attacker.rect, defender.rect):
+			if checkForEffect(attacker):
+				applyEffect(attacker, defender)
 			defender.health -= attacker.damage
 			knockBack(attacker, defender)
 			print "%s hit %s for %s damage..." % (attacker.name, defender.name, attacker.damage)
@@ -37,4 +41,15 @@ def knockBack(attacker, defender):
 		elif attacker.y > defender.y: #attacker is bellow
 			defender.y -= attacker.damage + 100 - defender.size
 
+def checkForEffect(attacker):
+	if attacker.currentWeapon.hasEffect == True:
+		return True
+		
+		
+def applyEffect(attacker, defender):
+	effect = attacker.currentWeapon.effect
+	if effect == "poison" or effect == "bleed":
+		defender.damageOverTime(attacker.currentWeapon.dot)
+	else:
+		pass #for now
 		

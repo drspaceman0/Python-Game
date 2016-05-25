@@ -8,10 +8,10 @@ import Potions
 class Spawnner():
 	
 	def __init__(self, playerObj, arr):
-		self.name = "GateToHELL!"
+		self.name = "Gate To HELL!"
 		self.container = arr
-		self.x = 400
-		self.y = 400
+		self.x = 300
+		self.y = 300
 		self.collisionx = self.x
 		self.collisiony = self.y
 		self.color = Display.YELLOW
@@ -25,6 +25,9 @@ class Spawnner():
 		self.font = pygame.font.SysFont("monospace", 12)
 		self.text = self.font.render(self.name, 1, (0,0,0))
 		self.playerObj = playerObj
+		self.adjective = random.randint(0, len(Enemy.nameGenerator.adjectives)-1)
+		self.noun = random.randint(0, len(Enemy.nameGenerator.nouns)-1)
+		self.verb = random.randint(0, len(Enemy.nameGenerator.verbs)-1)
 		#self.spriteObj = 
 			
 			
@@ -45,7 +48,7 @@ class Spawnner():
 			if functions.gameTimer == 1:
 				self.count += 1
 				if self.count == 3:
-					self.container.append(functions.spawnEnemy(self.playerObj, self.x, self.y))
+					self.container.append(functions.spawnEnemy(self.playerObj, self.x, self.y, self.adjective, self.noun, self.verb))
 					self.count = 0
 		if self.health <= 0:
 			print "Gate to hell closed!"

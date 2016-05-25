@@ -1,11 +1,16 @@
 """ Functions, variables, and objects shared between many classes stored here"""
 
+
+from pygame.locals import *
+
+import sys
+import logging
 import math
 import pygame
-import logging
 
 import Enemy
 import Display
+
 
 
 # Keep track of dead enemies loot and whatnot.
@@ -22,6 +27,28 @@ worldDeaths = 0
 # "Timer"
 gameTimer = 0
 
+#Game Menu
+paused = False
+def pauseMenu():
+
+	font = pygame.font.SysFont("comicsansms",115)
+	text = font.render("Pause", 1, (0,0,0))	
+    
+	while pauseMenu:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+				quit()
+			elif event.type == KEYUP:
+				if event.key == K_p:
+					return
+					
+		Display.DISPLAYSURF.fill(Display.WHITE)
+		Display.DISPLAYSURF.blit(text, (100, 200))
+		pygame.display.update()
+		Display.FPSCLOCK
+	
+
 
 def objCollision(obj1, obj2):
 	if math.sqrt(pow(obj1.collisionx - obj2.collisionx, 2) + pow(obj1.collisiony - obj2.collisiony, 2)) < obj1.range:
@@ -31,9 +58,9 @@ def rectCollision(rect1, rect2):
 	if rect1.x >= rect2.x and rect1.x <= rect2.x + rect2.width and rect1.y >= rect2.y and rect1.y <= rect2.y + rect2.height or rect2.x >= rect1.x and rect2.x <= rect1.x + rect1.width and rect2.y >= rect1.y and rect2.y <= rect1.y + rect1.height:
 		return True
 
-def spawnEnemy(playerObj, x, y):
+def spawnEnemy(playerObj, x, y, verb, noun, adjective):
 	logging.debug('spawnEnemy')
-	return Enemy.VariableEnemy(playerObj, x, y)
+	return Enemy.VariableEnemy(playerObj, x, y, verb, noun, adjective)
 
 def moveCoinFromWorldToPlayerInv(coin):
 	#worldInventory.remove(coin)
@@ -73,4 +100,5 @@ def updateCoins(player):
 					print "Hero acquired %s gold!" % (coin.value)
 					worldCoins.remove(coin)
 					coin.pickup()
+					
 

@@ -58,6 +58,8 @@ def checkForInputs(playerObj, menuObject):
 			if event.key == K_e:
 				playerObj.pickup = False
 				playerObj.isTrading = False
+			if event.key == K_p:
+				functions.paused = True
 			if event.key == K_q:
 				playerObj.usePotion()
 		elif event.type == pygame.JOYAXISMOTION:

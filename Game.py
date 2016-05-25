@@ -62,6 +62,9 @@ def runGame():
 	logging.debug('Finished initializations for runGame')
 
 	while True:
+		if functions.paused == True:
+			functions.pauseMenu()
+			functions.paused = False
 		if functions.gameTimer == 30:
 			functions.gameTimer = 0
 		# check for key input

@@ -26,13 +26,13 @@ class VariableEnemy:
 	numberOfEnemies = 0
 
 	# sprite library
-	outline_sprite = pygame.image.load('images\enemy_outline.png')
-	friendly_sprite = pygame.image.load('images\\friendly.png')
-	fierce_sprite = pygame.image.load('images\\fierce.png')
-	perceptive_sprite = pygame.image.load('images\\perceptive.png')
-	rich_sprite = pygame.image.load('images\\rich.png')
-	disgusting_sprite = [pygame.image.load('images\\flys1.png'), pygame.image.load('images\\flys2.png')]
-	polluting_sprite = [pygame.image.load('images\\polluting1.png'), pygame.image.load('images\\polluting2.png')]
+	outline_sprite 		= functions.load_image('enemy_outline.png')
+	friendly_sprite 	= functions.load_image('friendly.png')
+	fierce_sprite 		= functions.load_image('fierce.png')
+	perceptive_sprite 	= functions.load_image('perceptive.png')
+	rich_sprite 		= functions.load_image('rich.png')
+	disgusting_sprite 	= [functions.load_image('flys1.png'), functions.load_image('flys2.png')]
+	polluting_sprite 	= [functions.load_image('polluting1.png'), functions.load_image('polluting2.png')]
 
 	#Note that this has default values if we don't pass it stuff. The "stuff" comes from the spawner calling it, allowing for types of spawners
 	def __init__(self, playerObj, locationx, locationy, adjective = random.randint(0, len(nameGenerator.adjectives)-1), noun = random.randint(0, len(nameGenerator.nouns)-1), verb = random.randint(0, len(nameGenerator.verbs)-1)):
@@ -404,4 +404,4 @@ class VariableEnemy:
 			self.health -= 1
 			self.dotCount -= 1
 			if self.dotCount == 0:
-				self.dot == False		
+				self.dot = False

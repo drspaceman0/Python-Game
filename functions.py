@@ -1,16 +1,18 @@
 """ Functions, variables, and objects shared between many classes stored here"""
 
 
-from pygame.locals import *
+#from pygame.locals import *
 
-import sys
 import logging
 import math
 import pygame
+from os import path
 
-import Enemy
-import Display
+#import Enemy
+#import Display
 
+
+IMAGE_DIR = 'images'
 
 
 # Keep track of dead enemies loot and whatnot.
@@ -30,7 +32,7 @@ gameTimer = 0
 #Game Menu
 paused = False
 def pauseMenu():
-
+	import Display
 	font = pygame.font.SysFont("comicsansms",115)
 	text = font.render("Pause", 1, (0,0,0))	
     
@@ -39,8 +41,8 @@ def pauseMenu():
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				quit()
-			elif event.type == KEYUP:
-				if event.key == K_p:
+			elif event.type == pygame.KEYUP:
+				if event.key == pygame.K_p:
 					return
 					
 		Display.DISPLAYSURF.fill(Display.WHITE)
@@ -60,7 +62,8 @@ def rectCollision(rect1, rect2):
 
 def spawnEnemy(playerObj, x, y, verb, noun, adjective):
 	logging.debug('spawnEnemy')
-	return Enemy.VariableEnemy(playerObj, x, y, verb, noun, adjective)
+	from Enemy import VariableEnemy
+	return VariableEnemy(playerObj, x, y, verb, noun, adjective)
 
 def moveCoinFromWorldToPlayerInv(coin):
 	#worldInventory.remove(coin)
@@ -100,5 +103,6 @@ def updateCoins(player):
 					print "Hero acquired %s gold!" % (coin.value)
 					worldCoins.remove(coin)
 					coin.pickup()
-					
 
+def load_image(image_name):
+	return pygame.image.load(path.join(IMAGE_DIR, image_name))

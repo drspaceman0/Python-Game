@@ -1,11 +1,6 @@
-import math
-import Display
-import pygame
 import functions
 
-
-
-def attack(attacker, defender, isPlayerAttacking):
+def attack(attacker, defender, isPlayerAttacking): # TODO: iWhere is isPlayerAttacking being used
 	# use player's attack rectangle 
 	if attacker.name == "Hero":
 		if functions.rectCollision(attacker.attackRect, defender.rect):

@@ -1,6 +1,4 @@
-import functions
 import random
-import Enemy
 import Potions
 import Weapon
 import functions
@@ -8,7 +6,6 @@ import functions
 ENEMYDROPRATE = 1
 CHESTDROPRATE = 5
 BOSSDROPRATE = 10
-
 
 
 class Inventory:
@@ -19,8 +16,8 @@ class Inventory:
 	def __init__(self, droprate, inventory):
 		self.items = []
 		self.coins = 0
-		if (len(inventory) >0):
-			for item in (inventory):
+		if inventory:
+			for item in inventory:
 				self.items.append(item)
 				
 		self.coins = random.randint(int(droprate*2), int(droprate*3))
@@ -40,11 +37,11 @@ class Inventory:
 	
 	
 	def printInventory(self):
-		if (len(self.items) > 0):
-			for item in (self.items):
-				print "%s, in inventory" % (item.name)
+		if self.items:
+			for item in self.items:
+				print "%s, in inventory" % item.name
 		if self.coins > 0:
-			print "riches! %s" % (self.coins)
+			print "riches! %s" % self.coins
 	
 	#Pass it global container
 	def dropItems(self):
@@ -52,5 +49,3 @@ class Inventory:
 			for item in self.items:
 				functions.worldInventory.append(item)
 				#functions.worldCoins += self.coins
-import Game
-				

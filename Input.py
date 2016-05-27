@@ -6,8 +6,6 @@ from pygame.locals import *
 import sys
 import logging
 
-import Game
-import Player
 import functions
 
 # TODO: remapping of keybinds

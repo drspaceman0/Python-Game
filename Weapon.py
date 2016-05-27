@@ -1,6 +1,5 @@
 import WeaponLabelMaker
 import random
-import math
 import Display
 import pygame
 import SpriteAnimation
@@ -13,9 +12,9 @@ EFFECT = "none"
 WM = WeaponLabelMaker.WeaponLabelMaker()
 
 class MeleeWeapon:
-	default_sprite1 = pygame.transform.scale(pygame.image.load('images\weapon_swing1.png'), (RANGE, RANGE))
-	default_sprite2 = pygame.transform.scale(pygame.image.load('images\weapon_swing2.png'), (RANGE, RANGE))
-	default_sprite3 = pygame.transform.scale(pygame.image.load('images\weapon_swing3.png'), (RANGE, RANGE))
+	default_sprite1 = pygame.transform.scale(functions.load_image('weapon_swing1.png'), (RANGE, RANGE))
+	default_sprite2 = pygame.transform.scale(functions.load_image('weapon_swing2.png'), (RANGE, RANGE))
+	default_sprite3 = pygame.transform.scale(functions.load_image('weapon_swing3.png'), (RANGE, RANGE))
 	sprite_list_right = [pygame.transform.rotate(default_sprite1, 0), pygame.transform.rotate(default_sprite2, 0), pygame.transform.rotate(default_sprite3, 0)]
 	sprite_list_down = [pygame.transform.rotate(default_sprite1, 270), pygame.transform.rotate(default_sprite2, 270), pygame.transform.rotate(default_sprite3, 270)]
 	sprite_list_left = [pygame.transform.rotate(default_sprite1, 180), pygame.transform.rotate(default_sprite2, 180), pygame.transform.rotate(default_sprite3, 180)]

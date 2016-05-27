@@ -3,11 +3,9 @@ import logging
 
 import Display
 import SpriteAnimation
-import Room
 import math
 import Weapon
 import Combat
-import Enemy
 import functions
 
 # player variables defaults
@@ -19,10 +17,10 @@ PLAYER_SPEED = 15
 
 
 class Player:
-	player_down = [pygame.image.load('images\player_down1.png'), pygame.image.load('images\player_down2.png')]
-	player_up = [pygame.image.load('images\player_up1.png'), pygame.image.load('images\player_up2.png')]
-	player_right = [pygame.image.load('images\player_right1.png'), pygame.image.load('images\player_right2.png')]
-	player_left = [pygame.transform.flip(pygame.image.load('images\player_right1.png'), True, False), pygame.transform.flip(pygame.image.load('images\player_right2.png'), True, False)]
+	player_down = [functions.load_image('player_down1.png'), functions.load_image('player_down2.png')]
+	player_up = [functions.load_image('player_up1.png'), functions.load_image('player_up2.png')]
+	player_right = [functions.load_image('player_right1.png'), functions.load_image('player_right2.png')]
+	player_left = [pygame.transform.flip(functions.load_image('player_right1.png'), True, False), pygame.transform.flip(functions.load_image('player_right2.png'), True, False)]
 	
 	def __init__(self, player_name):
 		self.x = Display.TILE_SIZE

@@ -2,28 +2,21 @@ import pygame
 import logging
 
 import Display
-import SpriteAnimation
-import Player
-import Weapon
-import functions
-import time
-import Spawnner
-import Room
-import functions
+from functions import load_image
 
 class Menu:
 	#info bar stuff
-	infobar_sprite = pygame.image.load('images\\infobar.png')
-	full_heart_sprite = pygame.image.load('images\\100_heart.png')
-	threequarters_heart_sprite = pygame.image.load('images\\75_heart.png')
-	half_heart_sprite = pygame.image.load('images\\50_heart.png')
-	onequarter_heart_sprite = pygame.image.load('images\\25_heart.png')
+	infobar_sprite 				= load_image('infobar.png')
+	full_heart_sprite 			= load_image('100_heart.png')
+	threequarters_heart_sprite 	= load_image('75_heart.png')
+	half_heart_sprite 			= load_image('50_heart.png')
+	onequarter_heart_sprite 	= load_image('25_heart.png')
 
 	# weapons
-	axe_sprite = pygame.image.load('images\\axe.png')
+	axe_sprite 					= load_image('axe.png')
 
 	# Dialogue
-	dialogue_sprite = pygame.image.load('images\\dialoguebox.png')
+	dialogue_sprite 			= load_image('dialoguebox.png')
 
 	def __init__(self, playerObj, dungeonObj):
 		self.dialogue = ""

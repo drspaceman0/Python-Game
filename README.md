@@ -11,4 +11,4 @@ Attack using spacebar
 ## System requirements
 [Python 2.7](https://www.python.org/downloads/release/python-2711/)
 
-[Pygame 1.9.2](http://www.pygame.org/download.shtml)
+[Pygame 1.9.1](http://www.pygame.org/download.shtml)

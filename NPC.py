@@ -1,17 +1,11 @@
-import pygame, sys
-import math
-import random
+import pygame
+
 import Display
-import SpriteAnimation
-import Player
-import Weapon
 import functions
-import time
-import Spawnner
-import Room
+
 
 class NPC:
-	NPC_sprite = pygame.image.load('images\\friendly.png')
+	NPC_sprite = functions.load_image('friendly.png')
 	
 	def __init__(self, x, y, roomObj, text):
 		self.dialogue = text
@@ -21,8 +15,7 @@ class NPC:
 		self.height = 48
 		self.range = 48
 		self.roomObj = roomObj
-		pass
-		
+
 	def update(self):
 		self.drawNPC()
 		if self.checkPlayerCollision():
@@ -33,8 +26,6 @@ class NPC:
 	def checkPlayerCollision(self):
 		if functions.objCollision(self, self.roomObj.playerObj):
 			return True
-		else:
-			return False
 	
 	def drawNPC(self):
 		pygame.draw.rect(Display.DISPLAYSURF, Display.BLUE, pygame.Rect(self.collisionx, self.collisiony, self.width, self.height))

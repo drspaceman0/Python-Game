@@ -1,28 +1,21 @@
 """
-Move with left right up down arrow keys
+Primary game execution logic
 """
 
 import pygame
 from pygame import joystick
 
-import sys
-import os
+from sys import executable, argv
+from os import execl
 import logging
 
 import Display
-import SpriteAnimation
 import Player
 import Input
 import Room
-import Enemy
-import Weapon
-import Combat
-import Spawnner
 import Menu
-import Inventory
 import Audio
 import functions
-import Potions
 
 
 def main():
@@ -39,7 +32,7 @@ def main():
 	print "GAME OVER"
 	logging.info('GAME OVER')
 	functions.printPlayerStats()
-	os.execl(sys.executable, sys.executable, *sys.argv) # Glorious hack
+	execl(executable, executable, *argv) # Glorious hack
 
 def restart():
 	logging.debug('restart')
@@ -62,7 +55,7 @@ def runGame():
 	logging.debug('Finished initializations for runGame')
 
 	while True:
-		if functions.paused == True:
+		if functions.paused:
 			functions.pauseMenu()
 			functions.paused = False
 		if functions.gameTimer == 30:

@@ -1,12 +1,10 @@
 import pygame
-import math
-import Game
+
 import Display
 import Player
 import random
 import Spawnner
 import functions
-import Combat
 import NPC
 import Shopkeeper
 

@@ -1,9 +1,11 @@
 import pygame
+
 import Display
 import functions
 import random
 
-class Coin():
+
+class Coin:
 		
 	def __init__(self):
 		self.value = 0
@@ -11,13 +13,10 @@ class Coin():
 		self.collisionx = 0
 		self.collisiony = 0
 		self.shouldDraw = True
-
 		
 	def drawSelf(self):
-		if self.shouldDraw == True:
+		if self.shouldDraw:
 			pygame.draw.circle(Display.DISPLAYSURF, Display.GOLD, (self.collisionx, self.collisiony), self.size)
-		else:
-			pass
 	
 	def setDrawInfo(self, value, x, y):
 		self.value = value
@@ -26,8 +25,6 @@ class Coin():
 		self.collisiony = y+random.randint(-20,20) 
 		
 	def pickup(self):
-		if self.shouldDraw == True:
+		if self.shouldDraw:
 			functions.moveCoinFromWorldToPlayerInv(self)
 			self.shouldDraw = False
-		else:
-			pass

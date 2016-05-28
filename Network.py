@@ -24,11 +24,9 @@ class ChatMessage(messages.BaseMessage):
     MessageTypeID = MSGID + 10
     MessageValues = {
         'player_from'   : 'varstring',
+        'player_to'     : 'varstring',
         'message'       : 'varstring',
-        'timestamp'     : 'varstring'
+        'timestamp'     : 'varstring' # length could probably be specified using string <len> for this
     }
 messages.message_factory.add(ChatMessage)
-
-
-
 

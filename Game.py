@@ -43,7 +43,7 @@ def attack(count, attacker, defender): #TODO: where is this being used, and why 
 
 def runGame():
 	playerObj = Player.Player("Hero")
-	audioObj = Audio.GameAudio()
+	audioObj = Audio.GameAudio() # TODO: ensure this is getting initialized only once
 	audioObj.load_music('music\Damnation.mp3')
 	#audioObj.play_next_song()
 

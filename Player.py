@@ -22,7 +22,7 @@ class Player:
 	player_right = [functions.load_image('player_right1.png'), functions.load_image('player_right2.png')]
 	player_left = [pygame.transform.flip(functions.load_image('player_right1.png'), True, False), pygame.transform.flip(functions.load_image('player_right2.png'), True, False)]
 	
-	def __init__(self, player_name):
+	def __init__(self, player_name="Hero"):
 		self.x = Display.TILE_SIZE
 		self.y = Display.GAME_SCREEN_START + Display.TILE_SIZE
 		self.rect = pygame.Rect(self.x, self.y, PLAYER_WIDTH, PLAYER_HEIGHT)

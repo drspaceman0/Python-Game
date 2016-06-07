@@ -13,6 +13,8 @@ def attack(attacker, defender, isPlayerAttacking): # TODO: iWhere is isPlayerAtt
 		if defender.health <= 0:
 			print "%s has been struck dead!" % (defender.name)
 			defender.death()
+			attacker.experience += 4
+			print "4 EXP gained!"
 	else:
 		if functions.rectCollision(attacker.rect, defender.rect):
 			if checkForEffect(attacker):

@@ -31,7 +31,7 @@ class Game:
 		# Initialize Input and Audio
 		self.inputObj.initialize()
 		self.audioObj.load_music('music\Damnation.mp3')
-
+		self.audioObj.play_next_song()
 		# Run the game
 		gameNotOver = True
 		while gameNotOver:

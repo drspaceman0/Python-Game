@@ -32,10 +32,14 @@ class Player:
 		self.collisionx = self.x
 		self.collisiony = self.y
 		self.name = player_name
+		self.level = 1
+		self.experience = 0
 		self.score = 0
 		self.health = 20
+		self.maxHealth = 20 #use for leveling and stuff
 		self.stamina = 10
-		self.damage = 1
+		self.maxStamina = 10 #use for leveling and stuff
+		self.damage = 10
 		self.range = 50
 		self.size = 48
 		self.weaponx = 0
@@ -78,9 +82,13 @@ class Player:
 		#self.checkForDoorCollision()
 		self.collisionx = self.x+24
 		self.collisiony = self.y+24
+		#check for leveling
+		self.checkExperience()
+		#Check if the player is attacking
 		if self.isAttacking == 1:
 			self.updateAttackSprite()
 			self.attack()
+		#Perform additional combat checks
 		if self.dot == True:
 			self.takeEffectDamage()
 	
@@ -181,18 +189,18 @@ class Player:
 		if functions.playerPotions:
 			usedPotion = functions.playerPotions.pop()
 			if usedPotion.isHealth == True:
-				if self.health == 20:
+				if self.health == self.maxHealth:
 					print "Well, that was dumb..."
 				self.health += usedPotion.size
 				self.dot = False
-				if self.health >= 20:
-					self.health = 20
+				if self.health >= self.maxHealth:
+					self.health = self.maxHealth
 			elif usedPotion.isStamina == True:
-				if self.stamina == 10:
+				if self.stamina == maxStamina:
 					print "What a dummie..."
 				self.stamina += usedPotion.size
-				if self.stamina >= 10:
-					self.stamina = 10
+				if self.stamina >= maxStamina:
+					self.stamina = maxStamina
 			print "Used a %s! %s potions left..." % (usedPotion.name, len(functions.playerPotions))
 		else:
 			print "No potions... buy some from NPC friendly for the low low price of 100 Gold!"
@@ -216,3 +224,14 @@ class Player:
 			print "Hero equipped %s" % (self.currentWeapon.name)
 		else:
 			print "No other weapons!"
+			
+	#Level up the player. Simply give the player one new heart every 20 exp pts
+	def checkExperience(self):
+		if self.experience >= 20:
+			self.maxHealth += 1
+			self.health = self.maxHealth
+			self.experience = 0
+			self.level += 1
+			print "Level gained!"
+		else:
+			pass

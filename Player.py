@@ -208,3 +208,11 @@ class Player:
 			if self.dotCount <= 0:
 				self.dot = False
 
+	def cycleWeapon(self):
+		if functions.playerInventory:
+			tempWeapon = self.currentWeapon
+			self.currentWeapon = functions.playerInventory.pop(0)
+			functions.playerInventory.append(tempWeapon)
+			print "Hero equipped %s" % (self.currentWeapon.name)
+		else:
+			print "No other weapons!"

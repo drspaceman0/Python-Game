@@ -37,13 +37,15 @@ def pauseMenu():
 	text = font.render("Pause", 1, (0,0,0))	
     
 	while pauseMenu:
-		for event in pygame.event.get():
+		for event in pygame.event.get():  # TODO: is there a better way?
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				quit()
 			elif event.type == pygame.KEYUP:
 				if event.key == pygame.K_p:
 					return
+			elif event.type == pygame.JOYBUTTONDOWN:
+				return
 					
 		Display.DISPLAYSURF.fill(Display.WHITE)
 		Display.DISPLAYSURF.blit(text, (100, 200))

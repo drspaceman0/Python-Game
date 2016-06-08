@@ -14,11 +14,12 @@ import Menu
 import Audio
 import functions
 
+GAME_ICON =  'slithering_python.png' # 'player_down1.png'
 
 class Game:
 	def __init__(self):
 		pygame.init()
-		pygame.display.set_icon(pygame.transform.scale(functions.load_image('player_down1.png'), (32, 32)))
+		pygame.display.set_icon(pygame.transform.scale(functions.load_image(GAME_ICON), (32, 32)))
 		pygame.display.set_caption('Python-Game')
 		self.playerObj = Player.Player()
 		self.audioObj = Audio.GameAudio()

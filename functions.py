@@ -1,19 +1,12 @@
 """ Functions, variables, and objects shared between many classes stored here"""
 
-
-#from pygame.locals import *
-
 import logging
 import math
 import pygame
 from os import path
-
-#import Enemy
-#import Display
-
+from Display import DISPLAYSURF
 
 IMAGE_DIR = 'images'
-
 
 # Keep track of dead enemies loot and whatnot.
 worldInventory = []
@@ -29,8 +22,10 @@ worldDeaths = 0
 # "Timer"
 gameTimer = 0
 
-#Game Menu
+# Game Menu
 paused = False
+
+
 def pauseMenu():
 	import Display
 	font = pygame.font.SysFont("comicsansms",115)
@@ -51,14 +46,12 @@ def pauseMenu():
 		Display.DISPLAYSURF.blit(text, (100, 200))
 		pygame.display.update()
 		Display.FPSCLOCK
-	
-
 
 def objCollision(obj1, obj2):
 	if math.sqrt(pow(obj1.collisionx - obj2.collisionx, 2) + pow(obj1.collisiony - obj2.collisiony, 2)) < obj1.range:
 		return True
 
-def rectCollision(rect1, rect2):
+def rectCollision(rect1, rect2): # TODO: clean this up
 	if rect1.x >= rect2.x and rect1.x <= rect2.x + rect2.width and rect1.y >= rect2.y and rect1.y <= rect2.y + rect2.height or rect2.x >= rect1.x and rect2.x <= rect1.x + rect1.width and rect2.y >= rect1.y and rect2.y <= rect1.y + rect1.height:
 		return True
 
@@ -108,3 +101,7 @@ def updateCoins(player):
 
 def load_image(image_name):
 	return pygame.image.load(path.join(IMAGE_DIR, image_name))
+
+def screenshot(filename='screenshot.tga'):
+	#TODO: counter for screenshots
+	pygame.image.save(DISPLAYSURF, filename)

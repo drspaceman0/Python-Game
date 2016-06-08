@@ -8,6 +8,8 @@ import sys
 import logging
 
 import functions
+import Display
+
 
 POS_SENS 	= 0.2				# Positive sensitivity
 NEG_SENS 	= -1.0 * POS_SENS  	# Negative sensitivity
@@ -18,7 +20,7 @@ HAT_RIGHT 	= (1, 0)
 
 
 # TODO: remapping of keybinds
-# This could be accomplished with genericized actions that map to the actual key
+# This could be accomplished with generalized actions that map to the actual key
 # e.g event.key == moveleft, with moveleft being pygame.K_LEFT or whatever user sets
 # More ideas: boolean array or dictionary of the current mapping set
 # TODO: rumble?
@@ -70,6 +72,15 @@ class Input:
 					playerObj.pickup = True
 					if functions.playerInventory:
 						playerObj.isTrading = True
+				if event.key == K_f:
+					if Display.is_fullscreen:
+						Display.resetWindow()
+						Display.is_fullscreen = 0
+					else:
+						Display.fullscreen()
+						Display.is_fullscreen = 1
+				if event.key == K_s:
+					functions.screenshot()
 				if event.key == K_BACKSPACE:
 					playerObj.isDead = True
 				if event.key == K_ESCAPE:
@@ -134,7 +145,6 @@ class Input:
 				elif self.controllers[0].get_axis(3) > POS_SENS:	# Right trigger pulled
 					playerObj.isAttacking = 1
 
-
 				# Right Stick
 				# Why is Y-axis 4 and X-axis 5? Again, don't ask me why man, I don't know what to believe anymore...
 				if self.controllers[0].get_axis(4) >= POS_SENS:  	# Right stick, Y-axis left
@@ -162,9 +172,14 @@ class Input:
 				elif self.controllers[0].get_button(3):  # 'Y'
 					playerObj.cycleWeapon()
 				elif self.controllers[0].get_button(4):  # 'LB'
-					pass
+					functions.screenshot()
 				elif self.controllers[0].get_button(5):  # 'RB'
-					pass
+					if Display.is_fullscreen:
+						Display.resetWindow()
+						Display.is_fullscreen = 0
+					else:
+						Display.fullscreen()
+						Display.is_fullscreen = 1
 				elif self.controllers[0].get_button(6):  # 'back' (the double window button thing)
 					self._log.debug('Back button pressed, terminating game')
 					self.terminate()
@@ -181,7 +196,7 @@ class Input:
 			elif event.type == JOYHATMOTION:
 				hat = self.controllers[0].get_hat(0)
 				if hat == HAT_UP:
-					pass  # TODO: make this a screenshoting function using pygame.image.save(Surface, Filename)
+					pass
 				elif hat == HAT_DOWN:
 					self._log.debug('Opening menu')
 					menuObject.activateText()

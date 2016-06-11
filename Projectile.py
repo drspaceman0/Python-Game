@@ -3,6 +3,7 @@
  x and y coordinate'''
 import pygame
 import Display
+import math
  
 SPEED = 10
  
@@ -27,7 +28,7 @@ class Projectile:
 		if self.y > self.endY:
 			self.y -= self.speed
 			
-		if self.y == self.endY and self.x == self.endX:
+		if math.sqrt(pow(self.x - self.endX, 2) + pow(self.y - self.endY, 2)) < 20:
 			self.exists = False
 			
 	def collide(self):
@@ -42,4 +43,3 @@ class Projectile:
 			self.draw()
 			self.move()
 			self.collide()
-			

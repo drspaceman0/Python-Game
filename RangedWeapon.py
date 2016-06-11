@@ -7,6 +7,7 @@ import pygame
 import Display
 import functions
 import Projectile
+import math 
 
 class RangedWeapon:
 	
@@ -22,22 +23,24 @@ class RangedWeapon:
 		self.arrows = []
 		self.noTarget = True
 		self.numOfTarget = 0
+		self.dung = 0
 	
 	def drawReticle(self):
 			pygame.draw.circle(Display.DISPLAYSURF, Display.RED, (self.target.collisionx, self.target.collisiony), 10)
 	
 	def cycleTargets(self, dung):
+		self.dung = dung
 		if self.owner.isPlayer() == True: #If the player wishes to grab a new target
-			if dung.returnCurrentRoom().hasSpawners: #Check if there is a spawner
-				if dung.returnCurrentRoom().enemylist: #Check if there are enemies
+			if self.dung.returnCurrentRoom().hasSpawners: #Check if there is a spawner
+				if self.dung.returnCurrentRoom().enemylist: #Check if there are enemies
 					self.noTarget = False
 					try:
-						self.target = dung.returnCurrentRoom().enemylist[self.numOfTarget+1] #Attempt to grab next enemy
+						self.target = self.dung.returnCurrentRoom().enemylist[self.numOfTarget+1] #Attempt to grab next enemy
 						self.numOfTarget += 1
 						print "New target acquired"
 					except IndexError:
 						try:
-							self.target = dung.returnCurrentRoom().enemylist[0]
+							self.target = self.dung.returnCurrentRoom().enemylist[0]
 							self.numOfTarget = 0
 							print "New target acquired"
 						except IndexError:
@@ -57,6 +60,15 @@ class RangedWeapon:
 			self.drawReticle()
 		if self.arrows:
 			for arrow in self.arrows:
+				if arrow.exists == False:
+					self.arrows.remove(arrow)
+				if self.dung.returnCurrentRoom().enemylist:
+					for enemy in self.dung.returnCurrentRoom().enemylist:
+						if math.sqrt(pow(arrow.x - enemy.x, 2) + pow(arrow.y - enemy.y, 2)) < 30:
+							enemy.health -= self.damage
+							if enemy.health <= 0:
+								enemy.death()
+							print "%s has been hit with an arrow for %s damage!" % (enemy.name, self.damage)
 				arrow.update()
 		else:
 			pass

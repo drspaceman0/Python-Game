@@ -50,7 +50,9 @@ class GameServer:
 
 
 if __name__ == '__main__':
-    logging.basicConfig(filename='Server.log', level=logging.DEBUG)
+    logging.basicConfig(filename='Python-Game-Server.log', level=logging.DEBUG)
+    logging.info('Beginning of logging for run starting at %s', strftime("%Y-%m-%d %H:%M:%S"))
+    logging.info()
     server = GameServer()
     server.run()
-    logging.info('Server finished')
+    logging.info('Server finished\n\n\n')

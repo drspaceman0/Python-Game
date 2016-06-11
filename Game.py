@@ -94,7 +94,9 @@ class Game:
  
 if __name__ == '__main__':
 	""" For non-networked gameplay """
-	logging.basicConfig(filename='Game.log',level=logging.DEBUG)
+	logging.basicConfig(filename='Python-Game.log',level=logging.DEBUG)
+	from time import strftime
+	logging.info('Beginning of logging for run starting at %s', strftime("%Y-%m-%d %H:%M:%S") )
 	game = Game()
 	game.run()
-	logging.debug('Finished Game')
+	logging.debug('Finished Game\n\n\n')

@@ -52,7 +52,8 @@ class GameClient:
         #Game.main()
 
 if __name__ == '__main__':
-    logging.basicConfig(filename='Client.log', level=logging.DEBUG)
+    logging.basicConfig(filename='Python-Game-Client.log', level=logging.DEBUG)
+    logging.info('Beginning of logging for run starting at %s', strftime("%Y-%m-%d %H:%M:%S"))
     client = GameClient()
     client.run()
-    logging.info('Client finished')
+    logging.info('Client finished\n\n\n')

@@ -47,7 +47,7 @@ class Input:
 				self._log.info('Initialized controller %s', c.get_name())
 			self._log.info('Initialized all controllers')
 
-	def update(self, playerObj, menuObject):
+	def update(self, playerObj, menuObject, dungObj):
 		if self.num_controllers < joystick.get_count():
 			self._log.error('Controller disconnected unexpectantly!')
 			self.num_controllers = joystick.get_count()
@@ -78,6 +78,9 @@ class Input:
 					playerObj.pickup = True
 					if functions.playerInventory:
 						playerObj.isTrading = True
+				if event.key == K_1:
+					print "firing!"
+					playerObj.rangedWeapon.shoot()
 				if event.key == K_f:
 					if Display.is_fullscreen:
 						Display.resetWindow()
@@ -113,6 +116,9 @@ class Input:
 					playerObj.usePotion()
 				if event.key == K_TAB:
 					playerObj.cycleWeapon()
+				if event.key == K_LSHIFT:
+					playerObj.rangedWeapon.cycleTargets(dungObj)
+
 
 			elif event.type == JOYAXISMOTION:  # TODO: handle multiple controllers better
 				for con in range(self.num_controllers):

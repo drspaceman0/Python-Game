@@ -52,6 +52,7 @@ class VariableEnemy:
 		self.speed = SPEED
 		self.health = HEALTH
 		self.damage = DAMAGE
+		self.rangeDamage = 1
 		self.attack = ATTACK
 		self.color = COLOR
 		self.drawDifferent = False
@@ -127,8 +128,8 @@ class VariableEnemy:
 		pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.collisionx, self.collisiony), self.size+2, 1)
 				
 	def updateColliders(self):
-		self.collisionx = self.x
-		self.collisiony = self.y
+		self.collisionx = self.x + 20
+		self.collisiony = self.y + 20
 		
 	def isPlayer(self):
 		return False

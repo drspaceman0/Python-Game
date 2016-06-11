@@ -63,10 +63,11 @@ class Game:
 				functions.paused = False
 			if functions.gameTimer == 30:
 				functions.gameTimer = 0
-			self.inputObj.update(self.playerObj, menuObject)
+			self.inputObj.update(self.playerObj, menuObject, dungeonObj)
 			dungeonObj.update()
 			menuObject.update()
 			self.playerObj.update()
+			self.playerObj.rangedWeapon.update()
 			self.playerObj.updateColliders()
 			self.audioObj.update()
 

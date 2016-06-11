@@ -24,6 +24,7 @@ class MeleeWeapon:
 	def __init__(self):
 		self.sprite = self.default_sprite1
 		self.spriteObj = SpriteAnimation.SpriteAnimation(self.sprite_list_down, 1)
+		self.isRanged = False
 		self.range = RANGE
 		self.damage = DAMAGE
 		self.hasEffect = False

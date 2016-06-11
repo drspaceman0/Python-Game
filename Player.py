@@ -6,7 +6,9 @@ import SpriteAnimation
 import math
 import Weapon
 import Combat
+import RangedWeapon
 import functions
+
 
 # player variables defaults
 PLAYER_X = 0
@@ -40,6 +42,7 @@ class Player:
 		self.stamina = 10
 		self.maxStamina = 10 #use for leveling and stuff
 		self.damage = 10
+		self.rangeDamage = 1
 		self.range = 50
 		self.size = 48
 		self.weaponx = 0
@@ -63,6 +66,7 @@ class Player:
 		self.currRoomObj = None
 		self.isDead = False
 		self.currentWeapon = Weapon.MeleeWeapon()
+		self.rangedWeapon = RangedWeapon.RangedWeapon(self)
 		self.updateToWeaponStats()
 		self.attackRect =  pygame.Rect(self.x, self.y, self.currentWeapon.range, self.currentWeapon.range)
 		self.circle = pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.collisionx, self.collisiony), self.range, 1)

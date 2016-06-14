@@ -14,7 +14,9 @@ def attack(attacker, defender, isPlayerAttacking): # TODO: iWhere is isPlayerAtt
 			print "%s has been struck dead!" % (defender.name)
 			defender.death()
 			attacker.experience += 4
+			attacker.meleeExp += 2
 			print "4 EXP gained!"
+			print "2 Melee EXP gained!"
 	else:
 		if functions.rectCollision(attacker.rect, defender.rect):
 			if checkForEffect(attacker):
@@ -26,6 +28,7 @@ def attack(attacker, defender, isPlayerAttacking): # TODO: iWhere is isPlayerAtt
 		if defender.health <= 0:
 			print "%s has been struck dead!" % (defender.name)
 			defender.death()
+			
 			
 
 def knockBack(attacker, defender):

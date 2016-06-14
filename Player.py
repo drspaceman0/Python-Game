@@ -36,12 +36,14 @@ class Player:
 		self.name = player_name
 		self.level = 1
 		self.experience = 0
+		self.meleeExp = 0
+		self.rangeExp = 0
 		self.score = 0
 		self.health = 20
 		self.maxHealth = 20 #use for leveling and stuff
 		self.stamina = 10
 		self.maxStamina = 10 #use for leveling and stuff
-		self.damage = 10
+		self.damage = 5
 		self.rangeDamage = 1
 		self.range = 50
 		self.size = 48
@@ -67,6 +69,7 @@ class Player:
 		self.isDead = False
 		self.currentWeapon = Weapon.MeleeWeapon()
 		self.rangedWeapon = RangedWeapon.RangedWeapon(self)
+		self.arrows = 10
 		self.updateToWeaponStats()
 		self.attackRect =  pygame.Rect(self.x, self.y, self.currentWeapon.range, self.currentWeapon.range)
 		self.circle = pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.collisionx, self.collisiony), self.range, 1)
@@ -95,6 +98,8 @@ class Player:
 		#Perform additional combat checks
 		if self.dot == True:
 			self.takeEffectDamage()
+		#Check ranged attacks
+		self.rangedAttack()
 	
 	def updateRects(self):
 		self.rect = pygame.Rect(self.x, self.y, PLAYER_WIDTH, PLAYER_HEIGHT)
@@ -104,7 +109,23 @@ class Player:
 			Combat.attack(self, enemy, True)
 		for spawnner in self.dungeonObj.returnCurrentRoom().spawnnerlist:
 			Combat.attack(self, spawnner, True)
-		
+			
+	def rangedAttack(self):
+		if self.rangedWeapon.arrows:
+			for projectile in self.rangedWeapon.arrows:
+				for enemy in self.dungeonObj.returnCurrentRoom().enemylist:
+					if projectile.exists == True:
+						if functions.objCollision(projectile, enemy):
+							enemy.health -= projectile.damage
+							projectile.exists = False
+							print "%s hit for %s damage!" % (enemy.name, projectile.damage)
+							if enemy.health <= 0:
+								enemy.death()
+								self.experience += 4
+								print "%s gained 4 Exp!" % (self.name) 
+								self.rangeExp += 2
+								print "%s has gained 2 ranged exp!" % (self.name)
+				
 	
 	def movePlayer(self):
 		if self.isAttacking == 1:
@@ -237,6 +258,17 @@ class Player:
 			self.experience = 0
 			self.level += 1
 			print "Level gained!"
+			
+		elif self.meleeExp >= 14:
+			print "Melee skill increased!"
+			self.damage += 1
+			self.meleeExp = 0
+		
+		elif self.rangeExp >= 14:
+			print "Ranged skill increased!"
+			self.rangeDamage += 1
+			self.rangedWeapon.updateDamage()
+			self.rangeExp = 0
 		else:
 			pass
 	

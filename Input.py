@@ -79,8 +79,12 @@ class Input:
 					if functions.playerInventory:
 						playerObj.isTrading = True
 				if event.key == K_1:
-					print "firing!"
-					playerObj.rangedWeapon.shoot()
+					if playerObj.arrows > 0:
+						playerObj.arrows -= 1
+						print "Firing!"
+						playerObj.rangedWeapon.shoot()
+					else:
+						print "No arrows!"
 				if event.key == K_f:
 					if Display.is_fullscreen:
 						Display.resetWindow()

@@ -115,7 +115,6 @@ class VariableEnemy:
 		functions.worldEnemiesKilled += 1
 		self.isDead = True
 		self.dropLoot()
-		"I died"
 	
 
 			

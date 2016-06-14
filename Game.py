@@ -63,6 +63,9 @@ class Game:
 				functions.paused = False
 			if functions.gameTimer == 30:
 				functions.gameTimer = 0
+				if self.playerObj.arrows < 10:
+					self.playerObj.arrows += 1
+					print "Magic quiver produced one arrow"
 			self.inputObj.update(self.playerObj, menuObject, dungeonObj)
 			dungeonObj.update()
 			menuObject.update()
@@ -70,6 +73,7 @@ class Game:
 			self.playerObj.rangedWeapon.update()
 			self.playerObj.updateColliders()
 			self.audioObj.update()
+			pygame.mouse.set_visible(False)
 
 			if dungeonObj.returnCurrentRoom().hasSpawners:
 				for spawnner in dungeonObj.returnCurrentRoom().spawnnerlist:

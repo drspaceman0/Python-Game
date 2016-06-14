@@ -6,6 +6,7 @@ import pygame
 import SpriteAnimation
 import Combat
 import Weapon
+import RangedWeapon
 import Inventory
 import Coin
 import functions
@@ -79,11 +80,21 @@ class VariableEnemy:
 		self.getNounTraits()
 		self.getVerbTraits()
 		self.currentWeapon = Weapon.MeleeWeapon()
+		self.rangedWeapon = RangedWeapon.RangedWeapon(self)
+		self.arrows = 3
+		self.reload = 1
 		self.updateStatsToCurrentWeapon()
 		self.updateInventory()
 		
 		
 		
+	def rangedAttack(self):
+		if functions.gameTimer == self.reload:
+			self.rangedWeapon.aimAtPlayer(self.playerObj)
+			self.rangedWeapon.attackPlayer()
+		else:
+			self.rangedWeapon.aimAtPlayer(self.playerObj)
+			
 	def updateInventory(self):
 		self.items.append(self.currentWeapon)
 		self.inventory = Inventory.Inventory(self.dropRate, self.items)
@@ -97,13 +108,20 @@ class VariableEnemy:
 		self.drawSelf()
 		self.updateColliders()
 		#self.drawCollider()
-		self.chaseObj(self.playerObj)
+		if self.arrows > 0:
+			self.speed = SPEED // 2 #aiming slows
+			self.rangedAttack()
+			self.chaseObj(self.playerObj)
+		else:
+			self.speed = SPEED
+			self.chaseObj(self.playerObj)
 		if self.isDead == True:
 			self.playerObj.score += 1
 			self.playerObj.dungeonObj.returnCurrentRoom().enemylist.remove(self)
 		if self.dot == True:
 			self.takeEffectDamage()
-	
+		self.rangedWeapon.update(self.playerObj)
+		
 
 	def collision(self, obj):
 		"""distance formula"""

@@ -70,7 +70,7 @@ class Game:
 			dungeonObj.update()
 			menuObject.update()
 			self.playerObj.update()
-			self.playerObj.rangedWeapon.update()
+			self.playerObj.rangedWeapon.update(self.playerObj)
 			self.playerObj.updateColliders()
 			self.audioObj.update()
 			pygame.mouse.set_visible(False)

@@ -19,6 +19,8 @@ class RangedWeapon:
 		self.owner = owner
 		self.damage = owner.rangeDamage+1
 		self.arrows = []
+		playerPosX = 0
+		playerPosY = 0
 		
 		
 	def updateDamage(self):
@@ -26,17 +28,34 @@ class RangedWeapon:
 	
 	def drawReticle(self):
 		reticlePos = pygame.mouse.get_pos()
-		pygame.draw.circle(Display.DISPLAYSURF, Display.RED, (reticlePos[0], reticlePos[1]), 10)
+		pygame.draw.circle(Display.DISPLAYSURF, Display.WHITE, (reticlePos[0], reticlePos[1]), 10)
+		
+	def aimAtPlayer(self, playerObj):
+		self.playerPosX = playerObj.collisionx
+		self.playerPosY = playerObj.collisiony
+		pygame.draw.circle(Display.DISPLAYSURF, Display.WHITE, (playerObj.collisionx, playerObj.collisiony), 10)
+		
+	def attackPlayer(self):
+			if self.owner.arrows > 0:
+				self.arrows.append(Projectile.Projectile(self.owner.x, self.owner.y, self.playerPosX, self.playerPosY, self.damage))
+				self.owner.arrows -= 1
+		
 						
 		
 	def shoot(self):
 		reticlePos = pygame.mouse.get_pos()
 		self.arrows.append(Projectile.Projectile(self.owner.x, self.owner.y, reticlePos[0], reticlePos[1], self.damage))
 			
-	def update(self):
-		self.drawReticle()
+	def update(self, playerObj):
+		if self.owner.isPlayer():
+			self.drawReticle()
 		if self.arrows:
 			for arrow in self.arrows:
+				if self.owner.isPlayer() == False:
+					if functions.objCollision(arrow, playerObj):
+						playerObj.health -= arrow.damage
+						print "Oh no! %s takes %s damage from an arrow!" % (playerObj.name, arrow.damage)
+						arrow.exists = False
 				if arrow.exists == False:
 					self.arrows.remove(arrow)
 				arrow.update()

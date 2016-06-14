@@ -26,6 +26,7 @@ def attack(attacker, defender, isPlayerAttacking): # TODO: iWhere is isPlayerAtt
 		if defender.health <= 0:
 			print "%s has been struck dead!" % (defender.name)
 			defender.death()
+			
 
 def knockBack(attacker, defender):
 	if defender.knocksBack:

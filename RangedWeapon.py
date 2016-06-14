@@ -64,13 +64,18 @@ class RangedWeapon:
 					self.arrows.remove(arrow)
 				if self.dung.returnCurrentRoom().enemylist:
 					for enemy in self.dung.returnCurrentRoom().enemylist:
-						if math.sqrt(pow(arrow.x - enemy.x, 2) + pow(arrow.y - enemy.y, 2)) < 30:
-							enemy.health -= self.damage
-							arrow.exists = False
-							print "%s has been hit with an arrow for %s damage!" % (enemy.name, self.damage)
-							if enemy.health <= 0:
-								enemy.death()
-								self.cycleTargets(self.dung)
+						if arrow.exists == False:
+							pass #Necessary becuase arrows are hitting twice
+						else:
+							if math.sqrt(pow(arrow.x - enemy.x, 2) + pow(arrow.y - enemy.y, 2)) < 30:
+								enemy.health -= self.damage
+								arrow.exists = False
+								print "%s has been hit with an arrow for %s damage!" % (enemy.name, self.damage)
+								if enemy.health <= 0:
+									enemy.death()
+									self.cycleTargets(self.dung)
+									self.owner.experience += 4
+									print "Gained 4 EXP!"
 				arrow.update()
 		else:
 			pass

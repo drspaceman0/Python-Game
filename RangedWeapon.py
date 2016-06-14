@@ -66,6 +66,7 @@ class RangedWeapon:
 					for enemy in self.dung.returnCurrentRoom().enemylist:
 						if math.sqrt(pow(arrow.x - enemy.x, 2) + pow(arrow.y - enemy.y, 2)) < 30:
 							enemy.health -= self.damage
+							arrow.exists = False
 							print "%s has been hit with an arrow for %s damage!" % (enemy.name, self.damage)
 							if enemy.health <= 0:
 								enemy.death()

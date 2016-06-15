@@ -124,8 +124,17 @@ class Input:
 					playerObj.usePotion()
 				if event.key == K_TAB:
 					playerObj.cycleWeapon()
-				if event.key == K_LSHIFT:
-					playerObj.rangedWeapon.cycleTargets(dungObj)
+					
+			elif pygame.mouse.get_pressed():
+				if pygame.time.get_ticks() > playerObj.lastFired + 500 and playerObj.arrows > 0:
+					playerObj.rangedWeapon.shoot()
+					playerObj.lastFired = pygame.time.get_ticks()
+					playerObj.arrows -= 1
+				else:
+					if playerObj.arrows < 1:
+						print "No arrows!"
+					else:
+						print "Notching arrow!"
 
 			elif event.type == JOYAXISMOTION:  # TODO: handle multiple controllers better
 				for con in range(self.num_controllers):

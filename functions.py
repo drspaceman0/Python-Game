@@ -22,6 +22,7 @@ worldDeaths = 0
 # "Timer"
 gameTimer = 0
 
+
 # Game Menu
 paused = False
 

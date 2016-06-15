@@ -69,7 +69,8 @@ class Player:
 		self.isDead = False
 		self.currentWeapon = Weapon.MeleeWeapon()
 		self.rangedWeapon = RangedWeapon.RangedWeapon(self)
-		self.arrows = 10
+		self.arrows = 1
+		self.lastFired = 0
 		self.updateToWeaponStats()
 		self.attackRect =  pygame.Rect(self.x, self.y, self.currentWeapon.range, self.currentWeapon.range)
 		self.circle = pygame.draw.circle(Display.DISPLAYSURF, Display.BLACK, (self.collisionx, self.collisiony), self.range, 1)

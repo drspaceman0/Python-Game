@@ -11,12 +11,14 @@ import functions
 import Display
 
 
-POS_SENS 	= 0.2				# Positive sensitivity
+# Controller sensitivity to axis position changes
+POS_SENS 	= 0.2		# Positive sensitivity
 NEG_SENS 	= -0.2  	# Negative sensitivity
 HAT_UP 		= (0, 1)
 HAT_DOWN 	= (0, -1)
 HAT_LEFT 	= (-1, 0)
 HAT_RIGHT 	= (1, 0)
+POS_CHANGE_PER_TICK = 2
 
 
 # TODO: remapping of keybinds
@@ -27,32 +29,34 @@ HAT_RIGHT 	= (1, 0)
 
 
 class Input:
-
 	def __init__(self):
-		self.controllers = [] # TODO: map controllers to players
+		self.controllers = [] 	# TODO: map controllers to players
+		self.vPos = [] 			# Virtual positions of each controller on the screen
 		self.num_controllers = 0
 		self.players = []
 		self._log = logging.getLogger(__name__)
 		self._log.debug('Initialized Input')
 
-	def initialize(self):
-		""" Initialize input devices, notably Controllers/Joysticks """
+	def initialize_controllers(self):
+		""" Initialize Controllers/Joysticks """
 		joystick.init()
 		if joystick.get_count():
 			self._log.info('%s Controllers found', joystick.get_count())
 			self.num_controllers = joystick.get_count()
 			self.controllers = [joystick.Joystick(x) for x in range(self.num_controllers)]
 			for c in self.controllers:
+				self.vPos.append( (0,0) )
 				c.init()
 				self._log.info('Initialized controller %s', c.get_name())
 			self._log.info('Initialized all controllers')
 
 	def update(self, playerObj, menuObject, dungObj):
+		""" Pulls events from the event queue """
 		if self.num_controllers < joystick.get_count():
-			self._log.error('Controller disconnected unexpectantly!')
-			self.num_controllers = joystick.get_count()
+			self._log.error('A controller disconnected unexpectantly! Attempting to reinitialize all controllers...')
+			self.initialize_controllers()
 
-		""" Input event handler """
+		# Input event handler
 		for event in pygame.event.get():
 			if event.type == QUIT:
 				self.terminate()
@@ -123,7 +127,6 @@ class Input:
 				if event.key == K_LSHIFT:
 					playerObj.rangedWeapon.cycleTargets(dungObj)
 
-
 			elif event.type == JOYAXISMOTION:  # TODO: handle multiple controllers better
 				for con in range(self.num_controllers):
 					self._axis_movement(con, playerObj)
@@ -177,21 +180,21 @@ class Input:
 				elif hat == HAT_LEFT:
 					pass
 
-	"""
-	Xbox 360
-		Axis 0/1 	= LS
-		Axis 2 		= LT/RT (0 is resting value)
-			-1 to 0 = RT
-			1 to 0 	= LT
-		Axis 3/4	= RS
-
-	Xbox ONE
-		Axis 0/1	= LS
-		Axis 2/3	= RS
-		Axis 4		= LT	(-1 is resting value)
-		Axis 5 		= RT	( -1 is resting value)
-	"""
 	def _axis_movement(self, con, playerObj):
+		"""
+		Xbox 360
+			Axis 0/1 	= LS
+			Axis 2 		= LT/RT (0 is resting value)
+				-1 to 0 = RT
+				1 to 0 	= LT
+			Axis 3/4	= RS
+
+		Xbox ONE
+			Axis 0/1	= LS
+			Axis 2/3	= RS
+			Axis 4		= LT	(-1 is resting value)
+			Axis 5 		= RT	( -1 is resting value)
+		"""
 
 		if self.controllers[con].get_numaxes() == 5:
 			""" Xbox 360 and other "5 axis" controllers """
@@ -252,19 +255,30 @@ class Input:
 				playerObj.isAttacking = 1
 
 		# Right Stick
-		# Why is Y-axis 4 and X-axis 5? Again, don't ask me why man, I don't know what to believe anymore...
-		if self.controllers[con].get_axis(RS_Y) >= POS_SENS:  # Right stick, Y-axis left
-			pass
-		elif self.controllers[con].get_axis(RS_Y) < POS_SENS:  # Right stick, Y-axis right
-			pass
-		if self.controllers[con].get_axis(RS_X) >= POS_SENS:  # Right stick, X-axis up
-			pass
-		elif self.controllers[con].get_axis(RS_X) < POS_SENS:  # Right stick, X-axis down
-			pass
+		if self.controllers[con].get_axis(RS_Y) >= POS_SENS:  # Right stick, Y-axis down
+			self.vPos[con] += (0, POS_CHANGE_PER_TICK)
+		elif self.controllers[con].get_axis(RS_Y) < POS_SENS:  # Right stick, Y-axis up
+			self.vPos[con] -= (0, POS_CHANGE_PER_TICK)
+		if self.controllers[con].get_axis(RS_X) >= POS_SENS:  # Right stick, X-axis right
+			self.vPos[con] += (POS_CHANGE_PER_TICK, 0)
+		elif self.controllers[con].get_axis(RS_X) < POS_SENS:  # Right stick, X-axis left
+			self.vPos[con] -= (POS_CHANGE_PER_TICK, 0)
 
+	# TODO: not sure how to do this without passing a input object everywhere yet
+	def get_current_pos(self):
+		"""
+		Gets current position on the screen.
+		If mouse: 		simply return current position of mouse
+		If controller: 	return current virtual position being tracked by Input
+		"""
+		if self.vPos:
+			return self.vPos[0] # TODO: multiple players
+		else:
+			return pygame.mouse.get_pos()
 
 	@staticmethod
 	def terminate():
+		""" Terminates the game utterly and completly """
 		logging.info('User quit game\n\n\n')
 		pygame.quit()
 		sys.exit()

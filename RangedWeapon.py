@@ -1,13 +1,13 @@
-'''Ranged Weapon Class
+"""
+Ranged Weapon Class
 Player and enemies can use them
 they show a reticle (small dot for now)
 on their target, and fire in a straight line
-'''
+"""
 import pygame
 import Display
 import functions
 import Projectile
-import math 
 
 class RangedWeapon:
 	
@@ -19,14 +19,15 @@ class RangedWeapon:
 		self.owner = owner
 		self.damage = owner.rangeDamage+1
 		self.arrows = []
-		playerPosX = 0
-		playerPosY = 0
+		self.playerPosX = 0
+		self.playerPosY = 0
 		
 		
 	def updateDamage(self):
 		self.damage = self.owner.rangeDamage+1
-	
-	def drawReticle(self):
+
+	@staticmethod
+	def drawReticle():
 		reticlePos = pygame.mouse.get_pos()
 		pygame.draw.circle(Display.DISPLAYSURF, Display.WHITE, (reticlePos[0], reticlePos[1]), 10)
 		
@@ -40,10 +41,9 @@ class RangedWeapon:
 				self.arrows.append(Projectile.Projectile(self.owner.x, self.owner.y, self.playerPosX, self.playerPosY, self.damage))
 				self.owner.arrows -= 1
 		
-						
-		
 	def shoot(self):
 		reticlePos = pygame.mouse.get_pos()
+		#reticlePos = Input.get_current_pos()
 		self.arrows.append(Projectile.Projectile(self.owner.x, self.owner.y, reticlePos[0], reticlePos[1], self.damage))
 			
 	def update(self, playerObj):
@@ -51,15 +51,11 @@ class RangedWeapon:
 			self.drawReticle()
 		if self.arrows:
 			for arrow in self.arrows:
-				if self.owner.isPlayer() == False:
+				if not self.owner.isPlayer():
 					if functions.objCollision(arrow, playerObj):
 						playerObj.health -= arrow.damage
 						print "Oh no! %s takes %s damage from an arrow!" % (playerObj.name, arrow.damage)
 						arrow.exists = False
-				if arrow.exists == False:
+				if not arrow.exists:
 					self.arrows.remove(arrow)
 				arrow.update()
-		else:
-			pass
-		
-	

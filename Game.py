@@ -30,7 +30,7 @@ class Game:
 	def run(self):
 
 		# Initialize Input and Audio
-		self.inputObj.initialize()
+		self.inputObj.initialize_controllers()
 		self.audioObj.load_music('music\Damnation.mp3')
 		self.audioObj.play_next_song()
 		# Run the game

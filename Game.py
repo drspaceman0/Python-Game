@@ -66,7 +66,7 @@ class Game:
 				if self.playerObj.arrows < 10:
 					self.playerObj.arrows += 1
 					print "Magic quiver produced one arrow"
-			self.inputObj.update(self.playerObj, menuObject, dungeonObj)
+			self.inputObj.update(self.playerObj, menuObject)
 			dungeonObj.update()
 			menuObject.update()
 			self.playerObj.update()
